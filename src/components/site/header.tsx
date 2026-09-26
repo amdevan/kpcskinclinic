@@ -48,7 +48,7 @@ export function Header() {
     <>
       {/* Top utility bar — quiet, editorial */}
       <div className="bg-ink text-cream/75 text-[11px]">
-        <div className="container mx-auto px-4 flex h-8 items-center justify-between gap-4">
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 flex h-8 items-center justify-between gap-4">
           <div className="hidden sm:flex items-center gap-4">
             <span className="inline-flex items-center gap-1.5">
               <Phone className="h-3 w-3 text-gold/70" />
@@ -96,7 +96,7 @@ export function Header() {
             : "bg-background border-transparent"
         )}
       >
-        <div className="container mx-auto px-4 flex h-16 lg:h-[4.5rem] items-center justify-between gap-4">
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 flex h-16 lg:h-[4.5rem] items-center justify-between gap-4">
           <Logo />
 
           {/* Desktop nav */}

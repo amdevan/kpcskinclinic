@@ -9,8 +9,8 @@ export function AboutSection() {
   const { setOpen } = useBookAppointment();
 
   return (
-    <section id="about" className="py-16 sm:py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="about" className="py-20 sm:py-28 bg-background">
+      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* LEFT — text */}
           <motion.div
@@ -141,10 +141,9 @@ export function CtaSection() {
   const { setOpen } = useBookAppointment();
 
   return (
-    <section id="cta" className="relative py-20 sm:py-28 overflow-hidden bg-ink">
+    <section id="cta" className="relative min-h-[70vh] flex items-center py-20 sm:py-28 overflow-hidden bg-ink">
       {/* Faded team photo background */}
       <div className="absolute inset-0">
-        { }
         <img
           src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg"
           alt=""
@@ -154,7 +153,7 @@ export function CtaSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/40" />
       </div>
 
-      <div className="relative container mx-auto px-4">
+      <div className="relative w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         <div className="max-w-3xl mx-auto text-center text-cream">
           <div className="inline-flex items-center gap-2 mb-5 rounded-full border border-gold/40 bg-ink/30 backdrop-blur px-3 py-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />

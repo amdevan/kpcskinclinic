@@ -18,7 +18,7 @@ export function Footer() {
     >
       {/* Newsletter strip — top of footer */}
       <div className="border-b border-border">
-        <div className="container mx-auto px-4 py-12 sm:py-14">
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-12 sm:py-14">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
@@ -38,7 +38,7 @@ export function Footer() {
       </div>
 
       {/* Main footer — brand + links (3 columns like sample) */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-12">
         <div className="grid lg:grid-cols-12 gap-10">
           {/* Brand + contact */}
           <div className="lg:col-span-5">
@@ -136,7 +136,7 @@ export function Footer() {
 
       {/* Copyright bar — green bottom banner like sample */}
       <div className="bg-brand text-cream">
-        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <p className="text-cream/90">
             © {year} KPC Skin Hair &amp; Aesthetic Clinic. All rights reserved.
           </p>

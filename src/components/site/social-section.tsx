@@ -5,10 +5,10 @@ import { SOCIAL_POSTS } from "@/lib/site-data";
 
 export function SocialSection() {
   return (
-    <section id="social" className="py-16 sm:py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="social" className="py-20 sm:py-28 bg-background">
+      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         {/* Header — Follow us @ Instagram Tiktok */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
               Follow us @

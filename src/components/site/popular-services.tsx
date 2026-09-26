@@ -13,7 +13,7 @@ export function PopularServices() {
   return (
     <section
       id="popular"
-      className="relative py-16 sm:py-20 bg-brand text-cream overflow-hidden"
+      className="relative py-20 sm:py-28 bg-brand text-cream overflow-hidden"
     >
       {/* subtle texture */}
       <div className="pointer-events-none absolute inset-0 opacity-10">
@@ -21,9 +21,9 @@ export function PopularServices() {
         <div className="absolute right-10 bottom-0 h-80 w-80 rounded-full border border-cream/15" />
       </div>
 
-      <div className="relative container mx-auto px-4">
+      <div className="relative w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-12">
           <div className="max-w-2xl">
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold mb-3">
               Popular Services
@@ -47,7 +47,7 @@ export function PopularServices() {
         </div>
 
         {/* 4-card grid — clean photos, text below */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {POPULAR_SERVICES.map((s, i) => (
             <motion.article
               key={s.title}
@@ -58,7 +58,6 @@ export function PopularServices() {
               className="group card-lift"
             >
               <div className="relative overflow-hidden rounded-2xl aspect-[4/5] bg-cream/10">
-                { }
                 <img
                   src={s.image}
                   alt={s.title}
@@ -70,16 +69,16 @@ export function PopularServices() {
                   </span>
                 </div>
               </div>
-              <div className="mt-3 px-1">
-                <h3 className="font-display text-lg sm:text-xl font-semibold text-cream">
+              <div className="mt-4 px-1">
+                <h3 className="font-display text-lg sm:text-xl lg:text-2xl font-semibold text-cream">
                   {s.title}
                 </h3>
-                <p className="mt-1 text-sm text-cream/70 leading-relaxed line-clamp-2">
+                <p className="mt-1.5 text-sm text-cream/70 leading-relaxed line-clamp-2">
                   {s.description}
                 </p>
-                <div className="mt-2.5 flex items-center justify-between">
+                <div className="mt-3 flex items-center justify-between">
                   <Link
-                    href="#services"
+                    href="#popular"
                     className="text-xs font-medium text-gold hover:text-cream inline-flex items-center gap-1"
                   >
                     Learn More

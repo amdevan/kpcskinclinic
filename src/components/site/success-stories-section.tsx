@@ -34,10 +34,10 @@ const STORY_CARDS = [
 
 export function SuccessStoriesSection() {
   return (
-    <section id="stories" className="py-16 sm:py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="stories" className="py-20 sm:py-28 bg-background">
+      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         {/* 4 before/after style cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-14">
           {STORY_CARDS.map((c, i) => (
             <motion.div
               key={c.label}

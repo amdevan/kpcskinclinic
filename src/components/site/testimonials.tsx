@@ -29,10 +29,10 @@ function GoogleG({ className }: { className?: string }) {
 
 export function Testimonials() {
   return (
-    <section id="reviews" className="py-16 sm:py-24 bg-sky-50">
-      <div className="container mx-auto px-4">
+    <section id="reviews" className="py-20 sm:py-28 bg-sky-50">
+      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="text-center max-w-2xl mx-auto mb-12">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
             Welcome to KPC
           </p>
@@ -46,7 +46,7 @@ export function Testimonials() {
         </div>
 
         {/* Google review cards — masonry-style staggered grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {TESTIMONIALS.map((t, i) => (
             <motion.article
               key={t.name + t.date}
