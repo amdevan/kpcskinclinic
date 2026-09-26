@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { BookAppointmentProvider } from "@/components/site/book-appointment-context";
+import { Header } from "@/components/site/header";
+import { Footer } from "@/components/site/footer";
+import { FloatingButtons } from "@/components/site/floating-whatsapp";
 
 const playfair = Playfair_Display({
   variable: "--font-display",
@@ -68,7 +72,14 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${inter.variable} ${sourceSerif.variable} antialiased bg-background text-foreground font-sans`}
       >
-        {children}
+        <BookAppointmentProvider>
+          <div className="flex min-h-screen flex-col bg-background">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <FloatingButtons />
+        </BookAppointmentProvider>
         <Toaster />
       </body>
     </html>

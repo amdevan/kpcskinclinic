@@ -107,7 +107,7 @@ export function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#home">Home</Link>
+                  <Link href="/">Home</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -115,7 +115,7 @@ export function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#about">About</Link>
+                  <Link href="/about">About</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -123,7 +123,7 @@ export function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#popular">Pricing</Link>
+                  <Link href="/pricing">Pricing</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -134,7 +134,7 @@ export function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#stories">Success Stories</Link>
+                  <Link href="/success-stories">Success Stories</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -142,7 +142,15 @@ export function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#newsletter">Offers</Link>
+                  <Link href="/offers">Offers</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href="/contact">Contact</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -206,7 +214,7 @@ export function Header() {
                             {cat.services.slice(0, 5).map((s) => (
                               <Link
                                 key={s.title}
-                                href={s.href}
+                                href="/services"
                                 onClick={() => setMobileOpen(false)}
                                 className="block px-3 py-1.5 text-sm text-foreground/70 hover:text-brand"
                               >
@@ -255,7 +263,6 @@ function ServicesMegaMenu() {
             >
               <div className="flex items-start gap-3">
                 <div className="h-12 w-12 shrink-0 overflow-hidden rounded-md bg-secondary">
-                  { }
                   <img
                     src={cat.image}
                     alt={cat.title}
@@ -273,7 +280,7 @@ function ServicesMegaMenu() {
                 {cat.services.slice(0, 4).map((s) => (
                   <li key={s.title}>
                     <Link
-                      href={s.href}
+                      href="/services"
                       className="block text-xs text-foreground/70 hover:text-brand py-0.5"
                     >
                       · {s.title}

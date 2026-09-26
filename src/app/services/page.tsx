@@ -1,0 +1,117 @@
+import { PageBanner } from "@/components/site/page-banner";
+import { CtaSection } from "@/components/site/cta-section";
+import { SERVICE_CATEGORIES } from "@/lib/site-data";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+
+export const metadata = {
+  title: "Our Services | KPC Skin Hair & Aesthetic Clinic",
+  description:
+    "All 28 treatments across 6 categories — hair transplant, hair clinic, surgery, cosmetic face concerns, aesthetic services, and laser treatments. Performed by doctors, in-house.",
+};
+
+export default function ServicesPage() {
+  return (
+    <>
+      <PageBanner
+        eyebrow="Our Services"
+        title="Twenty-eight treatments."
+        highlight="Six doctors who do them."
+        description="Pick a category to see what's on the menu. Every procedure is performed in-house at our Maharajgunj clinic — no outsourcing, no contractor doctors."
+        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg"
+        crumbs={[{ label: "Home", href: "/" }, { label: "Our Services" }]}
+      />
+
+      {/* Services list by category */}
+      <section className="py-20 sm:py-28 bg-background">
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 space-y-16 sm:space-y-20">
+          {SERVICE_CATEGORIES.map((cat, idx) => (
+            <div
+              key={cat.id}
+              id={cat.id}
+              className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start scroll-mt-28"
+            >
+              {/* Image */}
+              <div className="lg:col-span-5">
+                <div className="relative overflow-hidden rounded-3xl aspect-[4/3] bg-ink sticky top-28">
+                  { }
+                  <img
+                    src={cat.image}
+                    alt={cat.title}
+                    className="h-full w-full object-cover opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-cream">
+                    <p className="font-italic-accent text-sm text-gold mb-1">
+                      {cat.tagline}
+                    </p>
+                    <p className="section-index text-[11px] text-cream/60">
+                      0{idx + 1} / 0{SERVICE_CATEGORIES.length}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="lg:col-span-7">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
+                  Category 0{idx + 1}
+                </p>
+                <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink mb-4">
+                  {cat.title}
+                </h2>
+                <p className="text-muted-foreground text-base leading-relaxed mb-6 font-serif-body">
+                  {cat.description}
+                </p>
+
+                <ul className="divide-y divide-border border-t border-border">
+                  {cat.services.map((s, i) => (
+                    <li
+                      key={s.title}
+                      className="py-3.5 flex items-start gap-4 group"
+                    >
+                      <span className="section-index mt-1 shrink-0 text-[11px] text-clay w-6">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-ink">{s.title}</p>
+                        <p className="text-sm text-muted-foreground mt-0.5 font-serif-body">
+                          {s.description}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 flex items-center gap-5">
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:text-ink transition-colors link-underline"
+                  >
+                    Book this category
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="text-sm text-muted-foreground hover:text-brand transition-colors"
+                  >
+                    See pricing →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <CtaSection
+        titlePrefix="Not sure which treatment is right for you?"
+        highlight="Book a consultation."
+        description="A 30–45 minute consultation with the right doctor. We'll figure out what you actually need — and if the answer is nothing, we'll say so."
+        primaryCta="Request an Appointment"
+        secondaryCta="View Pricing"
+        secondaryHref="/pricing"
+      />
+    </>
+  );
+}
