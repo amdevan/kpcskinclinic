@@ -12,7 +12,7 @@ export function Logo({
     <Link
       href="#home"
       className={cn("flex items-center gap-2.5 group", className)}
-      aria-label="Aavaran Skin Clinic home"
+      aria-label="KPC Skin Hair & Aesthetic Clinic home"
     >
       <span className="relative inline-flex h-9 w-9 lg:h-10 lg:w-10 items-center justify-center rounded-xl bg-brand shadow-sm overflow-hidden">
         <svg
@@ -34,15 +34,15 @@ export function Logo({
             variant === "light" ? "text-cream" : "text-ink"
           )}
         >
-          Aavaran
+          KPC
         </span>
         <span
           className={cn(
-            "text-[10px] lg:text-[11px] uppercase tracking-[0.22em] font-medium -mt-0.5",
+            "text-[10px] lg:text-[11px] uppercase tracking-[0.18em] font-medium -mt-0.5",
             variant === "light" ? "text-cream/70" : "text-brand"
           )}
         >
-          Skin Clinic
+          Skin · Hair · Aesthetic
         </span>
       </span>
     </Link>

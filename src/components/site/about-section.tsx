@@ -27,7 +27,7 @@ export function AboutSection() {
                   { }
                   <img
                     src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1bc026548584.webp"
-                    alt="Healthy glowing skin after treatment at Aavaran"
+                    alt="Healthy glowing skin after treatment at KPC"
                     className="h-full w-full object-cover"
                   />
                 </div>
@@ -35,7 +35,7 @@ export function AboutSection() {
                   { }
                   <img
                     src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg"
-                    alt="Aavaran Skin Clinic interior"
+                    alt="KPC Skin Hair & Aesthetic Clinic interior"
                     className="h-full w-full object-cover"
                   />
                 </div>
@@ -93,7 +93,7 @@ export function AboutSection() {
             <div className="flex items-center gap-3 mb-4">
               <span className="h-px w-8 bg-brand" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand">
-                Welcome to Aavaran
+                Welcome to KPC
               </span>
             </div>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-ink">
@@ -101,7 +101,7 @@ export function AboutSection() {
               <span className="text-brand">unique treatment procedures.</span>
             </h2>
             <p className="mt-5 text-base sm:text-lg leading-relaxed text-muted-foreground">
-              At <strong className="text-ink">Aavaran Skin Clinic Pvt. Ltd</strong>,
+              At <strong className="text-ink">KPC Skin Hair & Aesthetic Clinic Pvt. Ltd</strong>,
               we are dedicated to delivering the highest quality treatments for all
               skin and hair concerns. By combining the expertise of experienced
               dermatologists, advanced technologies, and personalized care, we

@@ -17,11 +17,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aavaran Skin Clinic | Nepal's Leading Skin & Hair Clinic",
+  title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic",
   description:
-    "Aavaran Skin Clinic Pvt. Ltd — Nepal's leading skin and hair clinic. Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care.",
+    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal's leading skin and hair clinic. Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care.",
   keywords: [
-    "Aavaran Skin Clinic",
+    "KPC Skin Hair & Aesthetic Clinic",
     "skin clinic Kathmandu",
     "hair transplant Nepal",
     "laser hair removal",
@@ -29,21 +29,21 @@ export const metadata: Metadata = {
     "acne treatment",
     "cosmetic surgery Nepal",
   ],
-  authors: [{ name: "Aavaran Skin Clinic" }],
+  authors: [{ name: "KPC Skin Hair & Aesthetic Clinic" }],
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "Aavaran Skin Clinic | Nepal's Leading Skin & Hair Clinic",
+    title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic",
     description:
       "Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care in Nepal.",
-    url: "https://www.aavaranskin.com",
-    siteName: "Aavaran Skin Clinic",
+    url: "https://www.kpcskin.com",
+    siteName: "KPC Skin Hair & Aesthetic Clinic",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aavaran Skin Clinic",
+    title: "KPC Skin Hair & Aesthetic Clinic",
     description: "Nepal's leading skin & hair clinic.",
   },
 };

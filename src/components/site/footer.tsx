@@ -14,7 +14,7 @@ export function Footer() {
           <div className="lg:col-span-4">
             <Logo variant="light" />
             <p className="mt-4 text-sm leading-relaxed text-cream/70 max-w-sm">
-              Aavaran Skin Clinic Pvt. Ltd — Nepal&apos;s leading skin &amp; hair
+              KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal&apos;s leading skin &amp; hair
               clinic. Nearly 10 years of trusted care, advanced technology, and
               personalized treatment plans for every patient.
             </p>
@@ -27,11 +27,11 @@ export function Footer() {
                 +977-1-4XXXXXX
               </a>
               <a
-                href="mailto:info@aavaranskin.com"
+                href="mailto:info@kpcskin.com"
                 className="flex items-center gap-2.5 text-cream/75 hover:text-gold transition-colors"
               >
                 <Mail className="h-4 w-4 text-gold" />
-                info@aavaranskin.com
+                info@kpcskin.com
               </a>
               <span className="flex items-start gap-2.5 text-cream/75">
                 <MapPin className="h-4 w-4 text-gold mt-0.5 shrink-0" />
@@ -143,7 +143,7 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-cream/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream/55">
           <p>
-            © {new Date().getFullYear()} Aavaran Skin Clinic. All rights reserved.
+            © {new Date().getFullYear()} KPC Skin Hair & Aesthetic Clinic. All rights reserved.
           </p>
           <p className="flex items-center gap-2">
             <span>Beta version</span>
@@ -157,7 +157,7 @@ export function Footer() {
             </a>
           </p>
           <p className="text-cream/40">
-            Powered by Rewa Soft
+            Kathmandu, Nepal
           </p>
         </div>
       </div>

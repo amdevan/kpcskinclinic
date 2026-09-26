@@ -71,7 +71,7 @@ export function NewsletterSection() {
             <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-cream/10 backdrop-blur px-5 py-3 border border-cream/20">
               <CheckCircle2 className="h-5 w-5 text-gold" />
               <span className="text-sm font-medium text-cream">
-                You&apos;re subscribed — welcome to the Aavaran family!
+                You&apos;re subscribed — welcome to the KPC family!
               </span>
             </div>
           ) : (

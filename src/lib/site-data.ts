@@ -1,5 +1,5 @@
-// Centralized site content for Aavaran Skin Clinic
-// All copy is derived from the original aavaranskin.com site.
+// Centralized site content for KPC Skin Hair & Aesthetic Clinic
+// Site copy modeled on the original KPC clinic brand.
 
 export type ServiceItem = {
   title: string;
@@ -188,7 +188,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "9th Aug, 2026",
     rating: 5,
     text:
-      "I am the happiest guy now after visiting Aavaran Skin Clinic for my skin consultation with Dr. Rupak. I can see visible changes and glow on my skin that I never had before. Highly recommended, best skin clinic in Kathmandu.",
+      "I am the happiest guy now after visiting KPC Skin Hair & Aesthetic Clinic for my skin consultation with Dr. Rupak. I can see visible changes and glow on my skin that I never had before. Highly recommended, best skin clinic in Kathmandu.",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
     service: "Skin Consultation",
@@ -198,7 +198,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "14th Aug, 2025",
     rating: 5,
     text:
-      "Best place to transplant! The team was professional, the procedure was comfortable and the results speak for themselves. I would recommend Aavaran to anyone considering a hair transplant.",
+      "Best place to transplant! The team was professional, the procedure was comfortable and the results speak for themselves. I would recommend KPC to anyone considering a hair transplant.",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
     service: "Hair Transplant",
@@ -208,7 +208,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "18th Feb, 2026",
     rating: 5,
     text:
-      "Completed my laser hair removal sessions here and very satisfied with the result. Highly recommended Aavaran for laser hair removal — clean clinic, friendly staff, real results.",
+      "Completed my laser hair removal sessions here and very satisfied with the result. Highly recommended KPC for laser hair removal — clean clinic, friendly staff, real results.",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
     service: "Laser Hair Removal",
@@ -218,7 +218,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "2nd Mar, 2026",
     rating: 5,
     text:
-      "After years of struggling with acne scars, the team at Aavaran put together a plan that actually worked. My skin texture has improved dramatically. Thank you for restoring my confidence.",
+      "After years of struggling with acne scars, the team at KPC put together a plan that actually worked. My skin texture has improved dramatically. Thank you for restoring my confidence.",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
     service: "Acne & Acne Scars",
@@ -228,7 +228,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "22nd Jan, 2026",
     rating: 5,
     text:
-      "Genuine, transparent and skilled. They never pushed unnecessary treatments. The PRP hair sessions have visibly thickened my hair. Aavaran is the real deal.",
+      "Genuine, transparent and skilled. They never pushed unnecessary treatments. The PRP hair sessions have visibly thickened my hair. KPC is the real deal.",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
     service: "PRP Hair Treatment",
@@ -295,37 +295,37 @@ export const SOCIAL_POSTS = [
   {
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1bc026548584.webp",
-    handle: "@aavaranskin",
+    handle: "@kpcskin",
     caption: "Glowing skin week — HydraFacial results.",
   },
   {
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a6cc93c84fc4.jpg",
-    handle: "@aavaranskin",
+    handle: "@kpcskin",
     caption: "Day 7 post FUE hair transplant.",
   },
   {
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/da3261b93bf0.jpg",
-    handle: "@aavaranskin",
+    handle: "@kpcskin",
     caption: "Carbon laser peel — red carpet ready.",
   },
   {
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg",
-    handle: "@aavaranskin",
+    handle: "@kpcskin",
     caption: "Inside our Kathmandu clinic.",
   },
   {
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/cb095eaff0da.jpg",
-    handle: "@aavaranskin",
+    handle: "@kpcskin",
     caption: "Sterile, equipped, ready for you.",
   },
   {
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
-    handle: "@aavaranskin",
+    handle: "@kpcskin",
     caption: "Where science meets care.",
   },
 ];

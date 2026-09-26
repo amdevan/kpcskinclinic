@@ -17,7 +17,7 @@ export function SocialSection() {
               <span className="text-brand">Instagram & TikTok</span>
             </>
           }
-          description="@aavaranskin — behind-the-scenes, before & afters, patient stories and skincare tips from our clinic."
+          description="@kpcskin — behind-the-scenes, before & afters, patient stories and skincare tips from our clinic."
           action={
             <div className="flex items-center gap-3">
               <a
