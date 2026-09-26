@@ -6,51 +6,66 @@ import { Stethoscope, Microscope, HeartHandshake, ShieldCheck } from "lucide-rea
 const FEATURES = [
   {
     icon: Stethoscope,
-    title: "Experienced specialists",
+    title: "Specialists, not generalists",
     description:
-      "Board-certified dermatologists and plastic surgeons with nearly 10 years of clinical experience.",
+      "Each treatment is led by a board-certified dermatologist or plastic surgeon — not a technician, not a junior, not a salesperson.",
   },
   {
     icon: Microscope,
-    title: "Advanced technology",
+    title: "Equipment we'd use on ourselves",
     description:
-      "State-of-the-art medical equipment and clinically proven procedures for safe, lasting results.",
+      "We invest in the same FDA-cleared devices top clinics in Delhi and Bangkok use. No grey-market imports, no shortcuts.",
   },
   {
     icon: HeartHandshake,
-    title: "Personalized care",
+    title: "Honest about outcomes",
     description:
-      "Every treatment plan is built around your unique skin, hair, lifestyle and goals — never one-size-fits-all.",
+      "If a treatment won't help you, we say so. We've turned away patients — and they've come back for the right thing later.",
   },
   {
     icon: ShieldCheck,
-    title: "Safety first",
+    title: "Sterile, every time",
     description:
-      "Sterile environment, transparent counseling, and honest guidance — only the treatments you actually need.",
+      "Single-use disposables where it matters, autoclaved instruments otherwise, and a theatre you can walk through any day.",
   },
 ];
 
 export function FeaturesStrip() {
   return (
-    <section className="py-12 sm:py-16 bg-background border-y border-border">
+    <section className="py-14 sm:py-20 bg-paper border-y border-border">
       <div className="container mx-auto px-4">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="max-w-3xl mb-10">
+          <p className="section-index text-[11px] text-brand mb-3">
+            01 — Why people choose us
+          </p>
+          <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink leading-snug">
+            We started KPC because we were tired of{" "}
+            <span className="font-italic-accent text-brand">
+              clinics that treated patients like transactions.
+            </span>
+          </h2>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
           {FEATURES.map((f, i) => (
             <motion.div
               key={f.title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
+              transition={{ duration: 0.5 }}
               className="flex flex-col items-start gap-3"
             >
-              <div className="h-12 w-12 rounded-xl bg-brand/10 flex items-center justify-center">
-                <f.icon className="h-5 w-5 text-brand" />
+              <div className="flex items-baseline gap-3 w-full">
+                <span className="section-index text-[11px] text-clay">
+                  0{i + 1}
+                </span>
+                <f.icon className="h-4 w-4 text-brand" strokeWidth={1.5} />
               </div>
-              <h3 className="font-display text-lg font-semibold text-ink">
+              <h3 className="font-display text-lg font-medium text-ink leading-snug">
                 {f.title}
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-ink/70 leading-relaxed font-serif-body">
                 {f.description}
               </p>
             </motion.div>

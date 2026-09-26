@@ -1,149 +1,180 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { POPULAR_SERVICES } from "@/lib/site-data";
 import { useBookAppointment } from "./book-appointment-context";
+import { cn } from "@/lib/utils";
+
+// Re-export for backwards-compatible imports across other sections.
+export { SectionHeader } from "./section-header";
 
 export function PopularServices() {
   const { setPrefillService, setOpen } = useBookAppointment();
   return (
-    <section id="popular" className="py-16 sm:py-24 bg-cream">
+    <section id="popular" className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4">
-        <SectionHeader
-          eyebrow="Popular Services"
-          title={
-            <>
-              Advanced Solutions for{" "}
-              <span className="text-brand">Healthy, Glowing Skin & Hair</span>
-            </>
-          }
-          action={
-            <Button asChild variant="outline" className="border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground">
-              <Link href="#services">
-                Explore All Services
-                <ArrowRight className="ml-1.5 h-4 w-4" />
-              </Link>
-            </Button>
-          }
-        />
+        {/* Editorial header — left aligned, mixed sizes */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+          <div className="max-w-2xl">
+            <p className="section-index text-[11px] text-brand mb-3">
+              02 — Popular this season
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-normal leading-[1.1] tracking-[-0.02em] text-ink">
+              The treatments our patients{" "}
+              <span className="font-italic-accent text-brand">
+                keep coming back for.
+              </span>
+            </h2>
+          </div>
+          <Button
+            asChild
+            variant="link"
+            className="text-brand hover:text-ink p-0 h-auto text-sm font-medium"
+          >
+            <Link href="#services">
+              Browse all 28 services
+              <ArrowUpRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {POPULAR_SERVICES.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="card-lift group relative overflow-hidden rounded-2xl bg-card border border-border shadow-sm"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                { }
-                <img
-                  src={s.image}
-                  alt={s.title}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div
-                  className={`absolute inset-0 bg-gradient-to-tr ${s.accent} opacity-20 group-hover:opacity-30 transition-opacity`}
-                />
-                <div className="absolute top-3 right-3">
-                  <span className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-background/90 backdrop-blur text-brand shadow-sm group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-display text-xl font-semibold text-ink">
-                  {s.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">
-                  {s.description}
-                </p>
-                <div className="mt-4 flex items-center justify-between">
-                  <Link
-                    href="#services"
-                    className="text-sm font-semibold text-brand hover:underline inline-flex items-center gap-1"
-                  >
-                    Learn More
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                  <button
-                    onClick={() => {
-                      setPrefillService(s.title);
-                      setOpen(true);
-                    }}
-                    className="text-xs font-medium text-ink/60 hover:text-brand transition-colors"
-                  >
-                    Book now
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        {/* Bento grid — 4 cards, varied sizes */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5">
+          {/* Card 1 — large, spans 2 cols on md, taller */}
+          <BentoCard
+            service={POPULAR_SERVICES[0]}
+            className="md:col-span-3 md:row-span-2 min-h-[420px] md:min-h-0"
+            priority
+          />
+          {/* Card 2 — smaller, top right */}
+          <BentoCard
+            service={POPULAR_SERVICES[1]}
+            className="md:col-span-3 min-h-[200px]"
+          />
+          {/* Card 3 — smaller */}
+          <BentoCard
+            service={POPULAR_SERVICES[2]}
+            className="md:col-span-3 min-h-[200px]"
+          />
+        </div>
+
+        {/* Hair loss — featured as a wide editorial row, not a 4th card */}
+        <div className="mt-5 grid md:grid-cols-12 gap-5 items-stretch">
+          <div className="md:col-span-5 relative overflow-hidden rounded-2xl bg-cream border border-border min-h-[220px]">
+            { }
+            <img
+              src={POPULAR_SERVICES[3].image}
+              alt={POPULAR_SERVICES[3].title}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink/40 to-transparent" />
+          </div>
+          <div className="md:col-span-7 flex flex-col justify-between bg-paper border border-border rounded-2xl p-6 sm:p-8">
+            <div>
+              <p className="section-index text-[11px] text-clay mb-2">Featured</p>
+              <h3 className="font-display text-2xl sm:text-3xl font-normal text-ink leading-tight">
+                {POPULAR_SERVICES[3].title}
+              </h3>
+              <p className="mt-3 text-sm sm:text-base text-ink/70 leading-relaxed font-serif-body">
+                {POPULAR_SERVICES[3].description} Diagnosis-first — we figure out
+                <em> why</em> you're losing hair before we sell you a solution.
+              </p>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+              <button
+                onClick={() => {
+                  setPrefillService(POPULAR_SERVICES[3].title);
+                  setOpen(true);
+                }}
+                className="link-underline text-sm font-medium text-brand"
+              >
+                Book a consultation
+              </button>
+              <Link
+                href="#services"
+                className="text-sm text-ink/60 hover:text-brand transition-colors"
+              >
+                See what's included →
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-export function SectionHeader({
-  eyebrow,
-  title,
-  description,
-  action,
-  align = "center",
-  light = false,
+function BentoCard({
+  service,
+  className,
+  priority = false,
 }: {
-  eyebrow: string;
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  action?: React.ReactNode;
-  align?: "left" | "center";
-  light?: boolean;
+  service: (typeof POPULAR_SERVICES)[number];
+  className?: string;
+  priority?: boolean;
 }) {
+  const { setPrefillService, setOpen } = useBookAppointment();
   return (
-    <div
-      className={
-        align === "center"
-          ? "flex flex-col items-center text-center gap-3 max-w-3xl mx-auto"
-          : "flex flex-col gap-3 max-w-3xl"
-      }
-    >
-      <div
-        className={
-          align === "center"
-            ? "flex items-center gap-3 w-full justify-center"
-            : "flex items-center gap-3"
-        }
-      >
-        <span className="h-px w-8 bg-brand" />
-        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand">
-          {eyebrow}
-        </span>
-        <span className="h-px w-8 bg-brand" />
-      </div>
-      <h2
-        className={`font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight ${
-          light ? "text-cream" : "text-ink"
-        }`}
-      >
-        {title}
-      </h2>
-      {description && (
-        <p
-          className={`text-base sm:text-lg leading-relaxed ${
-            light ? "text-cream/80" : "text-muted-foreground"
-          }`}
-        >
-          {description}
-        </p>
+    <article
+      className={cn(
+        "group relative overflow-hidden rounded-2xl border border-border bg-card card-lift",
+        className
       )}
-      {action && <div className="mt-2">{action}</div>}
-    </div>
+    >
+      { }
+      <img
+        src={service.image}
+        alt={service.title}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
+      />
+      <div
+        className={cn(
+          "absolute inset-0 bg-gradient-to-t",
+          priority
+            ? "from-ink/95 via-ink/55 to-ink/10"
+            : "from-ink/90 via-ink/45 to-ink/10"
+        )}
+      />
+      <div className="relative h-full flex flex-col justify-end p-5 sm:p-6 text-cream">
+        <h3
+          className={cn(
+            "font-display font-normal leading-tight",
+            priority
+              ? "text-2xl sm:text-3xl"
+              : "text-xl sm:text-2xl"
+          )}
+        >
+          {service.title}
+        </h3>
+        <p
+          className={cn(
+            "mt-2 text-cream/80 leading-relaxed font-serif-body",
+            priority ? "text-sm sm:text-base max-w-md" : "text-sm max-w-xs"
+          )}
+        >
+          {service.description}
+        </p>
+        <div className="mt-4 flex items-center gap-4">
+          <button
+            onClick={() => {
+              setPrefillService(service.title);
+              setOpen(true);
+            }}
+            className="link-underline text-xs font-medium text-gold"
+          >
+            Book
+          </button>
+          <Link
+            href="#services"
+            className="text-xs text-cream/60 hover:text-cream transition-colors inline-flex items-center gap-0.5"
+          >
+            Learn more <ArrowUpRight className="h-3 w-3" />
+          </Link>
+        </div>
+      </div>
+    </article>
   );
 }

@@ -3,11 +3,11 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Star, ShieldCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { HERO_SLIDES } from "@/lib/site-data";
 import { useBookAppointment } from "./book-appointment-context";
 
-const AUTOPLAY_MS = 7000;
+const AUTOPLAY_MS = 7500;
 
 export function HeroCarousel() {
   const [active, setActive] = React.useState(0);
@@ -32,7 +32,7 @@ export function HeroCarousel() {
   return (
     <section
       id="home"
-      className="relative h-[88vh] min-h-[560px] w-full overflow-hidden bg-ink"
+      className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-ink"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -41,10 +41,10 @@ export function HeroCarousel() {
         <AnimatePresence mode="sync">
           <motion.div
             key={active}
-            initial={{ opacity: 0, scale: 1.05 }}
+            initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
+            transition={{ duration: 1.4, ease: "easeInOut" }}
             className="absolute inset-0"
           >
             { }
@@ -55,40 +55,44 @@ export function HeroCarousel() {
             />
           </motion.div>
         </AnimatePresence>
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/55 to-ink/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-ink/20" />
+        {/* Asymmetric gradient — heavier on the left where text lives */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/30" />
       </div>
 
-      {/* Decorative gold ring */}
-      <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full border border-gold/20" />
-      <div className="pointer-events-none absolute right-32 top-40 h-40 w-40 rounded-full border border-gold/10" />
-
-      {/* Content */}
-      <div className="relative h-full container mx-auto px-4 flex items-center">
+      {/* Content — left-aligned, deliberately not vertically centered */}
+      <div className="relative h-full container mx-auto px-4 flex items-end pb-24 sm:pb-28 lg:pb-32">
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-2xl text-cream"
           >
-            <div className="inline-flex items-center gap-2 mb-5 rounded-full border border-gold/40 bg-ink/30 backdrop-blur px-3 py-1.5">
-              <Star className="h-3.5 w-3.5 text-gold fill-gold" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+            {/* Quiet section index, not a pill badge */}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="section-index text-[11px] text-gold/90">
+                0{active + 1} —
+              </span>
+              <span className="text-[11px] tracking-[0.18em] uppercase text-cream/70">
                 {slide.eyebrow}
               </span>
             </div>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight">
+
+            <h1 className="font-display text-[2.5rem] sm:text-6xl lg:text-[4.25rem] font-normal leading-[1.04] tracking-[-0.02em]">
               {slide.title}{" "}
-              <span className="text-gradient-gold">{slide.highlight}</span>
+              <span className="font-italic-accent text-gold">
+                {slide.highlight}
+              </span>
             </h1>
-            <p className="mt-5 max-w-xl text-cream/80 text-base sm:text-lg leading-relaxed">
+
+            <p className="mt-6 max-w-lg text-cream/75 text-base sm:text-[1.05rem] leading-relaxed font-serif-body">
               {slide.description}
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+
+            <div className="mt-9 flex flex-col sm:flex-row gap-3">
               <Button
                 size="lg"
                 onClick={() => setOpen(true)}
@@ -98,66 +102,48 @@ export function HeroCarousel() {
               </Button>
               <Button
                 size="lg"
-                variant="outline"
+                variant="ghost"
                 asChild
-                className="border-cream/30 text-cream hover:bg-cream hover:text-ink"
+                className="text-cream hover:bg-cream/10 hover:text-cream"
               >
-                <a href="#services">{slide.secondaryCta}</a>
+                <a href="#services">{slide.secondaryCta} →</a>
               </Button>
-            </div>
-
-            {/* Trust badges */}
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-cream/70 text-sm">
-              <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-gold" />
-                10+ years experience
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-gold" />
-                Board-certified doctors
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-gold" />
-                Clinically proven procedures
-              </span>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Controls */}
-      <div className="absolute bottom-7 left-0 right-0 z-10">
-        <div className="container mx-auto px-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            {HERO_SLIDES.map((s, i) => (
-              <button
-                key={i}
-                aria-label={`Go to slide ${i + 1}`}
-                onClick={() => setActive(i)}
-                className={
-                  i === active
-                    ? "h-2.5 w-8 rounded-full bg-gold transition-all"
-                    : "h-2.5 w-2.5 rounded-full bg-cream/40 hover:bg-cream/70 transition-all"
-                }
-              />
-            ))}
-          </div>
-          <div className="hidden sm:flex items-center gap-2">
+      {/* Controls — bottom right, quieter */}
+      <div className="absolute bottom-7 right-4 sm:right-8 z-10 flex items-center gap-3">
+        <div className="flex items-center gap-2 mr-2">
+          {HERO_SLIDES.map((s, i) => (
             <button
-              onClick={prev}
-              aria-label="Previous slide"
-              className="h-10 w-10 rounded-full border border-cream/30 text-cream hover:bg-cream hover:text-ink transition-colors flex items-center justify-center"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              onClick={next}
-              aria-label="Next slide"
-              className="h-10 w-10 rounded-full border border-cream/30 text-cream hover:bg-cream hover:text-ink transition-colors flex items-center justify-center"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
+              key={i}
+              aria-label={`Go to slide ${i + 1}`}
+              onClick={() => setActive(i)}
+              className={
+                i === active
+                  ? "h-[3px] w-10 rounded-full bg-gold transition-all"
+                  : "h-[3px] w-5 rounded-full bg-cream/30 hover:bg-cream/60 transition-all"
+              }
+            />
+          ))}
+        </div>
+        <div className="hidden sm:flex items-center gap-1.5">
+          <button
+            onClick={prev}
+            aria-label="Previous slide"
+            className="h-9 w-9 rounded-full text-cream/70 hover:text-cream hover:bg-cream/10 transition-colors flex items-center justify-center"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={next}
+            aria-label="Next slide"
+            className="h-9 w-9 rounded-full text-cream/70 hover:text-cream hover:bg-cream/10 transition-colors flex items-center justify-center"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </section>

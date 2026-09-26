@@ -46,26 +46,28 @@ export function Header() {
 
   return (
     <>
-      {/* Top utility bar */}
-      <div className="bg-ink text-cream/90 text-xs">
-        <div className="container mx-auto px-4 flex h-9 items-center justify-between gap-4">
-          <div className="hidden sm:flex items-center gap-5">
+      {/* Top utility bar — quiet, editorial */}
+      <div className="bg-ink text-cream/75 text-[11px]">
+        <div className="container mx-auto px-4 flex h-8 items-center justify-between gap-4">
+          <div className="hidden sm:flex items-center gap-4">
             <span className="inline-flex items-center gap-1.5">
-              <Phone className="h-3.5 w-3.5 text-gold" />
+              <Phone className="h-3 w-3 text-gold/70" />
               +977-1-4XXXXXX
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-gold" />
+            <span className="hidden md:inline text-cream/40">·</span>
+            <span className="hidden md:inline-flex items-center gap-1.5">
+              <MapPin className="h-3 w-3 text-gold/70" />
               Maharajgunj, Kathmandu
             </span>
-            <span className="hidden md:inline-flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5 text-gold" />
-              Sun–Fri: 8:00 AM – 6:00 PM
+            <span className="hidden lg:inline text-cream/40">·</span>
+            <span className="hidden lg:inline-flex items-center gap-1.5">
+              <Clock className="h-3 w-3 text-gold/70" />
+              Sun–Fri · 8 AM – 6 PM
             </span>
           </div>
           <div className="flex items-center gap-3 ml-auto">
-            <span className="hidden sm:inline text-cream/70">
-              Follow us:
+            <span className="hidden sm:inline text-cream/45 font-serif-body italic">
+              Follow:
             </span>
             <a
               href="#social"
@@ -77,7 +79,7 @@ export function Header() {
             <a
               href="#social"
               aria-label="TikTok"
-              className="hover:text-gold transition-colors text-[11px] font-semibold"
+              className="hover:text-gold transition-colors text-[11px] font-medium"
             >
               TikTok
             </a>
@@ -90,11 +92,11 @@ export function Header() {
         className={cn(
           "sticky top-0 z-50 w-full border-b transition-all duration-300",
           scrolled
-            ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-border shadow-sm"
+            ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-border"
             : "bg-background border-transparent"
         )}
       >
-        <div className="container mx-auto px-4 flex h-16 lg:h-20 items-center justify-between gap-4">
+        <div className="container mx-auto px-4 flex h-16 lg:h-[4.5rem] items-center justify-between gap-4">
           <Logo />
 
           {/* Desktop nav */}
@@ -149,9 +151,10 @@ export function Header() {
           <div className="flex items-center gap-2">
             <Button
               onClick={() => setBookOpen(true)}
-              className="hidden sm:inline-flex bg-brand hover:bg-brand/90 text-brand-foreground"
+              variant="ghost"
+              className="hidden sm:inline-flex text-ink hover:bg-brand hover:text-brand-foreground font-medium"
             >
-              Book Appointment
+              Book appointment
             </Button>
 
             {/* Mobile menu */}
@@ -224,7 +227,7 @@ export function Header() {
                     }}
                     className="w-full bg-brand hover:bg-brand/90 text-brand-foreground"
                   >
-                    Book Appointment
+                    Book appointment
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">
                     Open Sun–Fri · 8 AM – 6 PM

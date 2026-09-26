@@ -140,7 +140,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     description:
       "Natural, permanent hair restoration with advanced FUE techniques and experienced surgeons.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/9b2eebe27adf.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
     href: "#services",
     accent: "from-brand/80 to-brand",
   },

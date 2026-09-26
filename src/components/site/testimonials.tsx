@@ -1,123 +1,132 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Star, Quote, ChevronLeft, ChevronRight, PlayCircle } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { TESTIMONIALS } from "@/lib/site-data";
-import { SectionHeader } from "./popular-services";
 import { cn } from "@/lib/utils";
 
 export function Testimonials() {
-  const [page, setPage] = React.useState(0);
-  const perPage = 3;
-  const pages = Math.ceil(TESTIMONIALS.length / perPage);
-  const visible = TESTIMONIALS.slice(page * perPage, page * perPage + perPage);
+  const [active, setActive] = React.useState(0);
+  const t = TESTIMONIALS[active];
+
+  const next = () => setActive((p) => (p + 1) % TESTIMONIALS.length);
+  const prev = () =>
+    setActive((p) => (p - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
 
   return (
-    <section id="stories" className="py-16 sm:py-24 bg-cream">
+    <section id="stories" className="py-16 sm:py-24 bg-paper">
       <div className="container mx-auto px-4">
-        <SectionHeader
-          eyebrow="Success Stories"
-          title={
-            <>
-              Hear From Our <span className="text-brand">Satisfied Clients</span>
-            </>
-          }
-          description="Discover why so many people trust our clinic to boost their confidence and well-being."
-          action={
-            <div className="flex items-center gap-3">
-              <Button asChild variant="outline" className="border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground">
-                <a href="#stories">
-                  <PlayCircle className="mr-1.5 h-4 w-4" />
-                  Watch Stories
-                </a>
-              </Button>
-              <Button asChild variant="outline" className="border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground">
-                <a href="#stories">Read Success Stories</a>
-              </Button>
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Left column — section intro, sticky-ish */}
+          <div className="lg:col-span-4">
+            <p className="section-index text-[11px] text-brand mb-3">
+              08 — Patient stories
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-ink">
+              What people{" "}
+              <span className="font-italic-accent text-brand">
+                actually said
+              </span>{" "}
+              after walking out.
+            </h2>
+            <p className="mt-4 text-ink/65 font-serif-body text-base leading-relaxed">
+              These are real reviews from our Google and Facebook pages.
+              We&apos;ve lightly trimmed length, but not the sentiment.
+            </p>
+
+            <div className="mt-6 flex items-center gap-3">
+              <button
+                onClick={prev}
+                aria-label="Previous testimonial"
+                className="h-9 w-9 rounded-full border border-border text-ink/70 hover:border-brand hover:text-brand transition-colors flex items-center justify-center"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
+              <button
+                onClick={next}
+                aria-label="Next testimonial"
+                className="h-9 w-9 rounded-full border border-border text-ink/70 hover:border-brand hover:text-brand transition-colors flex items-center justify-center"
+              >
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              <span className="section-index text-[11px] text-ink/50 ml-1">
+                {String(active + 1).padStart(2, "0")} /{" "}
+                {String(TESTIMONIALS.length).padStart(2, "0")}
+              </span>
             </div>
-          }
-        />
+          </div>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-5">
-          {visible.map((t, i) => (
-            <motion.article
-              key={t.name + t.date}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="card-lift relative bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col"
-            >
-              <Quote className="absolute top-5 right-5 h-8 w-8 text-brand/15" />
-              <div className="flex items-center gap-1 text-gold">
-                {Array.from({ length: t.rating }).map((_, idx) => (
-                  <Star key={idx} className="h-4 w-4 fill-gold" />
-                ))}
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-ink/85 flex-1 line-clamp-6">
-                &ldquo;{t.text}&rdquo;
-              </p>
-              <div className="mt-5 pt-4 border-t border-border flex items-center gap-3">
-                <div className="h-10 w-10 overflow-hidden rounded-full bg-secondary shrink-0">
-                  { }
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="h-full w-full object-cover"
-                  />
+          {/* Right column — the pull quote */}
+          <div className="lg:col-span-8 relative min-h-[340px]">
+            <AnimatePresence mode="wait">
+              <motion.figure
+                key={t.name + t.date}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="relative"
+              >
+                {/* Star rating — quiet, not in a card */}
+                <div className="flex items-center gap-1 text-gold mb-6">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-gold" strokeWidth={0} />
+                  ))}
                 </div>
-                <div className="min-w-0">
-                  <p className="font-semibold text-ink truncate">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.date}</p>
-                </div>
-                <span className="ml-auto text-[11px] font-medium text-brand bg-brand/10 rounded-full px-2 py-0.5 whitespace-nowrap">
-                  {t.service}
-                </span>
-              </div>
-            </motion.article>
-          ))}
-        </div>
 
-        {/* Pagination dots */}
-        {pages > 1 && (
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setPage((p) => (p - 1 + pages) % pages)}
-              aria-label="Previous testimonials"
-              className="h-8 w-8 border-border"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <div className="flex items-center gap-1.5">
-              {Array.from({ length: pages }).map((_, i) => (
+                {/* The quote — big serif */}
+                <blockquote className="font-display text-2xl sm:text-3xl lg:text-[2.5rem] font-normal leading-[1.25] tracking-[-0.01em] text-ink">
+                  <span className="text-brand/30 mr-1">&ldquo;</span>
+                  {t.text}
+                  <span className="text-brand/30 ml-1">&rdquo;</span>
+                </blockquote>
+
+                {/* Attribution — editorial */}
+                <figcaption className="mt-8 flex items-center gap-4 pt-5 border-t border-border">
+                  <div className="h-11 w-11 overflow-hidden rounded-full bg-secondary shrink-0">
+                    { }
+                    <img
+                      src={t.avatar}
+                      alt={t.name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-medium text-ink text-sm">{t.name}</p>
+                    <p className="text-[11px] text-ink/55 mt-0.5">
+                      {t.service} · reviewed {t.date}
+                    </p>
+                  </div>
+                  <a
+                    href="#stories"
+                    className="ml-auto hidden sm:inline-flex text-[11px] text-brand hover:text-ink transition-colors link-underline"
+                  >
+                    Read full review
+                  </a>
+                </figcaption>
+              </motion.figure>
+            </AnimatePresence>
+
+            {/* Thumbnail strip — pick any testimonial */}
+            <div className="mt-10 flex items-center gap-2 flex-wrap">
+              {TESTIMONIALS.map((tt, i) => (
                 <button
-                  key={i}
-                  onClick={() => setPage(i)}
-                  aria-label={`Go to page ${i + 1}`}
+                  key={tt.name}
+                  onClick={() => setActive(i)}
+                  aria-label={`Show review from ${tt.name}`}
                   className={cn(
-                    "h-2 rounded-full transition-all",
-                    i === page
-                      ? "w-6 bg-brand"
-                      : "w-2 bg-ink/20 hover:bg-ink/40"
+                    "h-1.5 rounded-full transition-all",
+                    i === active
+                      ? "w-10 bg-brand"
+                      : "w-5 bg-ink/15 hover:bg-ink/35"
                   )}
                 />
               ))}
             </div>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setPage((p) => (p + 1) % pages)}
-              aria-label="Next testimonials"
-              className="h-8 w-8 border-border"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

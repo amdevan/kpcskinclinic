@@ -1,7 +1,6 @@
 import { BookAppointmentProvider } from "@/components/site/book-appointment-context";
 import { Header } from "@/components/site/header";
 import { HeroCarousel } from "@/components/site/hero-carousel";
-import { MarqueeStrip } from "@/components/site/marquee-strip";
 import { FeaturesStrip } from "@/components/site/features-strip";
 import { PopularServices } from "@/components/site/popular-services";
 import { AboutSection, CtaSection } from "@/components/site/about-section";
@@ -20,7 +19,6 @@ export default function Home() {
         <Header />
         <main className="flex-1">
           <HeroCarousel />
-          <MarqueeStrip />
           <FeaturesStrip />
           <PopularServices />
           <AboutSection />

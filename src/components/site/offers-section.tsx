@@ -1,63 +1,94 @@
 "use client";
 
-import * as React from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Tag, ArrowRight } from "lucide-react";
 import { OFFERS } from "@/lib/site-data";
-import { SectionHeader } from "./popular-services";
 import { useBookAppointment } from "./book-appointment-context";
+import { SectionHeader } from "./section-header";
+import { cn } from "@/lib/utils";
 
 export function OffersSection() {
   const { setOpen } = useBookAppointment();
+  const [featured, ...rest] = OFFERS;
+
   return (
-    <section id="offers" className="py-16 sm:py-24 bg-cream">
+    <section id="offers" className="py-16 sm:py-24 bg-paper">
       <div className="container mx-auto px-4">
         <SectionHeader
-          eyebrow="Offers"
+          variant="lead"
+          index="09"
+          eyebrow="This season"
           title={
             <>
-              Limited-time <span className="text-brand">packages & savings</span>
+              A few offers worth{" "}
+              <span className="font-italic-accent text-brand">
+                knowing about.
+              </span>
             </>
           }
-          description="Seasonal packages and special offers across our most popular treatments. Book early — slots fill fast."
+          description="We don't run sales. These are seasonal packages and new-patient bundles that genuinely save money if you were going to do the treatment anyway."
+          align="left"
         />
 
-        <div className="mt-12 grid md:grid-cols-3 gap-6">
-          {OFFERS.map((o, i) => (
-            <motion.article
-              key={o.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="card-lift relative rounded-3xl overflow-hidden border border-border bg-card shadow-sm"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand via-gold to-brand" />
-              <div className="p-6 sm:p-7">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-brand">
-                    <Tag className="h-3 w-3" />
-                    {o.badge}
-                  </span>
-                </div>
-                <h3 className="font-display text-xl font-bold text-ink leading-snug">
+        <div className="mt-10 grid lg:grid-cols-12 gap-5">
+          {/* Featured offer — large, dark */}
+          <motion.article
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-7 relative overflow-hidden rounded-2xl bg-ink text-cream p-7 sm:p-10 card-lift"
+          >
+            <div className="pointer-events-none absolute -right-12 -bottom-12 h-56 w-56 rounded-full bg-gold/10 blur-2xl" />
+            <div className="relative">
+              <p className="section-index text-[11px] text-gold mb-4">
+                {featured.badge} · Featured
+              </p>
+              <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-normal leading-tight max-w-xl">
+                {featured.title}
+              </h3>
+              <p className="mt-4 text-cream/75 text-sm sm:text-base leading-relaxed font-serif-body max-w-lg">
+                {featured.description}
+              </p>
+              <button
+                onClick={() => setOpen(true)}
+                className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-gold hover:text-cream transition-colors link-underline"
+              >
+                {featured.cta} →
+              </button>
+            </div>
+          </motion.article>
+
+          {/* Smaller offers — stacked, lighter */}
+          <div className="lg:col-span-5 grid gap-5">
+            {rest.map((o, i) => (
+              <motion.article
+                key={o.title}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className={cn(
+                  "relative rounded-2xl border border-border bg-card p-6 card-lift"
+                )}
+              >
+                <p className="section-index text-[11px] text-brand mb-2">
+                  {o.badge}
+                </p>
+                <h3 className="font-display text-lg font-medium text-ink leading-snug">
                   {o.title}
                 </h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                <p className="mt-2 text-sm text-ink/65 leading-relaxed font-serif-body">
                   {o.description}
                 </p>
-                <Button
+                <button
                   onClick={() => setOpen(true)}
-                  variant="outline"
-                  className="mt-5 w-full border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground"
+                  className="mt-4 text-xs font-medium text-brand hover:text-ink transition-colors link-underline"
                 >
-                  {o.cta}
-                  <ArrowRight className="ml-1.5 h-4 w-4" />
-                </Button>
-              </div>
-            </motion.article>
-          ))}
+                  {o.cta} →
+                </button>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
