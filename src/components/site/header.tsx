@@ -123,7 +123,7 @@ export function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#pricing">Pricing</Link>
+                  <Link href="#popular">Pricing</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -142,7 +142,7 @@ export function Header() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link href="#offers">Offers</Link>
+                  <Link href="#newsletter">Offers</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>

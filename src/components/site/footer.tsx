@@ -1,145 +1,155 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
-import { Phone, Mail, MapPin, Instagram, Facebook, Clock, ArrowUpRight } from "lucide-react";
+import { Phone, Mail, MapPin, Instagram, Facebook, Clock, Send, Loader2 } from "lucide-react";
 import { Logo } from "./logo";
 import { SERVICE_CATEGORIES } from "@/lib/site-data";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-ink text-cream/85 mt-auto">
-      <div className="container mx-auto px-4 pt-16 pb-10">
-        {/* Top — editorial statement + contact, not a perfect 4-column grid */}
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 pb-12 border-b border-cream/10">
-          <div className="lg:col-span-5">
-            <Logo variant="light" />
-            <p className="mt-5 text-cream/65 font-serif-body text-[15px] leading-relaxed max-w-md">
-              KPC Skin Hair &amp; Aesthetic Clinic Pvt. Ltd. A small clinic in
-              Maharajgunj that takes a long time with each patient. Founded
-              2016.
-            </p>
+    <footer
+      id="newsletter"
+      className="mt-auto bg-gradient-to-b from-background to-brand/5"
+    >
+      {/* Newsletter strip — top of footer */}
+      <div className="border-b border-border">
+        <div className="container mx-auto px-4 py-12 sm:py-14">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
+                Newsletter
+              </p>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold leading-tight text-ink">
+                Subscribe to our newsletter
+              </h2>
+              <p className="mt-2 text-muted-foreground text-sm sm:text-base">
+                Subscribe to our newsletter for the latest tips, offers, and
+                updates straight to your inbox.
+              </p>
+            </div>
+            <NewsletterForm />
+          </div>
+        </div>
+      </div>
 
-            <div className="mt-6 space-y-2 text-sm">
+      {/* Main footer — brand + links (3 columns like sample) */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid lg:grid-cols-12 gap-10">
+          {/* Brand + contact */}
+          <div className="lg:col-span-5">
+            <Logo />
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-sm">
+              KPC Skin Hair &amp; Aesthetic Clinic Pvt. Ltd — Nepal&apos;s
+              leading skin &amp; hair clinic. Nearly 10 years of trusted care,
+              advanced technology, and personalized treatment plans.
+            </p>
+            <div className="mt-5 space-y-2.5 text-sm">
               <a
                 href="tel:+97714000000"
-                className="flex items-center gap-2.5 text-cream/75 hover:text-gold transition-colors"
+                className="flex items-center gap-2.5 text-muted-foreground hover:text-brand transition-colors"
               >
-                <Phone className="h-3.5 w-3.5 text-gold/70" />
+                <Phone className="h-4 w-4 text-brand" />
                 +977-1-4XXXXXX
               </a>
               <a
                 href="mailto:info@kpcskin.com"
-                className="flex items-center gap-2.5 text-cream/75 hover:text-gold transition-colors"
+                className="flex items-center gap-2.5 text-muted-foreground hover:text-brand transition-colors"
               >
-                <Mail className="h-3.5 w-3.5 text-gold/70" />
+                <Mail className="h-4 w-4 text-brand" />
                 info@kpcskin.com
               </a>
-              <span className="flex items-start gap-2.5 text-cream/75">
-                <MapPin className="h-3.5 w-3.5 text-gold/70 mt-0.5 shrink-0" />
+              <span className="flex items-start gap-2.5 text-muted-foreground">
+                <MapPin className="h-4 w-4 text-brand mt-0.5 shrink-0" />
                 Maharajgunj, Kathmandu, Nepal
               </span>
-              <span className="flex items-center gap-2.5 text-cream/75">
-                <Clock className="h-3.5 w-3.5 text-gold/70" />
-                Sun–Fri: 8 AM – 6 PM · Sat: closed
+              <span className="flex items-center gap-2.5 text-muted-foreground">
+                <Clock className="h-4 w-4 text-brand" />
+                Sun–Fri: 8:00 AM – 6:00 PM · Sat: Closed
               </span>
             </div>
-
-            <div className="mt-6 flex items-center gap-2">
+            <div className="mt-5 flex items-center gap-2">
               <SocialLink href="#social" label="Instagram">
-                <Instagram className="h-3.5 w-3.5" />
+                <Instagram className="h-4 w-4" />
               </SocialLink>
               <SocialLink href="#social" label="Facebook">
-                <Facebook className="h-3.5 w-3.5" />
+                <Facebook className="h-4 w-4" />
               </SocialLink>
               <SocialLink href="#social" label="TikTok">
-                <span className="text-[11px] font-bold">TT</span>
+                <span className="text-xs font-bold">TT</span>
               </SocialLink>
             </div>
           </div>
 
-          {/* Services — inline list, not a perfect 2x3 directory */}
-          <div className="lg:col-span-4">
-            <p className="section-index text-[11px] text-gold/80 mb-4">
-              What we do
-            </p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
-              {SERVICE_CATEGORIES.map((c) =>
-                c.services.slice(0, 4).map((s) => (
-                  <li key={s.title}>
-                    <Link
-                      href={s.href}
-                      className="text-[13px] text-cream/60 hover:text-gold transition-colors"
-                    >
-                      {s.title}
-                    </Link>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-
-          {/* Directory — small, quiet */}
+          {/* Our Services column */}
           <div className="lg:col-span-3">
-            <p className="section-index text-[11px] text-gold/80 mb-4">
-              The clinic
-            </p>
-            <ul className="space-y-1.5">
-              {[
-                { label: "About us", href: "#about" },
-                { label: "Pricing", href: "#pricing" },
-                { label: "Patient stories", href: "#stories" },
-                { label: "This season's offers", href: "#offers" },
-                { label: "Gallery", href: "#about" },
-                { label: "Contact", href: "tel:+97714000000" },
-              ].map((l) => (
-                <li key={l.label}>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand mb-4">
+              Our Services
+            </h3>
+            <ul className="space-y-2">
+              {SERVICE_CATEGORIES.map((c) => (
+                <li key={c.id}>
                   <Link
-                    href={l.href}
-                    className="text-[13px] text-cream/60 hover:text-gold transition-colors"
+                    href="#popular"
+                    className="text-sm text-muted-foreground hover:text-brand transition-colors"
                   >
-                    {l.label}
+                    {c.title}
                   </Link>
                 </li>
               ))}
             </ul>
+          </div>
 
-            <div className="mt-6 rounded-lg bg-cream/5 border border-cream/10 p-4">
-              <p className="text-xs text-cream/80 font-medium">
-                Prefer to talk to a human?
-              </p>
-              <p className="mt-1 text-[11px] text-cream/55 leading-relaxed">
-                Sunita on the front desk picks up between 8 and 6.
-              </p>
-              <Link
-                href="tel:+97714000000"
-                className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-gold hover:text-cream transition-colors link-underline"
-              >
-                Call the clinic
-                <ArrowUpRight className="h-3 w-3" />
-              </Link>
-            </div>
+          {/* Directory column */}
+          <div className="lg:col-span-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand mb-4">
+              Directory
+            </h3>
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
+              {[
+                "About",
+                "Pricing",
+                "Contact Us",
+                "Gallery",
+                "Awards",
+                "News & Article",
+                "Success Stories",
+                "Offers",
+              ].map((l) => (
+                <li key={l}>
+                  <Link
+                    href="#about"
+                    className="text-sm text-muted-foreground hover:text-brand transition-colors"
+                  >
+                    {l}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
+      </div>
 
-        {/* Bottom — signed-off feel, not a generic copyright row */}
-        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-cream/45">
-          <p className="font-serif-body italic">
-            © {year} KPC Skin Hair &amp; Aesthetic Clinic Pvt. Ltd.
-            <span className="mx-2">·</span>
-            Made in Kathmandu.
+      {/* Copyright bar — green bottom banner like sample */}
+      <div className="bg-brand text-cream">
+        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <p className="text-cream/90">
+            © {year} KPC Skin Hair &amp; Aesthetic Clinic. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
+          <p className="flex items-center gap-2 text-cream/80">
             <a href="#home" className="hover:text-gold transition-colors">
               Privacy
             </a>
+            <span className="h-1 w-1 rounded-full bg-cream/40" />
             <a href="#home" className="hover:text-gold transition-colors">
               Terms
             </a>
-            <a href="#home" className="hover:text-gold transition-colors">
-              Sitemap
-            </a>
-          </div>
+          </p>
+          <p className="text-cream/60">Powered by: Rewa Soft</p>
         </div>
       </div>
     </footer>
@@ -159,9 +169,67 @@ function SocialLink({
     <a
       href={href}
       aria-label={label}
-      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-cream/15 text-cream/60 hover:bg-gold hover:text-ink hover:border-gold transition-all"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-brand hover:text-brand-foreground hover:border-brand transition-all"
     >
       {children}
     </a>
+  );
+}
+
+function NewsletterForm() {
+  const [email, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error("failed");
+      toast.success("You're subscribed — thank you!");
+      setEmail("");
+    } catch (err) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="flex flex-col sm:flex-row gap-3 max-w-md lg:ml-auto w-full"
+    >
+      <Input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Your email address"
+        className="bg-background border-border focus-visible:ring-brand h-11"
+        aria-label="Email address"
+      />
+      <Button
+        type="submit"
+        disabled={loading}
+        className="bg-brand hover:bg-brand/90 text-brand-foreground h-11 shrink-0"
+      >
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <>
+            Send
+            <Send className="ml-1.5 h-3.5 w-3.5" />
+          </>
+        )}
+      </Button>
+    </form>
   );
 }

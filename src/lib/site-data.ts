@@ -19,10 +19,10 @@ export type ServiceCategory = {
 export const NAV_LINKS = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Pricing", href: "#popular" },
   { label: "Our Services", href: "#services" },
   { label: "Success Stories", href: "#stories" },
-  { label: "Offers", href: "#offers" },
+  { label: "Offers", href: "#newsletter" },
 ];
 
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
@@ -188,7 +188,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "9th Aug, 2026",
     rating: 5,
     text:
-      "I am the happiest guy now after visiting KPC Skin Hair & Aesthetic Clinic for my skin consultation with Dr. Rupak. I can see visible changes and glow on my skin that I never had before. Highly recommended, best skin clinic in Kathmandu.",
+      "I am the most happiest guy now after visiting KPC Skin Clinic for my skin consultation with Dr Rupak, I can see the visible changes and glow on my skin that I never had before. Highly recommended, best skin clinic in Kathmandu.",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
     service: "Skin Consultation",
@@ -197,8 +197,7 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Megha Nath Rai",
     date: "14th Aug, 2025",
     rating: 5,
-    text:
-      "Best place to transplant! The team was professional, the procedure was comfortable and the results speak for themselves. I would recommend KPC to anyone considering a hair transplant.",
+    text: "Best place to transplant!",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
     service: "Hair Transplant",
@@ -208,40 +207,10 @@ export const TESTIMONIALS: Testimonial[] = [
     date: "18th Feb, 2026",
     rating: 5,
     text:
-      "Completed my laser hair removal sessions here and very satisfied with the result. Highly recommended KPC for laser hair removal — clean clinic, friendly staff, real results.",
+      "Completed my laser hair removal sessions here and very satisfied with the result. Highly recommended KPC for laser hair removal.",
     avatar:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
     service: "Laser Hair Removal",
-  },
-  {
-    name: "Sneha Shrestha",
-    date: "2nd Mar, 2026",
-    rating: 5,
-    text:
-      "After years of struggling with acne scars, the team at KPC put together a plan that actually worked. My skin texture has improved dramatically. Thank you for restoring my confidence.",
-    avatar:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
-    service: "Acne & Acne Scars",
-  },
-  {
-    name: "Rajesh Maharjan",
-    date: "22nd Jan, 2026",
-    rating: 5,
-    text:
-      "Genuine, transparent and skilled. They never pushed unnecessary treatments. The PRP hair sessions have visibly thickened my hair. KPC is the real deal.",
-    avatar:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
-    service: "PRP Hair Treatment",
-  },
-  {
-    name: "Priya Karki",
-    date: "10th Dec, 2025",
-    rating: 5,
-    text:
-      "The HydraFacial left my skin glowing for weeks. The clinic feels premium yet welcoming, and every visit feels personalized. Easily the best aesthetic clinic in the valley.",
-    avatar:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/91cc97c0d4e3.jpg",
-    service: "Hydra Facial",
   },
 ];
 

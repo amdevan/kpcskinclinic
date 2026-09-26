@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 import { useBookAppointment } from "./book-appointment-context";
-import { SectionHeader } from "./section-header";
 
 export function AboutSection() {
   const { setOpen } = useBookAppointment();
@@ -12,134 +11,122 @@ export function AboutSection() {
   return (
     <section id="about" className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          {/* Image collage — left, asymmetric */}
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* LEFT — text */}
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
-            className="relative order-2 lg:order-1 lg:col-span-6"
+            transition={{ duration: 0.6 }}
           >
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="overflow-hidden rounded-2xl aspect-[4/5] shadow-sm">
-                  { }
-                  <img
-                    src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1bc026548584.webp"
-                    alt="Healthy glowing skin after treatment at KPC"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="overflow-hidden rounded-2xl aspect-square shadow-sm">
-                  { }
-                  <img
-                    src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg"
-                    alt="KPC Skin Hair & Aesthetic Clinic interior"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-              <div className="space-y-4 pt-8">
-                <div className="overflow-hidden rounded-2xl aspect-square shadow-sm">
-                  { }
-                  <img
-                    src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg"
-                    alt="Facial treatment in progress at KPC"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="overflow-hidden rounded-2xl aspect-[4/5] shadow-sm">
-                  { }
-                  <img
-                    src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg"
-                    alt="Hair clinic treatment at KPC"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Photo caption — editorial, not a floating badge */}
-            <p className="mt-4 text-[11px] text-ink/45 font-serif-body italic max-w-xs">
-              Above: our Maharajgunj clinic, ground floor. Photographed by the
-              KPC team, monsoon 2025.
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
+              Welcome to KPC
             </p>
-          </motion.div>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-ink">
+              The country&apos;s leading skin clinic, with{" "}
+              <span className="font-italic-accent text-brand font-medium">
+                unique treatment procedures.
+              </span>
+            </h2>
 
-          {/* Copy — right, takes more space */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
-            className="order-1 lg:order-2 lg:col-span-6"
-          >
-            <SectionHeader
-              variant="lead"
-              index="03"
-              eyebrow="Our story"
-              title={
-                <>
-                  We&apos;re a small clinic that takes{" "}
-                  <span className="font-italic-accent text-brand">
-                    a long time
-                  </span>{" "}
-                  with each patient.
-                </>
-              }
-            />
-            <div className="mt-6 space-y-4 text-base sm:text-[1.05rem] leading-relaxed text-ink/75 font-serif-body">
-              <p className="drop-cap">
-                KPC Skin Hair &amp; Aesthetic Clinic started in 2016 with two
-                rooms in Maharajgunj and one dermatologist who refused to
-                recommend treatments he wouldn&apos;t do on his own family.
-                Nine years on, we&apos;ve grown — but that rule hasn&apos;t
-                changed.
+            <div className="mt-5 space-y-4 text-muted-foreground text-base leading-relaxed">
+              <p>
+                At{" "}
+                <strong className="text-ink">
+                  KPC Skin Hair &amp; Aesthetic Clinic Pvt. Ltd
+                </strong>
+                , we are dedicated to delivering the highest quality treatments
+                for all skin and hair concerns. By combining the expertise of
+                experienced dermatologists, advanced technologies, and
+                personalized care, we ensure that every patient receives safe,
+                effective, and lasting results.
               </p>
               <p>
-                We are not the biggest clinic in Kathmandu, and we don&apos;t
-                want to be. What we are is deliberate: every consultation runs
-                30–45 minutes, every treatment plan is written down and handed
-                to you, and every procedure is performed by a doctor — not a
-                technician, not a salesperson.
+                With nearly <strong className="text-ink">10 years of experience</strong>{" "}
+                in the field, we are one of Nepal&apos;s leading skin and hair
+                clinics, trusted for our accurate diagnosis, expert counseling,
+                and innovative treatments. Our clinic prides itself on using
+                state-of-the-art medical equipment and clinically proven
+                procedures, giving you confidence in every step of your skincare
+                or haircare journey.
+              </p>
+              <p>
+                Whether it&apos;s laser hair removal, hair transplants, acne
+                &amp; acne scar treatments, cosmetic procedures, or professional
+                product recommendations, our team is committed to delivering
+                results that enhance your natural beauty while keeping your
+                health and comfort as a priority.
               </p>
             </div>
 
-            {/* Inline editorial mention — replaces the stats grid */}
-            <p className="mt-6 text-sm text-ink/55 font-serif-body italic border-l-2 border-brand/40 pl-4">
-              Since 2016, we&apos;ve done over 15,000 procedures — hair
-              transplants, laser, aesthetic, surgical — and we still answer
-              every appointment request ourselves. No call center, no bots.
-            </p>
+            {/* Checklist */}
+            <ul className="mt-6 grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
+              {[
+                "Experienced dermatologists",
+                "State-of-the-art equipment",
+                "Clinically proven procedures",
+                "Personalized care plans",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm">
+                  <CheckCircle2 className="h-4 w-4 text-brand mt-0.5 shrink-0" />
+                  <span className="text-ink/80">{item}</span>
+                </li>
+              ))}
+            </ul>
 
-            <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <div className="mt-7 flex flex-wrap items-center gap-4">
               <Button
                 onClick={() => setOpen(true)}
                 className="bg-brand hover:bg-brand/90 text-brand-foreground"
               >
-                Book a consultation
+                Learn More
                 <ArrowRight className="ml-1.5 h-4 w-4" />
               </Button>
-              <a
-                href="#services"
-                className="link-underline text-sm font-medium text-ink/70 hover:text-brand"
-              >
-                See what we treat
-              </a>
+              <Button asChild variant="outline" className="border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground">
+                <a href="#services">Explore our Services</a>
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* RIGHT — team photo */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="relative"
+          >
+            <div className="relative overflow-hidden rounded-3xl bg-cream aspect-[4/3] shadow-lg">
+              { }
+              <img
+                src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg"
+                alt="KPC Skin Hair & Aesthetic Clinic team and interior"
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent" />
+              {/* Logo overlay center */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-16 w-16 rounded-2xl bg-cream/95 backdrop-blur shadow-lg flex items-center justify-center">
+                  <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+                    <path
+                      d="M32 14c-7 0-12 5-12 12 0 6 4 9 6 14 1 3 2 6 6 6s5-3 6-6c2-5 6-8 6-14 0-7-5-12-12-12z"
+                      fill="#1f5a4a"
+                    />
+                    <circle cx="32" cy="26" r="4" fill="#c9a063" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
-            {/* Signature line — adds a human touch */}
-            <div className="mt-10 pt-6 border-t border-border flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-brand/10 flex items-center justify-center font-display text-brand text-sm font-semibold">
-                RM
+            {/* Floating experience badge */}
+            <div className="absolute -bottom-5 -left-3 sm:-left-5 bg-card border border-border rounded-2xl shadow-lg px-5 py-3.5 flex items-center gap-3">
+              <div className="h-11 w-11 rounded-full bg-brand/10 flex items-center justify-center font-display text-brand text-lg font-bold">
+                10+
               </div>
               <div>
-                <p className="font-italic-accent text-sm text-ink">
-                  Dr. Rupak Maharjan
-                </p>
-                <p className="text-[11px] text-ink/55">
-                  MBBS, MD (Dermatology) · Founder &amp; Medical Director
+                <p className="text-sm font-semibold text-ink">Years of trust</p>
+                <p className="text-[11px] text-muted-foreground">
+                  Nepal&apos;s leading clinic
                 </p>
               </div>
             </div>
@@ -154,45 +141,52 @@ export function CtaSection() {
   const { setOpen } = useBookAppointment();
 
   return (
-    <section id="cta" className="relative py-20 sm:py-28 bg-ink overflow-hidden">
-      {/* Quiet, single decorative element instead of multiple blurred blobs */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.08]">
-        <div className="absolute -right-20 top-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full bg-gold blur-3xl" />
+    <section id="cta" className="relative py-20 sm:py-28 overflow-hidden bg-ink">
+      {/* Faded team photo background */}
+      <div className="absolute inset-0">
+        { }
+        <img
+          src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg"
+          alt=""
+          className="h-full w-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/40" />
       </div>
 
       <div className="relative container mx-auto px-4">
-        <div className="max-w-2xl text-cream">
-          <p className="section-index text-[11px] text-gold mb-4">
-            06 — Take the first step
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.08] tracking-[-0.02em]">
-            Radiant skin and healthy hair start with{" "}
-            <span className="font-italic-accent text-gold">
-              a single conversation.
+        <div className="max-w-3xl mx-auto text-center text-cream">
+          <div className="inline-flex items-center gap-2 mb-5 rounded-full border border-gold/40 bg-ink/30 backdrop-blur px-3 py-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+              Get Started
+            </span>
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-[-0.02em]">
+            Take the First Step to{" "}
+            <span className="font-italic-accent text-gold font-medium">
+              Radiant Skin &amp; Healthy Hair
             </span>
           </h2>
-          <p className="mt-5 text-cream/75 text-base sm:text-lg leading-relaxed font-serif-body">
-            Whether it&apos;s a hair transplant, laser, cosmetic surgery, or
-            just figuring out which moisturizer actually works for you —
-            book a 30-minute consultation and we&apos;ll give you an honest
-            plan, even if the answer is &ldquo;you don&apos;t need a
-            procedure.&rdquo;
+          <p className="mt-5 text-base sm:text-lg text-cream/80 leading-relaxed max-w-2xl mx-auto">
+            Whether it comes to Hair transplants, laser treatments, cosmetic
+            surgery or product recommendations, trust us to do right by you!
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-start gap-3">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               size="lg"
               onClick={() => setOpen(true)}
               className="bg-brand hover:bg-brand/90 text-brand-foreground"
             >
-              Request an appointment
+              Request an Appointment
             </Button>
             <Button
               size="lg"
-              variant="ghost"
+              variant="outline"
               asChild
-              className="text-cream hover:bg-cream/10 hover:text-cream"
+              className="border-cream/30 text-cream hover:bg-cream hover:text-ink"
             >
-              <a href="#stories">Read patient stories →</a>
+              <a href="#stories">Request a Quote</a>
             </Button>
           </div>
         </div>

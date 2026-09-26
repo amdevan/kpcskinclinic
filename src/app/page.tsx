@@ -1,16 +1,13 @@
 import { BookAppointmentProvider } from "@/components/site/book-appointment-context";
 import { Header } from "@/components/site/header";
 import { HeroCarousel } from "@/components/site/hero-carousel";
-import { FeaturesStrip } from "@/components/site/features-strip";
 import { PopularServices } from "@/components/site/popular-services";
 import { AboutSection, CtaSection } from "@/components/site/about-section";
-import { ServicesSection } from "@/components/site/services-section";
-import { PricingSection } from "@/components/site/pricing-section";
-import { OffersSection } from "@/components/site/offers-section";
+import { SuccessStoriesSection } from "@/components/site/success-stories-section";
 import { Testimonials } from "@/components/site/testimonials";
 import { SocialSection } from "@/components/site/social-section";
-import { NewsletterSection } from "@/components/site/newsletter-section";
 import { Footer } from "@/components/site/footer";
+import { FloatingButtons } from "@/components/site/floating-whatsapp";
 
 export default function Home() {
   return (
@@ -19,18 +16,15 @@ export default function Home() {
         <Header />
         <main className="flex-1">
           <HeroCarousel />
-          <FeaturesStrip />
           <PopularServices />
           <AboutSection />
-          <ServicesSection />
           <CtaSection />
-          <PricingSection />
-          <OffersSection />
+          <SuccessStoriesSection />
           <Testimonials />
           <SocialSection />
-          <NewsletterSection />
         </main>
         <Footer />
+        <FloatingButtons />
       </div>
     </BookAppointmentProvider>
   );
