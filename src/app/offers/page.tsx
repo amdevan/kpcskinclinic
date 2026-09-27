@@ -58,7 +58,7 @@ export default function OffersPage() {
                 <h3 className="font-display text-xl sm:text-2xl font-semibold text-ink leading-snug">
                   {o.title}
                 </h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed font-serif-body">
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                   {o.description}
                 </p>
                 <a
@@ -114,7 +114,7 @@ export default function OffersPage() {
                     </span>
                     <div>
                       <p className="font-semibold text-ink">{s.t}</p>
-                      <p className="text-sm text-muted-foreground mt-1 font-serif-body leading-relaxed">
+                      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
                         {s.d}
                       </p>
                     </div>
@@ -138,7 +138,7 @@ export default function OffersPage() {
                 {TERMS.map((t) => (
                   <li key={t} className="flex items-start gap-2.5">
                     <Check className="h-4 w-4 text-brand mt-0.5 shrink-0" />
-                    <span className="text-sm text-ink/70 leading-relaxed font-serif-body">
+                    <span className="text-sm text-ink/70 leading-relaxed">
                       {t}
                     </span>
                   </li>
@@ -175,7 +175,7 @@ function FeaturedOffer({ offer }: { offer: any }) {
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-[-0.02em]">
             {offer.title}
           </h2>
-          <p className="mt-5 text-cream/75 text-base sm:text-lg leading-relaxed font-serif-body max-w-lg">
+          <p className="mt-5 text-cream/75 text-base sm:text-lg leading-relaxed max-w-lg">
             {offer.description}
           </p>
           <a

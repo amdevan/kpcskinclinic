@@ -46,7 +46,7 @@ export function OffersSection() {
               <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-normal leading-tight max-w-xl">
                 {featured.title}
               </h3>
-              <p className="mt-4 text-cream/75 text-sm sm:text-base leading-relaxed font-serif-body max-w-lg">
+              <p className="mt-4 text-cream/75 text-sm sm:text-base leading-relaxed max-w-lg">
                 {featured.description}
               </p>
               <button
@@ -77,7 +77,7 @@ export function OffersSection() {
                 <h3 className="font-display text-lg font-medium text-ink leading-snug">
                   {o.title}
                 </h3>
-                <p className="mt-2 text-sm text-ink/65 leading-relaxed font-serif-body">
+                <p className="mt-2 text-sm text-ink/65 leading-relaxed">
                   {o.description}
                 </p>
                 <button

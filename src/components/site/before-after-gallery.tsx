@@ -36,7 +36,7 @@ export function BeforeAfterGallery() {
               {c.treatment}
             </p>
             <p className="text-[11px] text-cream/75 mt-0.5">{c.patient}</p>
-            <p className="text-[10px] text-cream/55 mt-0.5 font-serif-body italic">
+            <p className="text-[10px] text-cream/55 mt-0.5">
               {c.sessions}
             </p>
           </div>

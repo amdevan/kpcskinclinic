@@ -73,7 +73,7 @@ export function Testimonials() {
 
               <Quote className="h-6 w-6 text-brand/15 mb-2" />
 
-              <p className="text-sm leading-relaxed text-ink/85 font-serif-body">
+              <p className="text-sm leading-relaxed text-ink/85">
                 {t.text}
               </p>
 

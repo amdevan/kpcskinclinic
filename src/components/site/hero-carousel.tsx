@@ -71,16 +71,16 @@ export function HeroCarousel() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="max-w-3xl text-cream"
           >
-            <div className="inline-flex items-center gap-2 mb-6 rounded-full border border-gold/40 bg-ink/30 backdrop-blur px-3 py-1.5">
+            <div className="inline-flex items-center gap-2 mb-6 rounded-full border border-cyan/50 bg-ink/30 backdrop-blur px-3 py-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gold">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan">
                 {slide.eyebrow}
               </span>
             </div>
 
             <h1 className="font-display text-[2.75rem] sm:text-6xl lg:text-[4.5rem] xl:text-[5rem] font-bold leading-[1.04] tracking-[-0.02em]">
               {slide.title}{" "}
-              <span className="font-italic-accent text-gold font-medium">
+              <span className="font-italic-accent text-gold">
                 {slide.highlight}
               </span>
             </h1>
@@ -110,7 +110,7 @@ export function HeroCarousel() {
             {/* Trust badges */}
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-cream/75 text-sm">
               <span className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-gold" />
+                <ShieldCheck className="h-4 w-4 text-cyan" />
                 10+ years experience
               </span>
               <span className="inline-flex items-center gap-2">
@@ -118,7 +118,7 @@ export function HeroCarousel() {
                 Board-certified doctors
               </span>
               <span className="inline-flex items-center gap-2">
-                <Users className="h-4 w-4 text-gold" />
+                <Users className="h-4 w-4 text-green" />
                 15k+ happy patients
               </span>
             </div>

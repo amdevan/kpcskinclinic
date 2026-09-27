@@ -55,7 +55,7 @@ export function NewsletterSection() {
               what actually works.
             </span>
           </h2>
-          <p className="mt-4 text-ink/65 font-serif-body text-base leading-relaxed max-w-lg">
+          <p className="mt-4 text-ink/65 text-base leading-relaxed max-w-lg">
             No &ldquo;10 tips for glowing skin&rdquo; listicles. Just one short
             email a month — new treatments we&apos;ve added, things
             we&apos;ve learned from patients, and the occasional offer. You
@@ -94,7 +94,7 @@ export function NewsletterSection() {
               </Button>
             </form>
           )}
-          <p className="mt-3 text-[11px] text-ink/45 font-serif-body italic">
+          <p className="mt-3 text-[11px] text-ink/45">
             ~600 readers. We never share your email.
           </p>
         </div>

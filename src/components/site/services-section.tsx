@@ -88,7 +88,7 @@ export function ServicesSection() {
                     </h3>
                   </div>
                 </div>
-                <div className="p-6 sm:p-7 text-cream/75 text-sm leading-relaxed font-serif-body">
+                <div className="p-6 sm:p-7 text-cream/75 text-sm leading-relaxed">
                   {cat.description}
                 </div>
               </div>
@@ -107,7 +107,7 @@ export function ServicesSection() {
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-ink">{s.title}</p>
-                      <p className="text-sm text-ink/55 mt-0.5 font-serif-body">
+                      <p className="text-sm text-ink/55 mt-0.5">
                         {s.description}
                       </p>
                     </div>
@@ -125,7 +125,7 @@ export function ServicesSection() {
               </ul>
 
               <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-5">
-                <p className="text-sm text-ink/55 font-serif-body italic">
+                <p className="text-sm text-ink/55">
                   Not sure which is right for you? Book a 30-min consultation
                   and we&apos;ll figure it out together.
                 </p>

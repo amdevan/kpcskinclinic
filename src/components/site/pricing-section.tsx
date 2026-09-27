@@ -52,7 +52,7 @@ export function PricingSection() {
                     {p.features.slice(0, 3).map((f) => (
                       <li
                         key={f}
-                        className="text-xs text-ink/65 leading-snug font-serif-body"
+                        className="text-xs text-ink/65 leading-snug"
                       >
                         — {f}
                       </li>
@@ -79,7 +79,7 @@ export function PricingSection() {
           </div>
         </div>
 
-        <p className="mt-8 text-xs text-ink/45 font-serif-body italic max-w-2xl">
+        <p className="mt-8 text-xs text-ink/45 max-w-2xl">
           All procedures include the pre-treatment consultation and
           post-treatment care guidance. For treatments above NPR 50,000 we
           offer 3- and 6-month EMI plans through our partner banks — ask at

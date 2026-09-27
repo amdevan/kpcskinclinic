@@ -37,7 +37,7 @@ export default function SuccessStoriesPage() {
               </span>{" "}
               transformations
             </h2>
-            <p className="mt-4 text-muted-foreground font-serif-body text-base leading-relaxed">
+            <p className="mt-4 text-muted-foreground text-base leading-relaxed">
               Click any card to watch the full patient story. All photos are
               of real KPC patients, taken with consent, untouched.
             </p>
@@ -91,7 +91,7 @@ export default function SuccessStoriesPage() {
               </div>
             ))}
           </div>
-          <p className="mt-6 text-center text-[11px] text-muted-foreground font-serif-body italic">
+          <p className="mt-6 text-center text-[11px] text-muted-foreground">
             Patient consent obtained for all stories. Some identifying details
             have been changed at the patient&apos;s request.
           </p>

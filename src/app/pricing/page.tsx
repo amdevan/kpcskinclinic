@@ -95,7 +95,7 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <p className="mt-8 text-xs text-muted-foreground italic font-serif-body max-w-2xl">
+          <p className="mt-8 text-xs text-muted-foreground max-w-2xl">
             All prices include the pre-treatment consultation and
             post-treatment care guidance. Prices may vary based on the area
             treated, the number of sessions, and your specific case. Final
@@ -118,7 +118,7 @@ export default function PricingPage() {
                   ask us
                 </span>
               </h2>
-              <p className="mt-4 text-muted-foreground font-serif-body">
+              <p className="mt-4 text-muted-foreground">
                 Can&apos;t find your answer? Call{" "}
                 <a
                   href={CONTACT_INFO.phoneHref}
@@ -144,7 +144,7 @@ export default function PricingPage() {
                     <AccordionTrigger className="text-left text-base font-medium text-ink hover:no-underline py-5">
                       {f.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-sm text-muted-foreground leading-relaxed font-serif-body pb-5">
+                    <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-5">
                       {f.a}
                     </AccordionContent>
                   </AccordionItem>

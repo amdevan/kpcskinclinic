@@ -25,7 +25,17 @@ export default function ServicesPage() {
       {/* Services list by category */}
       <section className="py-20 sm:py-28 bg-background">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 space-y-16 sm:space-y-20">
-          {SERVICE_CATEGORIES.map((cat, idx) => (
+          {SERVICE_CATEGORIES.map((cat, idx) => {
+            const styles = [
+              { text: "text-brand", bar: "bg-brand", soft: "bg-brand/10" },
+              { text: "text-cyan", bar: "bg-cyan", soft: "bg-cyan/10" },
+              { text: "text-green", bar: "bg-green", soft: "bg-green/10" },
+              { text: "text-gold", bar: "bg-gold", soft: "bg-gold/10" },
+              { text: "text-rust", bar: "bg-rust", soft: "bg-rust/10" },
+              { text: "text-brand", bar: "bg-brand", soft: "bg-brand/10" },
+            ];
+            const s = styles[idx % styles.length];
+            return (
             <div
               key={cat.id}
               id={cat.id}
@@ -34,13 +44,13 @@ export default function ServicesPage() {
               {/* Image */}
               <div className="lg:col-span-5">
                 <div className="relative overflow-hidden rounded-3xl aspect-[4/3] bg-ink sticky top-28">
-                  { }
                   <img
                     src={cat.image}
                     alt={cat.title}
                     className="h-full w-full object-cover opacity-90"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+                  <div className={`absolute top-0 left-0 right-0 h-2 ${s.bar}`} />
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-cream">
                     <p className="font-italic-accent text-sm text-gold mb-1">
                       {cat.tagline}
@@ -54,29 +64,29 @@ export default function ServicesPage() {
 
               {/* Content */}
               <div className="lg:col-span-7">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
+                <p className={`text-[11px] font-semibold uppercase tracking-[0.2em] mb-2 ${s.text}`}>
                   Category 0{idx + 1}
                 </p>
                 <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink mb-4">
                   {cat.title}
                 </h2>
-                <p className="text-muted-foreground text-base leading-relaxed mb-6 font-serif-body">
+                <p className="text-muted-foreground text-base leading-relaxed mb-6">
                   {cat.description}
                 </p>
 
                 <ul className="divide-y divide-border border-t border-border">
-                  {cat.services.map((s, i) => (
+                  {cat.services.map((sv, i) => (
                     <li
-                      key={s.title}
+                      key={sv.title}
                       className="py-3.5 flex items-start gap-4 group"
                     >
-                      <span className="section-index mt-1 shrink-0 text-[11px] text-clay w-6">
+                      <span className={`mt-1 shrink-0 w-6 h-6 rounded-full ${s.soft} flex items-center justify-center text-[11px] font-semibold ${s.text}`}>
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-ink">{s.title}</p>
-                        <p className="text-sm text-muted-foreground mt-0.5 font-serif-body">
-                          {s.description}
+                        <p className="font-medium text-ink">{sv.title}</p>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          {sv.description}
                         </p>
                       </div>
                     </li>
@@ -86,7 +96,7 @@ export default function ServicesPage() {
                 <div className="mt-6 flex items-center gap-5">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:text-ink transition-colors link-underline"
+                    className={`inline-flex items-center gap-1.5 text-sm font-medium ${s.text} hover:text-ink transition-colors link-underline`}
                   >
                     Book this category
                     <ArrowRight className="h-4 w-4" />
@@ -100,7 +110,8 @@ export default function ServicesPage() {
                 </div>
               </div>
             </div>
-          ))}
+          );
+          })}
         </div>
       </section>
 

@@ -66,7 +66,7 @@ export function Header() {
             </span>
           </div>
           <div className="flex items-center gap-3 ml-auto">
-            <span className="hidden sm:inline text-cream/45 font-serif-body italic">
+            <span className="hidden sm:inline text-cream/45">
               Follow:
             </span>
             <a

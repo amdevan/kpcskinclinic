@@ -143,7 +143,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
     href: "#services",
-    accent: "from-brand/80 to-brand",
+    accent: "from-brand/80 to-cyan",
   },
   {
     title: "Plastic Surgery",
@@ -152,7 +152,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2daf75b22fb4.jpg",
     href: "#services",
-    accent: "from-gold/80 to-gold",
+    accent: "from-gold/80 to-rust",
   },
   {
     title: "Acne & Acne Scars",
@@ -161,7 +161,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
     href: "#services",
-    accent: "from-brand/70 to-ink",
+    accent: "from-green/80 to-brand",
   },
   {
     title: "Hair Loss Treatment",
@@ -170,7 +170,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
     href: "#services",
-    accent: "from-ink/80 to-brand",
+    accent: "from-rust/80 to-gold",
   },
 ];
 

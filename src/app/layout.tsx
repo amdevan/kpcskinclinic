@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Source_Serif_4 } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { BookAppointmentProvider } from "@/components/site/book-appointment-context";
@@ -7,27 +7,18 @@ import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
 import { FloatingButtons } from "@/components/site/floating-whatsapp";
 
-const playfair = Playfair_Display({
-  variable: "--font-display",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-});
-
 const inter = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Used sparingly for editorial pull-quotes and long-form captions.
-const sourceSerif = Source_Serif_4({
-  variable: "--font-serif-body",
+// Clean, normal heading font (used in normal — non-italic — weight)
+const poppins = Poppins({
+  variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -70,7 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${playfair.variable} ${inter.variable} ${sourceSerif.variable} antialiased bg-background text-foreground font-sans`}
+        className={`${inter.variable} ${poppins.variable} antialiased bg-background text-foreground font-sans`}
       >
         <BookAppointmentProvider>
           <div className="flex min-h-screen flex-col bg-background">

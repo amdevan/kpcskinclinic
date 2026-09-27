@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
  * Editorial section header.
  * Variants:
  *  - "lead"   : numbered eyebrow + serif display headline (default)
- *  - "quiet"  : small italic label only
+ *  - "quiet"  : small label only
  *  - "center": centered with decorative rule
  */
 export function SectionHeader({
@@ -57,7 +57,7 @@ export function SectionHeader({
         {description && (
           <p
             className={cn(
-              "mt-4 text-base sm:text-[1.05rem] leading-relaxed font-serif-body",
+              "mt-4 text-base sm:text-[1.05rem] leading-relaxed ",
               light ? "text-cream/75" : "text-ink/65"
             )}
           >
@@ -100,7 +100,7 @@ export function SectionHeader({
       {description && (
         <p
           className={cn(
-            "text-base sm:text-lg leading-relaxed font-serif-body",
+            "text-base sm:text-lg leading-relaxed ",
             light ? "text-cream/75" : "text-ink/65"
           )}
         >

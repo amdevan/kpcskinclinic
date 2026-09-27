@@ -36,8 +36,8 @@ export default function AboutPage() {
                   transactions.
                 </span>
               </h2>
-              <div className="space-y-4 text-base sm:text-lg leading-relaxed text-muted-foreground font-serif-body">
-                <p className="drop-cap">
+              <div className="space-y-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
+                <p className="">
                   KPC Skin Hair &amp; Aesthetic Clinic started in 2016 with
                   two rooms in Maharajgunj and one dermatologist who refused
                   to recommend treatments he wouldn&apos;t do on his own
@@ -63,16 +63,19 @@ export default function AboutPage() {
             </div>
             <div className="lg:col-span-5">
               <div className="grid grid-cols-2 gap-px bg-border rounded-2xl overflow-hidden">
-                {STATS_FULL.map((s) => (
-                  <div key={s.label} className="bg-card p-5 text-center">
-                    <p className="font-display text-3xl sm:text-4xl font-bold text-brand">
-                      {s.value}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1.5 leading-tight">
-                      {s.label}
-                    </p>
-                  </div>
-                ))}
+                {STATS_FULL.map((s, i) => {
+                  const colors = ["text-brand", "text-cyan", "text-green", "text-gold", "text-rust", "text-brand"];
+                  return (
+                    <div key={s.label} className="bg-card p-5 text-center">
+                      <p className={`font-display text-3xl sm:text-4xl font-bold ${colors[i % colors.length]}`}>
+                        {s.value}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1.5 leading-tight">
+                        {s.label}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -83,40 +86,40 @@ export default function AboutPage() {
       <section className="py-20 sm:py-28 bg-cream">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
           <div className="grid lg:grid-cols-3 gap-6 mb-12">
-            <div className="bg-card rounded-2xl p-7 border border-border">
+            <div className="bg-card rounded-2xl p-7 border-t-4 border-brand border border-border">
               <div className="h-11 w-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4">
                 <Target className="h-5 w-5 text-brand" />
               </div>
               <h3 className="font-display text-xl font-semibold text-ink mb-2">
                 Mission
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed font-serif-body">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 To deliver dermatology and aesthetic care that puts the
                 patient&apos;s long-term outcome above short-term revenue — and
                 to prove that honesty is a viable business model.
               </p>
             </div>
-            <div className="bg-card rounded-2xl p-7 border border-border">
-              <div className="h-11 w-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4">
-                <Eye className="h-5 w-5 text-brand" />
+            <div className="bg-card rounded-2xl p-7 border-t-4 border-cyan border border-border">
+              <div className="h-11 w-11 rounded-xl bg-cyan/10 flex items-center justify-center mb-4">
+                <Eye className="h-5 w-5 text-cyan" />
               </div>
               <h3 className="font-display text-xl font-semibold text-ink mb-2">
                 Vision
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed font-serif-body">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 To be Nepal&apos;s most trusted skin and hair clinic — where
                 patients come for a second opinion before they commit to a
                 procedure anywhere else.
               </p>
             </div>
-            <div className="bg-card rounded-2xl p-7 border border-border">
-              <div className="h-11 w-11 rounded-xl bg-brand/10 flex items-center justify-center mb-4">
-                <Heart className="h-5 w-5 text-brand" />
+            <div className="bg-card rounded-2xl p-7 border-t-4 border-rust border border-border">
+              <div className="h-11 w-11 rounded-xl bg-rust/10 flex items-center justify-center mb-4">
+                <Heart className="h-5 w-5 text-rust" />
               </div>
               <h3 className="font-display text-xl font-semibold text-ink mb-2">
                 Promise
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed font-serif-body">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 Every patient leaves with a written plan, a clear price, and
                 the name of the doctor responsible for their care. If we
                 can&apos;t help, we&apos;ll tell you who can.
@@ -137,7 +140,7 @@ export default function AboutPage() {
                 <CheckCircle2 className="h-5 w-5 text-brand mt-0.5 shrink-0" />
                 <div>
                   <p className="font-semibold text-ink mb-1">{v.title}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-serif-body">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {v.description}
                   </p>
                 </div>
@@ -162,28 +165,37 @@ export default function AboutPage() {
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TEAM.map((m) => (
-              <article key={m.name} className="group">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/5] bg-secondary mb-4">
-                  { }
-                  <img
-                    src={m.image}
-                    alt={m.name}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-                <p className="font-display text-lg font-semibold text-ink">
-                  {m.name}
-                </p>
-                <p className="text-sm text-brand font-medium">{m.role}</p>
-                <p className="text-[11px] text-muted-foreground mt-0.5">
-                  {m.credentials}
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed font-serif-body">
-                  {m.bio}
-                </p>
-              </article>
-            ))}
+            {TEAM.map((m, i) => {
+              const styles = [
+                { bar: "bg-brand", role: "text-brand" },
+                { bar: "bg-cyan", role: "text-cyan" },
+                { bar: "bg-green", role: "text-green" },
+                { bar: "bg-rust", role: "text-rust" },
+              ];
+              const s = styles[i % styles.length];
+              return (
+                <article key={m.name} className="group">
+                  <div className="relative overflow-hidden rounded-2xl aspect-[4/5] bg-secondary mb-4">
+                    <img
+                      src={m.image}
+                      alt={m.name}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className={`absolute top-0 left-0 right-0 h-1.5 ${s.bar}`} />
+                  </div>
+                  <p className="font-display text-lg font-semibold text-ink">
+                    {m.name}
+                  </p>
+                  <p className={`text-sm font-medium ${s.role}`}>{m.role}</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    {m.credentials}
+                  </p>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                    {m.bio}
+                  </p>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>

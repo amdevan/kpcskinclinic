@@ -9,24 +9,32 @@ const FEATURES = [
     title: "Specialists, not generalists",
     description:
       "Each treatment is led by a board-certified dermatologist or plastic surgeon — not a technician, not a junior, not a salesperson.",
+    color: "text-brand",
+    bg: "bg-brand/10",
   },
   {
     icon: Microscope,
     title: "Equipment we'd use on ourselves",
     description:
       "We invest in the same FDA-cleared devices top clinics in Delhi and Bangkok use. No grey-market imports, no shortcuts.",
+    color: "text-cyan",
+    bg: "bg-cyan/10",
   },
   {
     icon: HeartHandshake,
     title: "Honest about outcomes",
     description:
       "If a treatment won't help you, we say so. We've turned away patients — and they've come back for the right thing later.",
+    color: "text-green",
+    bg: "bg-green/10",
   },
   {
     icon: ShieldCheck,
     title: "Sterile, every time",
     description:
       "Single-use disposables where it matters, autoclaved instruments otherwise, and a theatre you can walk through any day.",
+    color: "text-rust",
+    bg: "bg-rust/10",
   },
 ];
 
@@ -60,12 +68,14 @@ export function FeaturesStrip() {
                 <span className="section-index text-[11px] text-clay">
                   0{i + 1}
                 </span>
-                <f.icon className="h-4 w-4 text-brand" strokeWidth={1.5} />
+                <div className={`h-10 w-10 rounded-xl ${f.bg} flex items-center justify-center`}>
+                  <f.icon className={`h-5 w-5 ${f.color}`} />
+                </div>
               </div>
-              <h3 className="font-display text-lg font-medium text-ink leading-snug">
+              <h3 className="font-display text-lg font-semibold text-ink leading-snug">
                 {f.title}
               </h3>
-              <p className="text-sm text-ink/70 leading-relaxed font-serif-body">
+              <p className="text-sm text-ink/70 leading-relaxed">
                 {f.description}
               </p>
             </motion.div>

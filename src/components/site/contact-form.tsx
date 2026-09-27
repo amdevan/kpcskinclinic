@@ -61,7 +61,7 @@ export function ContactForm() {
         <p className="font-display text-2xl font-semibold text-ink">
           Thanks, {name.split(" ")[0]}!
         </p>
-        <p className="text-sm text-muted-foreground max-w-sm font-serif-body">
+        <p className="text-sm text-muted-foreground max-w-sm">
           Your message has been received. Sunita or one of our patient care
           team will call you back within one working day.
         </p>
@@ -168,7 +168,7 @@ export function ContactForm() {
         )}
         Send message
       </Button>
-      <p className="text-[11px] text-muted-foreground text-center font-serif-body italic">
+      <p className="text-[11px] text-muted-foreground text-center">
         We typically reply within one working day. For urgent queries, please
         call.
       </p>
