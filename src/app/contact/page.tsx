@@ -6,7 +6,7 @@ import { Phone, Mail, MapPin, Clock, Instagram, Facebook, Navigation } from "luc
 export const metadata = {
   title: "Contact Us | KPC Skin Hair & Aesthetic Clinic",
   description:
-    "Get in touch with KPC Skin Clinic in Maharajgunj, Kathmandu. Call, email, or send us a message — we reply within one working day.",
+    "Get in touch with KPC Skin Clinic in Thapathali, Kathmandu. Call, email, or send us a message — we reply within one working day.",
 };
 
 export default function ContactPage() {
@@ -191,7 +191,7 @@ export default function ContactPage() {
                   KPC Skin Hair &amp; Aesthetic Clinic
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Maharajgunj, Kathmandu
+                  Thapathali, Kathmandu
                 </p>
                 <a
                   href={CONTACT_INFO.addressMapHref}

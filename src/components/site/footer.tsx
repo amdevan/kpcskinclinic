@@ -2,9 +2,18 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Phone, Mail, MapPin, Instagram, Facebook, Clock, Send, Loader2 } from "lucide-react";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Instagram,
+  Facebook,
+  Clock,
+  Send,
+  Loader2,
+} from "lucide-react";
 import { Logo } from "./logo";
-import { SERVICE_CATEGORIES } from "@/lib/site-data";
+import { SERVICE_CATEGORIES, CONTACT_INFO } from "@/lib/site-data";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,10 +46,10 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Main footer — brand + links (3 columns like sample) */}
+      {/* Main footer — brand + links */}
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-12">
         <div className="grid lg:grid-cols-12 gap-10">
-          {/* Brand + contact */}
+          {/* Brand + contact — uses CONTACT_INFO */}
           <div className="lg:col-span-5">
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-sm">
@@ -50,42 +59,50 @@ export function Footer() {
             </p>
             <div className="mt-5 space-y-2.5 text-sm">
               <a
-                href="tel:+97714000000"
+                href={CONTACT_INFO.phoneHref}
                 className="flex items-center gap-2.5 text-muted-foreground hover:text-brand transition-colors"
               >
                 <Phone className="h-4 w-4 text-brand" />
-                +977-1-4XXXXXX
+                {CONTACT_INFO.phone}
               </a>
               <a
-                href="mailto:info@kpcskin.com"
+                href={CONTACT_INFO.emailHref}
                 className="flex items-center gap-2.5 text-muted-foreground hover:text-brand transition-colors"
               >
                 <Mail className="h-4 w-4 text-brand" />
-                info@kpcskin.com
+                {CONTACT_INFO.email}
               </a>
-              <span className="flex items-start gap-2.5 text-muted-foreground">
+              <a
+                href={CONTACT_INFO.addressMapHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2.5 text-muted-foreground hover:text-brand transition-colors"
+              >
                 <MapPin className="h-4 w-4 text-brand mt-0.5 shrink-0" />
-                Maharajgunj, Kathmandu, Nepal
-              </span>
+                {CONTACT_INFO.address}
+              </a>
               <span className="flex items-center gap-2.5 text-muted-foreground">
                 <Clock className="h-4 w-4 text-brand" />
-                Sun–Fri: 8:00 AM – 6:00 PM · Sat: Closed
+                {CONTACT_INFO.hours.map((h) => `${h.day}: ${h.time}`).join(" · ")}
               </span>
             </div>
             <div className="mt-5 flex items-center gap-2">
-              <SocialLink href="#social" label="Instagram">
+              <SocialLink href={CONTACT_INFO.socials[0].href} label="Instagram">
                 <Instagram className="h-4 w-4" />
               </SocialLink>
-              <SocialLink href="#social" label="Facebook">
+              <SocialLink href={CONTACT_INFO.socials[1].href} label="Facebook">
                 <Facebook className="h-4 w-4" />
               </SocialLink>
-              <SocialLink href="#social" label="TikTok">
+              <SocialLink href={CONTACT_INFO.socials[2].href} label="TikTok">
                 <span className="text-xs font-bold">TT</span>
+              </SocialLink>
+              <SocialLink href={CONTACT_INFO.whatsapp} label="WhatsApp">
+                <Phone className="h-4 w-4" />
               </SocialLink>
             </div>
           </div>
 
-          {/* Our Services column */}
+          {/* Our Services column — links to /services (treatment hub) */}
           <div className="lg:col-span-3">
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand mb-4">
               Our Services
@@ -94,38 +111,50 @@ export function Footer() {
               {SERVICE_CATEGORIES.map((c) => (
                 <li key={c.id}>
                   <Link
-                    href="#popular"
+                    href="/services"
                     className="text-sm text-muted-foreground hover:text-brand transition-colors"
                   >
                     {c.title}
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/std-sti"
+                  className="text-sm text-muted-foreground hover:text-brand transition-colors"
+                >
+                  STD / STI Testing
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Directory column */}
+          {/* Directory column — real routes (spec: fix footer routing) */}
           <div className="lg:col-span-4">
             <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand mb-4">
               Directory
             </h3>
             <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
               {[
-                "About",
-                "Pricing",
-                "Contact Us",
-                "Gallery",
-                "Awards",
-                "News & Article",
-                "Success Stories",
-                "Offers",
+                { label: "About", href: "/about" },
+                { label: "Doctors", href: "/doctors" },
+                { label: "Pricing", href: "/packages" },
+                { label: "Hair Transplant", href: "/hair-transplant" },
+                { label: "Procedures", href: "/procedures" },
+                { label: "Packages", href: "/packages" },
+                { label: "Offers", href: "/offers" },
+                { label: "Success Stories", href: "/success-stories" },
+                { label: "STD / STI", href: "/std-sti" },
+                { label: "Blog", href: "/blog" },
+                { label: "Contact", href: "/contact" },
+                { label: "Gallery", href: "/success-stories" },
               ].map((l) => (
-                <li key={l}>
+                <li key={l.label}>
                   <Link
-                    href="#about"
+                    href={l.href}
                     className="text-sm text-muted-foreground hover:text-brand transition-colors"
                   >
-                    {l}
+                    {l.label}
                   </Link>
                 </li>
               ))}
@@ -134,22 +163,26 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Copyright bar — green bottom banner like sample */}
+      {/* Copyright bar — spec: Privacy→/privacy, Terms→/terms (not #home) */}
       <div className="bg-brand text-cream">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <p className="text-cream/90">
             © {year} KPC Skin Hair &amp; Aesthetic Clinic. All rights reserved.
           </p>
           <p className="flex items-center gap-2 text-cream/80">
-            <a href="#home" className="hover:text-gold transition-colors">
+            <Link href="/privacy" className="hover:text-gold transition-colors">
               Privacy
-            </a>
+            </Link>
             <span className="h-1 w-1 rounded-full bg-cream/40" />
-            <a href="#home" className="hover:text-gold transition-colors">
+            <Link href="/terms" className="hover:text-gold transition-colors">
               Terms
-            </a>
+            </Link>
+            <span className="h-1 w-1 rounded-full bg-cream/40" />
+            <Link href="/services" className="hover:text-gold transition-colors">
+              Sitemap
+            </Link>
           </p>
-          <p className="text-cream/60">Powered by: Rewa Soft</p>
+          <p className="text-cream/60">Thapathali, Kathmandu</p>
         </div>
       </div>
     </footer>
@@ -169,6 +202,8 @@ function SocialLink({
     <a
       href={href}
       aria-label={label}
+      target={href.startsWith("http") ? "_blank" : undefined}
+      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
       className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-brand hover:text-brand-foreground hover:border-brand transition-all"
     >
       {children}

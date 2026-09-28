@@ -1,6 +1,6 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
-import { SERVICE_CATEGORIES } from "@/lib/site-data";
+import { SERVICE_CATEGORIES, slugify } from "@/lib/site-data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ export default function ServicesPage() {
         eyebrow="Our Services"
         title="Twenty-eight treatments."
         highlight="Six doctors who do them."
-        description="Pick a category to see what's on the menu. Every procedure is performed in-house at our Maharajgunj clinic — no outsourcing, no contractor doctors."
+        description="Pick a category to see what's on the menu. Every procedure is performed in-house at our Thapathali clinic — no outsourcing, no contractor doctors."
         image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "Our Services" }]}
       />
@@ -84,7 +84,7 @@ export default function ServicesPage() {
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-ink">{sv.title}</p>
+                        <Link href={`/services/${slugify(sv.title)}`} className="font-medium text-ink hover:text-brand transition-colors">{sv.title}</Link>
                         <p className="text-sm text-muted-foreground mt-0.5">
                           {sv.description}
                         </p>
@@ -102,7 +102,7 @@ export default function ServicesPage() {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
-                    href="/pricing"
+                    href="/packages"
                     className="text-sm text-muted-foreground hover:text-brand transition-colors"
                   >
                     See pricing →

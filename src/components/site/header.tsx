@@ -57,7 +57,7 @@ export function Header() {
             <span className="hidden md:inline text-cream/40">·</span>
             <span className="hidden md:inline-flex items-center gap-1.5">
               <MapPin className="h-3 w-3 text-gold/70" />
-              Maharajgunj, Kathmandu
+              Thapathali, Kathmandu
             </span>
             <span className="hidden lg:inline text-cream/40">·</span>
             <span className="hidden lg:inline-flex items-center gap-1.5">
@@ -99,58 +99,60 @@ export function Header() {
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 flex h-16 lg:h-[4.5rem] items-center justify-between gap-4">
           <Logo />
 
-          {/* Desktop nav */}
-          <NavigationMenu className="hidden lg:flex">
+          {/* Desktop nav — 11 items per spec, with Our Services as mega-menu */}
+          <NavigationMenu className="hidden xl:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                   <Link href="/">Home</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link href="/about">About</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link href="/pricing">Pricing</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <ServicesMegaMenu />
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link href="/success-stories">Success Stories</Link>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/doctors">Doctors</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/about">About</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/hair-transplant">Hair Transplant</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/procedures">Procedure</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/packages">Package</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                   <Link href="/offers">Offers</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuLink
-                  asChild
-                  className={navigationMenuTriggerStyle()}
-                >
-                  <Link href="/contact">Contact</Link>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/success-stories">Success Story</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/std-sti">STD/STI</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/blog">Blog</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>

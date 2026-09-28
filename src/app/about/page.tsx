@@ -6,7 +6,7 @@ import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
 export const metadata = {
   title: "About Us | KPC Skin Hair & Aesthetic Clinic",
   description:
-    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — founded 2016 in Maharajgunj, Kathmandu. Meet our doctors, our values, and the story behind Nepal's leading skin & hair clinic.",
+    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — founded 2016 in Thapathali, Kathmandu. Meet our doctors, our values, and the story behind Nepal's leading skin & hair clinic.",
 };
 
 export default function AboutPage() {
@@ -16,7 +16,7 @@ export default function AboutPage() {
         eyebrow="About Us"
         title="A small clinic that takes"
         highlight="a long time with each patient."
-        description="Founded 2016 in Maharajgunj. Four doctors, one philosophy: honest treatment plans, written down, performed by doctors — not salespeople."
+        description="Founded 2016 in Thapathali. Four doctors, one philosophy: honest treatment plans, written down, performed by doctors — not salespeople."
         image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
@@ -39,7 +39,7 @@ export default function AboutPage() {
               <div className="space-y-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
                 <p className="">
                   KPC Skin Hair &amp; Aesthetic Clinic started in 2016 with
-                  two rooms in Maharajgunj and one dermatologist who refused
+                  two rooms in Thapathali and one dermatologist who refused
                   to recommend treatments he wouldn&apos;t do on his own
                   family. Nine years on, we&apos;ve grown — but that rule
                   hasn&apos;t changed.

@@ -30,7 +30,7 @@ export function ServicesSection() {
               </span>
             </>
           }
-          description="Pick a category to see what's on the menu. Every procedure is performed in-house at our Maharajgunj clinic — no outsourcing, no contractor doctors."
+          description="Pick a category to see what's on the menu. Every procedure is performed in-house at our Thapathali clinic — no outsourcing, no contractor doctors."
           align="left"
         />
 
