@@ -629,6 +629,14 @@ export const DOCTORS = [
     credentials: "MBBS, MD (Dermatology)",
     specialties: ["Hair Disorders", "Hair Transplant", "Cosmetic Dermatology"],
     bio: "Founded KPC in 2016 after 8 years in hospital dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
+    fullBio: "Dr. Rupak Maharjan graduated from the Institute of Medicine, Maharajgunj, and completed his MD in Dermatology at TUTH. After 8 years in hospital practice — including 3 years leading the dermatology department at a major Kathmandu hospital — he founded KPC in 2016 with a single rule: never recommend a treatment he wouldn't do on his own family. Nine years on, that rule hasn't changed. He personally oversees every hair transplant case and leads the clinic's medical dermatology practice.",
+    education: [
+      "MBBS — Institute of Medicine, Tribhuvan University Teaching Hospital (TUTH)",
+      "MD (Dermatology, Venereology & Leprosy) — TUTH",
+      "Certification in Aesthetic Medicine — American Academy of Aesthetic Medicine",
+    ],
+    treatments: ["Hair Transplant", "PRP Hair Treatment", "GFC Treatment", "Acne & Acne Scars", "Melasma Treatment"],
+    approach: "Every consultation runs 30–45 minutes. You leave with a written plan: what you have, what we recommend, what it costs, what to expect. No verbal estimates.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
     experience: "17+ years",
   },
@@ -639,6 +647,15 @@ export const DOCTORS = [
     credentials: "MBBS, MD (Dermatology, Venereology & Leprosy)",
     specialties: ["Acne", "Pigmentation", "Laser Aesthetics"],
     bio: "Leads our acne, pigmentation and laser aesthetic practice. Trained at TUTH with fellowships in aesthetic medicine in Mumbai and Bangkok.",
+    fullBio: "Dr. Sneha Shrestha completed her MD in Dermatology at TUTH, followed by a fellowship in aesthetic medicine at the Mumbai Institute of Aesthetic Medicine and laser training at Bangkok's laser academy. She leads KPC's acne, pigmentation, and laser aesthetic practice — the clinic's highest-volume area. She's known for her methodical approach to acne scarring: she diagnoses the scar type (there are at least six) before recommending any treatment.",
+    education: [
+      "MBBS — Institute of Medicine, TUTH",
+      "MD (Dermatology, Venereology & Leprosy) — TUTH",
+      "Fellowship in Aesthetic Medicine — Mumbai Institute of Aesthetic Medicine",
+      "Laser Aesthetics Certification — Bangkok Laser Academy",
+    ],
+    treatments: ["Acne & Acne Scars", "Melasma Treatment", "Open Pores & Oily Skin", "Laser Hair Removal", "Chemical Peeling", "HydraFacial"],
+    approach: "Acne scars are not one condition — they are at least six. I diagnose what you actually have before recommending any treatment. A single laser won't fix all of them.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
     experience: "12+ years",
   },
@@ -649,6 +666,14 @@ export const DOCTORS = [
     credentials: "MBBS, MS, MCh (Plastic Surgery)",
     specialties: ["Rhinoplasty", "Blepharoplasty", "Scar Revision"],
     bio: "Board-certified plastic surgeon with 12 years of experience in rhinoplasty, blepharoplasty and scar revision. Performs all surgical procedures in our in-house theatre.",
+    fullBio: "Dr. Rajesh Maharjan is one of the few MCh-qualified plastic surgeons in private practice in Kathmandu. He completed his super-specialty training at the National Academy of Medical Sciences (NAMS), Bir Hospital. With 12 years of surgical experience, he performs all of KPC's cosmetic and reconstructive procedures — rhinoplasty, blepharoplasty, scar revision, and anti-ageing surgery — in our in-house sterile theatre at Thapathali. He's known for natural-looking results and honest pre-operative counselling.",
+    education: [
+      "MBBS — Institute of Medicine, TUTH",
+      "MS (General Surgery) — National Academy of Medical Sciences (NAMS)",
+      "MCh (Plastic Surgery) — NAMS, Bir Hospital",
+    ],
+    treatments: ["Rhinoplasty", "Blepharoplasty", "Scar Revision", "Anti-Ageing Surgery", "Plastic Surgery"],
+    approach: "I show patients photographs of real results — not the best, but the typical. If you want a nose that looks like a celebrity's, I'll tell you whether your anatomy allows it. Natural is the goal.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
     experience: "12+ years",
   },
@@ -659,6 +684,15 @@ export const DOCTORS = [
     credentials: "MBBS, MD, Fellowship in Aesthetic Medicine",
     specialties: ["Botox", "Dermal Fillers", "HIFU", "HydraFacial"],
     bio: "Specialises in non-surgical facial rejuvenation — injectables, energy-based devices, and medical-grade facials. Trained in Seoul and Bangkok.",
+    fullBio: "Dr. Priya Karki leads KPC's non-surgical aesthetic practice. After her MD, she completed a fellowship in aesthetic medicine in Seoul — the global capital of non-surgical facial refinement — and advanced training in energy-based devices (HIFU, radiofrequency) in Bangkok. She performs all injectable treatments (Botox, dermal fillers) and energy-based treatments at the clinic. Her philosophy: less is more. A good aesthetic treatment should make you look rested, not 'done'.",
+    education: [
+      "MBBS — Institute of Medicine, TUTH",
+      "MD — Kathmandu University",
+      "Fellowship in Aesthetic Medicine — Seoul, South Korea",
+      "Advanced Injectable & Energy-Based Device Training — Bangkok, Thailand",
+    ],
+    treatments: ["Botox Treatment", "Dermal Fillers", "HIFU", "HydraFacial", "Carbon Laser Peel", "Microneedling", "PRP Face Treatment"],
+    approach: "A good aesthetic treatment should make you look rested, not 'done'. I start with less and add more if needed — you can always inject more, you can't un-inject.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/91cc97c0d4e3.jpg",
     experience: "9+ years",
   },
@@ -669,6 +703,15 @@ export const DOCTORS = [
     credentials: "MBBS, MD, Fellowship in Trichology (FUE)",
     specialties: ["FUE Hair Transplant", "Beard Transplant", "PRP Therapy"],
     bio: "Leads our hair transplant practice. Has performed over 2,000 FUE procedures with a focus on natural density and graft survival.",
+    fullBio: "Dr. Anil Shakya leads KPC's hair transplant practice. He completed a fellowship in trichology and FUE technique at a leading hair restoration centre in New Delhi. With over 2,000 FUE procedures performed, he's one of the most experienced hair transplant surgeons in Kathmandu. His focus is on natural density and graft survival — he personally performs both the donor harvest and the implantation, never delegating to a technician.",
+    education: [
+      "MBBS — Institute of Medicine, TUTH",
+      "MD — Kathmandu University",
+      "Fellowship in Trichology & FUE — New Delhi, India",
+      "Member, International Society of Hair Restoration Surgery (ISHRS)",
+    ],
+    treatments: ["FUE Hair Transplant", "Beard Transplant", "Eyebrow Transplant", "PRP Hair Treatment", "GFC Treatment"],
+    approach: "I personally perform both the harvest and the implantation. The angle, direction, and density of implantation is what makes a transplant look natural — and that's the surgeon's job, not a technician's.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
     experience: "11+ years",
   },
@@ -679,6 +722,14 @@ export const DOCTORS = [
     credentials: "BSc Nursing, Aesthetic Nurse Certified",
     specialties: ["Patient Care", "Treatment Coordination"],
     bio: "Runs the front desk and our patient care team. The first voice you'll hear on the phone and the last face you'll see before leaving — your go-to person for anything.",
+    fullBio: "Sunita runs KPC's patient care team — the front desk, the follow-up calls, the treatment coordination, and the small details that make a clinic feel human. She's a BSc Nursing graduate with an aesthetic nurse certification, and she's been with KPC for 8 years. She's the first voice you'll hear when you call, the person who confirms your appointment, and the last face you'll see before you leave. If you have a question about anything — billing, scheduling, aftercare, or just 'is this normal?' — Sunita is your go-to person.",
+    education: [
+      "BSc Nursing — Tribhuvan University",
+      "Aesthetic Nurse Certification — Bangalore, India",
+      "Certified in CPR & Basic Life Support",
+    ],
+    treatments: ["Treatment Coordination", "Patient Follow-up", "Aftercare Guidance"],
+    approach: "No question is too small. If something worries you after a treatment — call. I'd rather answer 100 calls about nothing than miss one call about something.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
     experience: "8+ years",
   },
@@ -997,4 +1048,313 @@ export const REMAINING_TREATMENT_SLUGS: { slug: string; title: string; category:
   { slug: "rhinoplasty", title: "Rhinoplasty", category: "Surgery" },
   { slug: "blepharoplasty", title: "Blepharoplasty (Upper & Lower)", category: "Surgery" },
   { slug: "scar-revision", title: "Scar Revision", category: "Surgery" },
+];
+
+// ===== Blog articles (full content for /blog/[slug]) =====
+export type BlogArticle = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  date: string;
+  author: string;
+  category: string;
+  image: string;
+  readTime: string;
+};
+
+export const BLOG_ARTICLES: BlogArticle[] = [
+  {
+    slug: "is-hair-transplant-right-for-you",
+    title: "Is a hair transplant right for you? An honest checklist.",
+    excerpt:
+      "Before you spend NPR 2 lakh on a transplant, read this. We break down who benefits, who should wait, and who should never have one.",
+    date: "20 Sep 2026",
+    author: "Dr. Rupak Maharjan",
+    category: "Hair Transplant",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+    readTime: "6 min read",
+    body: `Hair transplant is surgery, not magic. It's also the most effective permanent solution for hair loss — when it's done on the right person, at the right time, by the right surgeon.
+
+This article is a checklist. If you're considering a transplant, read it before you book a consultation. It will save you money and disappointment.
+
+## Who benefits from a hair transplant
+
+A hair transplant works best for men with **stable, patterned hair loss** (Norwood III to VII). "Stable" means your hair loss has roughly plateaued for 6+ months. "Patterned" means it follows the classic male baldness pattern — receding hairline, thinning crown, or both.
+
+You also need **adequate donor hair**. The back and sides of your scalp are genetically resistant to DHT (the hormone that causes hair loss). If your donor area is dense and healthy, we can harvest follicles from there and implant them where you've lost hair. The transplanted hair is permanent — it grows for life.
+
+## Who should wait
+
+If your hair loss is **rapid and active**, a transplant now is premature. You'll get density in the transplanted area, but the surrounding native hair will continue to thin — leaving you with an unnatural "island" of transplanted hair. We'd rather stabilise your loss first (with finasteride/minoxidil) and transplant later.
+
+If you're **under 25 with aggressive loss**, we usually defer. Pattern baldness at 22 often means severe baldness by 30. Transplanting too early uses up your donor supply before we know the final pattern.
+
+## Who should never have one
+
+If your donor area is **very sparse** (diffuse unpatterned alopecia), there isn't enough healthy hair to harvest. We'll tell you this honestly — a good surgeon will turn you away.
+
+If you have **alopecia areata, lichen planopilaris, or frontal fibrosing alopecia** — these are inflammatory conditions that destroy follicles. Transplanting into an active inflammatory area is a waste of grafts. Treat the inflammation first.
+
+If you expect a **full head of teenage hair back**, a transplant can't deliver that. It restores hair in bald areas; it doesn't give you the density of a 16-year-old.
+
+## The honest checklist
+
+1. Is your hair loss stable (6+ months)?
+2. Is it patterned (not patchy)?
+3. Is your donor area dense?
+4. Are you over 25 (or have stable loss if younger)?
+5. Are your expectations realistic (improvement, not perfection)?
+6. Can you take 8–10 hours for surgery and 5–7 days to recover?
+7. Can you wait 12 months for the final result?
+8. Are you willing to take finasteride/minoxidil to keep your existing hair?
+
+If you answered yes to all 8, book a consultation. If you answered no to any, come anyway — we'll tell you what to do instead.`,
+  },
+  {
+    slug: "acne-scar-types-explained",
+    title: "Acne scars are six different conditions. Here's how we treat each.",
+    excerpt:
+      "Ice pick, boxcar, rolling, hypertrophic, PIH, erythema — each responds to different treatments. A single laser won't fix all of them.",
+    date: "15 Sep 2026",
+    author: "Dr. Sneha Shrestha",
+    category: "Acne & Scars",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+    readTime: "8 min read",
+    body: `Most patients who come to me for "acne scar treatment" expect a single procedure — usually a laser — to fix everything. The truth is that acne scars are at least six different conditions, and each responds to a different treatment. A fractional CO2 laser that works beautifully on boxcar scars will do nothing for an ice pick scar.
+
+This article explains the six types and what works for each. If you have acne scars, this is what your consultation should cover.
+
+## 1. Ice pick scars
+
+These are deep, narrow, V-shaped scars that look like large open pores. They extend into the dermis. **First-line treatment: TCA cross** (trichloroacetic acid chemical reconstruction of skin scars). High-strength TCA is applied precisely into each scar, triggering localised resurfelling. Done carefully, one scar at a time. Radiofrequency microneedling also helps.
+
+## 2. Boxcar scars
+
+Wide, square-edged, U-shaped depressions. **First-line: fractional CO2 laser** and/or subcision. The laser creates controlled micro-injuries that trigger collagen remodelling. Expect 5–7 days of redness per session, 3–5 sessions for significant improvement.
+
+## 3. Rolling scars
+
+Broad, wave-like depressions that make the skin look uneven. They're caused by fibrous bands tethering the skin down. **First-line: subcision** — a fine needle releases the bands, allowing the skin to rise. Often combined with filler or microneedling.
+
+## 4. Hypertrophic scars
+
+Raised, firm scars — usually on the jawline, chest, or back. **First-line: intralesional steroid injections** plus silicone gel sheeting. These scars over-produce collagen; steroids calm that down. Ongoing treatment, not one-and-done.
+
+## 5. Post-inflammatory hyperpigmentation (PIH)
+
+Flat brown or purple marks left after acne heals. These are not "scars" in the structural sense — they're pigment. **First-line: chemical peels** (salicylic or glycolic) plus a prescription topical (azelaic acid, hydroquinone, or retinoid). Fades over 4–6 sessions.
+
+## 6. Post-inflammatory erythema (PIE)
+
+Flat red marks — caused by dilated blood vessels near the surface. **First-line: vascular laser** (pulsed dye laser or IPL). Also responds to time — PIE fades on its own over 6–12 months, but laser speeds it up.
+
+## Why a single treatment won't work
+
+If you have three ice pick scars, two boxcar scars, and some PIH — no single device treats all of them. You need TCA cross for the ice pick, fractional CO2 for the boxcar, and a peel for the PIH. A clinic that offers "one laser for all your scars" is either lying or doesn't understand the difference.
+
+## What to expect at your consultation
+
+I will examine your skin under good lighting, identify which scar types you have, and write down a treatment plan that names each scar type and the treatment for it. I'll give you a realistic expectation — typically 40–70% improvement, not 100% elimination. And I'll photograph your skin so we can measure honestly, month by month.
+
+Book a consultation if you're ready. If you're not, come for a 15-minute orientation chat — it's free.`,
+  },
+  {
+    slug: "laser-hair-removal-myths",
+    title: "Five laser hair removal myths we hear every week — debunked.",
+    excerpt:
+      "Does it hurt? Does it work on dark skin? Is it permanent? We answer the questions we get asked most often.",
+    date: "8 Sep 2026",
+    author: "Dr. Sneha Shrestha",
+    category: "Laser",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+    readTime: "5 min read",
+    body: `Laser hair removal is one of our most popular treatments — and one of the most misunderstood. Here are the five myths we hear every week, and the truth behind each.
+
+## Myth 1: "Laser hair removal is permanent after one session"
+
+**Reality:** No. Hair grows in cycles (anagen, catagen, telogen). Laser only effectively treats hair in the active growth (anagen) phase — about 20–30% of your hair at any time. That's why you need 6–8 sessions, spaced 4–8 weeks apart, to catch each cycle. After a full course, you'll see 80–90% permanent reduction. Maintenance sessions (1–2 per year) keep it that way.
+
+## Myth 2: "Laser doesn't work on dark skin"
+
+**Reality:** It does — but you need the right laser. Older Nd:YAG lasers were designed specifically for darker skin types (Fitzpatrick IV–VI) because they bypass the melanin in the skin and target the hair follicle directly. At KPC we use a diode laser with adjustable settings that works safely on all skin types. Dark skin needs more sessions and lower energy, not fewer and higher.
+
+## Myth 3: "Laser hurts a lot"
+
+**Reality:** Modern lasers have built-in cooling tips that numb the skin as they work. Most patients describe the sensation as a rubber band snap — uncomfortable, not painful. Sensitive areas (bikini, upper lip) are more sensitive than arms or legs. We apply numbing cream for sensitive areas on request.
+
+## Myth 4: "Laser causes cancer"
+
+**Reality:** No. Laser hair removal uses non-ionising radiation — the same type of light energy as a lightbulb, just focused. It does not damage DNA or cause cancer. The wavelengths used (800–1064nm) penetrate only 1–4mm into the skin, reaching the hair follicle but not deeper tissue.
+
+## Myth 5: "Laser is the same as waxing"
+
+**Reality:** Waxing pulls hair out by the root — it grows back in 3–6 weeks. Laser destroys the follicle's ability to produce hair — permanently. Waxing is temporary; laser is permanent reduction. The upfront cost of laser is higher, but over 5 years (vs. monthly waxing), laser is cheaper.
+
+## The honest summary
+
+Laser hair removal works. It's one of the most evidence-based aesthetic treatments available. It's not magic — you need multiple sessions, some maintenance, and realistic expectations. But for most people, it's a genuinely life-changing treatment.
+
+Book a free patch test to see how your skin responds.`,
+  },
+  {
+    slug: "prp-vs-gfc-for-hair",
+    title: "PRP vs GFC for hair loss: which is actually better?",
+    excerpt:
+      "Both use your own blood. Both claim to regrow hair. We explain the difference in cost, process, and evidence.",
+    date: "1 Sep 2026",
+    author: "Dr. Anil Shakya",
+    category: "Hair Clinic",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+    readTime: "6 min read",
+    body: `PRP (Platelet-Rich Plasma) and GFC (Growth Factor Concentrate) are two hair loss treatments that both use your own blood. Patients ask me every week which is better. The honest answer: they're similar in effectiveness, but differ in process, cost, and convenience.
+
+## What is PRP?
+
+PRP involves drawing about 20–30ml of your blood, centrifuging it to separate the platelet-rich plasma, and injecting it into your scalp. The platelets release growth factors that stimulate dormant hair follicles. PRP has been used for 15+ years and has good clinical evidence behind it.
+
+## What is GFC?
+
+GFC is a newer technique. We draw a smaller amount of blood (about 10–16ml), use a special kit to extract a concentrated growth factor solution, and inject it. The key difference: GFC removes red and white blood cells (which can cause inflammation) and delivers a higher concentration of pure growth factors.
+
+## The comparison
+
+**Effectiveness:** Both work. Studies show 30–40% improvement in hair density after 3–4 sessions of either. GFC may have a slight edge in hair calibre (thickness) but the difference is not dramatic. Anyone claiming one is dramatically better than the other is selling you something.
+
+**Sessions:** Both require 3–4 initial sessions, spaced 3–4 weeks apart, then maintenance every 6 months.
+
+**Process time:** PRP takes about 45 minutes. GFC takes about 60 minutes (the kit processing takes longer).
+
+**Cost:** PRP is NPR 8,000 per session. GFC is NPR 6,000 per session — it's slightly cheaper because the kit is more efficient with less blood.
+
+**Pain:** Both involve scalp injections with a very fine needle. We use numbing cream. Most patients describe it as mild discomfort.
+
+## Which should you choose?
+
+If cost is your concern: **GFC** is slightly cheaper and equally effective.
+
+If you want the most-established treatment: **PRP** has 15+ years of evidence; GFC is newer (5–6 years).
+
+If you have a low pain tolerance: **GFC** uses fewer injections (smaller volume).
+
+If your hair loss is early-stage: either works. We usually start with GFC and switch to PRP if response is slow.
+
+## What neither will do
+
+Neither PRP nor GFC will regrow hair in completely bald areas. They stimulate thinning follicles — they don't create new ones. If you have a smooth bald spot (no vellus hair), the only option is a hair transplant.
+
+Both treatments also need to be combined with medical therapy (finasteride/minoxidil) for best results. Injections alone won't stop the underlying hormone-driven hair loss.
+
+Book a consultation and we'll tell you honestly which (if either) is right for your specific case.`,
+  },
+  {
+    slug: "rhinoplasty-recovery-timeline",
+    title: "Rhinoplasty recovery: what to expect week by week.",
+    excerpt:
+      "From day 1 swelling to month 12 final shape — a surgeon's honest guide to what happens after nose surgery.",
+    date: "25 Aug 2026",
+    author: "Dr. Rajesh Maharjan",
+    category: "Surgery",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+    readTime: "7 min read",
+    body: `Rhinoplasty (nose surgery) is one of the most common cosmetic procedures we perform — and the one patients ask most about recovery. Here's an honest, week-by-week timeline of what to expect.
+
+## Day 1–2: The hard part
+
+You'll wake up with a splint on your nose and packing inside (we remove packing on day 2). Your face will be swollen, especially around the eyes — bruising is common. You'll breathe through your mouth. Pain is moderate — managed with oral painkillers. Sleep elevated, don't blow your nose, and don't wear glasses.
+
+## Week 1: Splint on
+
+We remove the splint at day 7. This is the moment patients see the initial result — but it's not the final shape. Swelling is still significant, especially at the tip. Bruising has mostly faded. You can return to work (desk job) at day 7–10, but you'll look "puffy."
+
+## Weeks 2–4: Visible improvement
+
+Swelling reduces noticeably. Most people won't notice you had surgery by week 3, but you will — the tip still feels firm and slightly swollen. Avoid strenuous exercise, contact sports, and sun exposure. Don't wear heavy glasses.
+
+## Months 1–3: The long middle
+
+Swelling continues to reduce slowly. The tip starts to soften. You'll see 60–70% of the final result by month 3. This is when patients sometimes worry — "Is it still swollen?" Yes, it is. This is normal.
+
+## Months 3–6: Refining
+
+The bridge settles. The tip definition improves. 80% of the final result is visible. Fine details emerge.
+
+## Months 6–12: Final shape
+
+The last 20% of swelling resolves. The tip reaches its final definition. The skin re-drapes fully. **Month 12 is the "final result" we photograph for your records.**
+
+## What affects your recovery
+
+- **Skin thickness:** Thick skin takes longer to show the final result (12+ months). Thin skin shows results sooner but reveals every underlying detail.
+- **Open vs closed:** Open rhinoplasty (with an incision at the columella) has slightly more tip swelling. Closed has less.
+- **Grafts:** If we used cartilage grafts (for tip support or bridge building), swelling lasts longer.
+- **Your biology:** Some people heal in 6 months; others take 14. We can't speed this up.
+
+## What to avoid
+
+- Blowing your nose for 2 weeks
+- Strenuous exercise for 3 weeks
+- Contact sports for 6 weeks
+- Glasses resting on the bridge for 4 weeks
+- Sun exposure without SPF 50 for 6 months
+
+## The honest summary
+
+Rhinoplasty recovery is a marathon, not a sprint. The first week is uncomfortable. The first month looks "puffy." The final result takes a year. If you can't commit to that timeline, this isn't the right procedure for you.
+
+Book a consultation and I'll show you real before-and-after timelines from our patients — not the best ones, but the typical ones.`,
+  },
+  {
+    slug: "hydrafacial-vs-chemical-peel",
+    title: "HydraFacial vs chemical peel: which should you choose?",
+    excerpt:
+      "Both exfoliate. Both give you a glow. But they work differently and suit different skin types. Here's how to decide.",
+    date: "18 Aug 2026",
+    author: "Dr. Priya Karki",
+    category: "Aesthetic",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+    readTime: "5 min read",
+    body: `HydraFacial and chemical peels are two of our most popular treatments. Both exfoliate, both give you a glow, and patients often ask which they should choose. The answer depends on your skin, your goals, and your timeline.
+
+## What is a HydraFacial?
+
+A HydraFacial is a three-step medical-grade treatment: cleanse and exfoliate, extract impurities, and hydrate. It uses a specialised vortex device to do all three in one session. There's no downtime — you walk out glowing. A session takes 30–45 minutes.
+
+**Best for:** Instant glow before an event, maintenance between deeper treatments, sensitive skin, first-time facial patients.
+
+**Not for:** Deep acne scarring, significant pigmentation, anyone wanting dramatic results from one session.
+
+## What is a chemical peel?
+
+A chemical peel applies an acid solution (salicylic, glycolic, mandelic, or TCA) to the skin, causing controlled exfoliation. The top layer sheds over 3–7 days, revealing smoother skin underneath. Peels range from superficial (no downtime) to deep (1–2 weeks recovery).
+
+**Best for:** Acne, pigmentation, uneven texture, acne scars, oily skin. Peels are "active" treatments — they change the skin, not just refresh it.
+
+**Not for:** The day before your wedding, very sensitive skin (choose mandelic), anyone who can't avoid sun exposure during healing.
+
+## The comparison
+
+| | HydraFacial | Chemical Peel |
+|---|---|---|
+| **Downtime** | None | 2–7 days flaking |
+| **Pain** | None | Mild tingling |
+| **Results** | Instant glow, lasts 1–2 weeks | Gradual, lasts months |
+| **Best for** | Maintenance, events | Active skin concerns |
+| **Cost** | NPR 4,500 | NPR 3,000+ |
+| **Frequency** | Monthly | Every 4–6 weeks |
+
+## Which should you choose?
+
+**Choose HydraFacial if:** You want a glow for a specific event. You have sensitive skin. You're new to facials. You want zero downtime. You want maintenance between peels.
+
+**Choose a peel if:** You have active acne. You have pigmentation. You want to improve texture over time. You can handle 3–5 days of flaking. You're treating a specific skin concern.
+
+**Choose both:** Many of our patients do a monthly HydraFacial for maintenance and a series of peels (4–6, spaced monthly) for active treatment. They complement each other — the peel does the work, the HydraFacial maintains the result.
+
+## The honest take
+
+Neither is "better." They do different things. If you're unsure, book a consultation — we'll look at your skin and recommend the right one (or both, sequenced correctly).
+
+Don't choose based on price alone. A NPR 3,000 peel that's right for your skin is better value than a NPR 4,500 HydraFacial that doesn't address your concern.`,
+  },
 ];

@@ -38,9 +38,10 @@ export default function DoctorsPage() {
               ];
               const s = styles[i % styles.length];
               return (
-                <article
+                <Link
                   key={d.slug}
-                  className="group bg-card rounded-2xl border border-border overflow-hidden card-lift"
+                  href={`/doctors/${d.slug}`}
+                  className="group bg-card rounded-2xl border border-border overflow-hidden card-lift block"
                 >
                   <div className="relative overflow-hidden aspect-[4/5] bg-secondary">
                     { }
@@ -72,7 +73,7 @@ export default function DoctorsPage() {
                       ))}
                     </div>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </div>
