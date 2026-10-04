@@ -111,7 +111,7 @@ export function HeroCarousel() {
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-cream/75 text-sm">
               <span className="inline-flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-cyan" />
-                10+ years experience
+                5+ years experience
               </span>
               <span className="inline-flex items-center gap-2">
                 <Award className="h-4 w-4 text-gold" />
@@ -119,7 +119,7 @@ export function HeroCarousel() {
               </span>
               <span className="inline-flex items-center gap-2">
                 <Users className="h-4 w-4 text-green" />
-                15k+ happy patients
+                5k+ happy patients
               </span>
             </div>
           </motion.div>

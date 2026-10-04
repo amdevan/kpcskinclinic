@@ -318,7 +318,7 @@ function DoctorForm({
             <Input value={form.credentials} onChange={(e) => set("credentials", e.target.value)} />
           </Field>
           <Field label="Experience">
-            <Input value={form.experience} onChange={(e) => set("experience", e.target.value)} placeholder="12+ years" />
+            <Input value={form.experience} onChange={(e) => set("experience", e.target.value)} placeholder="5+ years" />
           </Field>
           <Field label="Image URL">
             <Input value={form.image} onChange={(e) => set("image", e.target.value)} />

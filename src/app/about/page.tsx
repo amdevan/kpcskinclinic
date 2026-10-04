@@ -6,7 +6,7 @@ import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
 export const metadata = {
   title: "About Us | KPC Skin Hair & Aesthetic Clinic",
   description:
-    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — founded 2016 in Thapathali, Kathmandu. Meet our doctors, our values, and the story behind Nepal's leading skin & hair clinic.",
+    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — founded 2021 in Thapathali, Kathmandu. Meet our doctors, our values, and the story behind Nepal's leading skin & hair clinic.",
 };
 
 export default function AboutPage() {
@@ -16,7 +16,7 @@ export default function AboutPage() {
         eyebrow="About Us"
         title="A small clinic that takes"
         highlight="a long time with each patient."
-        description="Founded 2016 in Thapathali. Four doctors, one philosophy: honest treatment plans, written down, performed by doctors — not salespeople."
+        description="Founded 2021 in Thapathali. Trusted care, one promise: honest treatment plans, written down, performed by doctors — not salespeople."
         image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
       />
@@ -38,10 +38,10 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
                 <p className="">
-                  KPC Skin Hair &amp; Aesthetic Clinic started in 2016 with
+                  KPC Skin Hair &amp; Aesthetic Clinic started in 2021 with
                   two rooms in Thapathali and one dermatologist who refused
                   to recommend treatments he wouldn&apos;t do on his own
-                  family. Nine years on, we&apos;ve grown — but that rule
+                  family. Five years on, we&apos;ve grown — but that rule
                   hasn&apos;t changed.
                 </p>
                 <p>
@@ -52,9 +52,9 @@ export default function AboutPage() {
                   doctor — not a technician, not a salesperson.
                 </p>
                 <p>
-                  Today, KPC is a team of four full-time doctors, a patient
+                  Today, KPC is a team of five full-time doctors, a patient
                   care team of three, and an in-house surgical theatre. We&apos;ve
-                  performed over 15,000 procedures — from hair transplants to
+                  performed over 8,000 procedures — from hair transplants to
                   rhinoplasty to laser hair removal — and we still answer
                   every appointment request ourselves. No call center, no
                   bots.
@@ -158,7 +158,7 @@ export default function AboutPage() {
               The team
             </p>
             <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink">
-              Four doctors.{" "}
+              Trusted care.{" "}
               <span className="font-italic-accent text-brand font-medium">
                 One philosophy.
               </span>

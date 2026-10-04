@@ -140,7 +140,7 @@ export default function HairTransplantHubPage() {
               "Natural hairline design, not a 'pluggy' look",
               "EMI available on packages above NPR 50,000",
               "Photographed progress at every review",
-              "10+ years of hair transplant experience",
+              "5+ years of experience",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2.5 text-sm text-ink/80">
                 <CheckCircle2 className="h-4 w-4 text-brand mt-0.5 shrink-0" />

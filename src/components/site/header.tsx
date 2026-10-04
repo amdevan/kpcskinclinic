@@ -52,7 +52,7 @@ export function Header() {
           <div className="hidden sm:flex items-center gap-4">
             <span className="inline-flex items-center gap-1.5">
               <Phone className="h-3 w-3 text-gold/70" />
-              +977-1-4XXXXXX
+              +977-9747223514
             </span>
             <span className="hidden md:inline text-cream/40">·</span>
             <span className="hidden md:inline-flex items-center gap-1.5">
@@ -99,7 +99,7 @@ export function Header() {
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 flex h-16 lg:h-[4.5rem] items-center justify-between gap-4">
           <Logo />
 
-          {/* Desktop nav — 11 items per spec, with Our Services as mega-menu */}
+          {/* Desktop nav — 9 items (Procedure + Offers removed) */}
           <NavigationMenu className="hidden xl:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -127,17 +127,7 @@ export function Header() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                  <Link href="/procedures">Procedure</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                   <Link href="/packages">Package</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                  <Link href="/offers">Offers</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>

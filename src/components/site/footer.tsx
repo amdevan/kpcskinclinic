@@ -54,7 +54,7 @@ export function Footer() {
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-sm">
               KPC Skin Hair &amp; Aesthetic Clinic Pvt. Ltd — Nepal&apos;s
-              leading skin &amp; hair clinic. Nearly 10 years of trusted care,
+              leading skin &amp; hair clinic. 5 years of trusted care,
               advanced technology, and personalized treatment plans.
             </p>
             <div className="mt-5 space-y-2.5 text-sm">
@@ -138,16 +138,16 @@ export function Footer() {
               {[
                 { label: "About", href: "/about" },
                 { label: "Doctors", href: "/doctors" },
-                { label: "Pricing", href: "/packages" },
-                { label: "Hair Transplant", href: "/hair-transplant" },
-                { label: "Procedures", href: "/procedures" },
                 { label: "Packages", href: "/packages" },
-                { label: "Offers", href: "/offers" },
+                { label: "Hair Transplant", href: "/hair-transplant" },
                 { label: "Success Stories", href: "/success-stories" },
                 { label: "STD / STI", href: "/std-sti" },
                 { label: "Blog", href: "/blog" },
                 { label: "Contact", href: "/contact" },
                 { label: "Gallery", href: "/success-stories" },
+                { label: "Privacy", href: "/privacy" },
+                { label: "Terms", href: "/terms" },
+                { label: "Sitemap", href: "/services" },
               ].map((l) => (
                 <li key={l.label}>
                   <Link
@@ -182,7 +182,12 @@ export function Footer() {
               Sitemap
             </Link>
           </p>
-          <p className="text-cream/60">Thapathali, Kathmandu</p>
+          <p className="text-cream/60">
+            Design &amp; Developed by{" "}
+            <a href="https://itrelevant.com" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-cream transition-colors font-medium">
+              IT Relevant
+            </a>
+          </p>
         </div>
       </div>
     </footer>

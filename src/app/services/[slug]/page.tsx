@@ -335,7 +335,7 @@ function GeneratedTreatmentTemplate({
             verbal estimates, no surprise charges.
           </p>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Our doctors have collectively performed over 15,000 procedures
+            Our doctors have collectively performed over 8,000 procedures
             across hair, skin, and aesthetic medicine. We use clinically proven
             techniques and FDA-cleared equipment — the same devices top clinics
             in Delhi, Bangkok and Seoul use.

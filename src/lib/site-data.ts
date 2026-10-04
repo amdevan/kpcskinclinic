@@ -32,9 +32,7 @@ export const NAV_LINKS = [
   { label: "Doctors", href: "/doctors" },
   { label: "About", href: "/about" },
   { label: "Hair Transplant", href: "/hair-transplant" },
-  { label: "Procedure", href: "/procedures" },
   { label: "Package", href: "/packages" },
-  { label: "Offers", href: "/offers" },
   { label: "Success Story", href: "/success-stories" },
   { label: "STD/STI", href: "/std-sti" },
   { label: "Blog", href: "/blog" },
@@ -57,7 +55,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
   },
   {
     id: "hair-clinic",
-    title: "Hair Clinic",
+    title: "Hair Treatment",
     tagline: "Medical hair care, end to end.",
     description:
       "Diagnosis-driven treatment plans for dandruff, scalp concerns, hair loss and thinning — backed by clinically proven protocols.",
@@ -267,7 +265,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     title: "It all starts with a",
     highlight: "personalized consultation.",
     description:
-      "Nearly 10 years of trusted care. State-of-the-art medical equipment. Clinically proven procedures. Confidence in every step.",
+      "5 years of trusted care. State-of-the-art medical equipment. Clinically proven procedures. Confidence in every step.",
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/13a4cb2c9ca7.jpg",
     primaryCta: "Request an Appointment",
@@ -316,7 +314,7 @@ export const SOCIAL_POSTS = [
 
 export const STATS = [
   { value: "10+", label: "Years of trusted care" },
-  { value: "15k+", label: "Procedures performed" },
+  { value: "5k+", label: "Procedures performed" },
   { value: "98%", label: "Patient satisfaction" },
   { value: "6", label: "Service categories" },
 ];
@@ -394,7 +392,7 @@ export const TEAM = [
     name: "Dr. Rupak Maharjan",
     role: "Founder & Medical Director",
     credentials: "MBBS, MD (Dermatology)",
-    bio: "Founded KPC in 2016 after 8 years in hospital dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
+    bio: "Founded KPC in 2021 after 5 years in dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
     image:
       "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
   },
@@ -448,12 +446,12 @@ export const VALUES = [
 ];
 
 export const STATS_FULL = [
-  { value: "2016", label: "Founded in Kathmandu" },
-  { value: "15,000+", label: "Procedures performed" },
+  { value: "2021", label: "Founded in Kathmandu" },
+  { value: "8,000+", label: "Procedures performed" },
   { value: "4", label: "Full-time doctors" },
   { value: "6", label: "Service categories" },
   { value: "28", label: "Treatments on offer" },
-  { value: "9 yrs", label: "Of continuous care" },
+  { value: "5 yrs", label: "Of continuous care" },
 ];
 
 // Expanded pricing — one starting price per service category
@@ -467,7 +465,7 @@ export const PRICING_FULL = [
     ],
   },
   {
-    category: "Hair Clinic",
+    category: "Hair Treatment",
     items: [
       { name: "PRP Hair Treatment", price: "NPR 8,000", unit: "per session", note: "Package of 4 recommended" },
       { name: "GFC Treatment", price: "NPR 6,000", unit: "per session", note: "" },
@@ -583,11 +581,11 @@ export const FAQ = [
 ];
 
 export const CONTACT_INFO = {
-  phone: "+977-1-4XXXXXX",
-  phoneHref: "tel:+97714000000",
-  mobile: "+977-98XXXXXXXX",
-  mobileHref: "tel:+9779800000000",
-  whatsapp: "https://wa.me/9779800000000",
+  phone: "+977-9747223514",
+  phoneHref: "tel:+9779747223514",
+  mobile: "+977-9747223514",
+  mobileHref: "tel:+9779747223514",
+  whatsapp: "https://wa.me/9779747223514",
   whatsappLabel: "WhatsApp",
   email: "info@kpcskin.com",
   emailHref: "mailto:info@kpcskin.com",
@@ -602,7 +600,7 @@ export const CONTACT_INFO = {
     { label: "Instagram", href: "https://instagram.com/kpcskin", handle: "@kpcskin", icon: "instagram" },
     { label: "Facebook", href: "https://facebook.com/kpcskin", handle: "KPC Skin Clinic", icon: "facebook" },
     { label: "TikTok", href: "https://tiktok.com/@kpcskin", handle: "@kpcskin", icon: "tiktok" },
-    { label: "WhatsApp", href: "https://wa.me/9779800000000", handle: "+977-98XXXXXXXX", icon: "whatsapp" },
+    { label: "WhatsApp", href: "https://wa.me/9779747223514", handle: "+977-9747223514", icon: "whatsapp" },
   ],
 };
 
@@ -665,8 +663,8 @@ export const DOCTORS = [
     role: "Founder & Medical Director",
     credentials: "MBBS, MD (Dermatology)",
     specialties: ["Hair Disorders", "Hair Transplant", "Cosmetic Dermatology"],
-    bio: "Founded KPC in 2016 after 8 years in hospital dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
-    fullBio: "Dr. Rupak Maharjan graduated from the Institute of Medicine, Maharajgunj, and completed his MD in Dermatology at TUTH. After 8 years in hospital practice — including 3 years leading the dermatology department at a major Kathmandu hospital — he founded KPC in 2016 with a single rule: never recommend a treatment he wouldn't do on his own family. Nine years on, that rule hasn't changed. He personally oversees every hair transplant case and leads the clinic's medical dermatology practice.",
+    bio: "Founded KPC in 2021 after 5 years in dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
+    fullBio: "Dr. Rupak Maharjan graduated from the Institute of Medicine, Maharajgunj, and completed his MD in Dermatology at TUTH. After 5 years in practice — including 3 years leading the dermatology department at a major Kathmandu hospital — he founded KPC in 2021 with a single rule: never recommend a treatment he wouldn't do on his own family. Five years on, that rule hasn't changed. He personally oversees every hair transplant case and leads the clinic's medical dermatology practice.",
     education: [
       "MBBS — Institute of Medicine, Tribhuvan University Teaching Hospital (TUTH)",
       "MD (Dermatology, Venereology & Leprosy) — TUTH",
@@ -675,7 +673,7 @@ export const DOCTORS = [
     treatments: ["Hair Transplant", "PRP Hair Treatment", "GFC Treatment", "Acne & Acne Scars", "Melasma Treatment"],
     approach: "Every consultation runs 30–45 minutes. You leave with a written plan: what you have, what we recommend, what it costs, what to expect. No verbal estimates.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
-    experience: "17+ years",
+    experience: "5+ years",
   },
   {
     slug: "dr-sneha-shrestha",
@@ -694,7 +692,7 @@ export const DOCTORS = [
     treatments: ["Acne & Acne Scars", "Melasma Treatment", "Open Pores & Oily Skin", "Laser Hair Removal", "Chemical Peeling", "HydraFacial"],
     approach: "Acne scars are not one condition — they are at least six. I diagnose what you actually have before recommending any treatment. A single laser won't fix all of them.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
-    experience: "12+ years",
+    experience: "5+ years",
   },
   {
     slug: "dr-rajesh-maharjan",
@@ -712,7 +710,7 @@ export const DOCTORS = [
     treatments: ["Rhinoplasty", "Blepharoplasty", "Scar Revision", "Anti-Ageing Surgery", "Plastic Surgery"],
     approach: "I show patients photographs of real results — not the best, but the typical. If you want a nose that looks like a celebrity's, I'll tell you whether your anatomy allows it. Natural is the goal.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
-    experience: "12+ years",
+    experience: "5+ years",
   },
   {
     slug: "dr-priya-karki",
@@ -731,7 +729,7 @@ export const DOCTORS = [
     treatments: ["Botox Treatment", "Dermal Fillers", "HIFU", "HydraFacial", "Carbon Laser Peel", "Microneedling", "PRP Face Treatment"],
     approach: "A good aesthetic treatment should make you look rested, not 'done'. I start with less and add more if needed — you can always inject more, you can't un-inject.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/91cc97c0d4e3.jpg",
-    experience: "9+ years",
+    experience: "5+ years",
   },
   {
     slug: "dr-anil-shakya",
@@ -750,7 +748,7 @@ export const DOCTORS = [
     treatments: ["FUE Hair Transplant", "Beard Transplant", "Eyebrow Transplant", "PRP Hair Treatment", "GFC Treatment"],
     approach: "I personally perform both the harvest and the implantation. The angle, direction, and density of implantation is what makes a transplant look natural — and that's the surgeon's job, not a technician's.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
-    experience: "11+ years",
+    experience: "5+ years",
   },
   {
     slug: "sunita-gurung",
@@ -768,7 +766,7 @@ export const DOCTORS = [
     treatments: ["Treatment Coordination", "Patient Follow-up", "Aftercare Guidance"],
     approach: "No question is too small. If something worries you after a treatment — call. I'd rather answer 100 calls about nothing than miss one call about something.",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
-    experience: "8+ years",
+    experience: "5+ years",
   },
 ];
 
@@ -1056,11 +1054,11 @@ export const ALL_TREATMENT_SLUGS = TREATMENTS.map((t) => t.slug);
 // These use the shared template with generated content.
 export const REMAINING_TREATMENT_SLUGS: { slug: string; title: string; category: string }[] = [
   { slug: "eyebrow-transplant", title: "Eyebrow Transplant", category: "Hair Transplant" },
-  { slug: "dandruff-scalp-treatment", title: "Dandruff & Scalp Treatment", category: "Hair Clinic" },
-  { slug: "gfc-treatment", title: "GFC Treatment", category: "Hair Clinic" },
-  { slug: "prp-hair-treatment", title: "PRP Hair Treatment", category: "Hair Clinic" },
-  { slug: "hair-loss-treatment", title: "Hair Loss Treatment", category: "Hair Clinic" },
-  { slug: "minoxidil-finasteride", title: "Minoxidil / Finasteride Treatment", category: "Hair Clinic" },
+  { slug: "dandruff-scalp-treatment", title: "Dandruff & Scalp Treatment", category: "Hair Treatment" },
+  { slug: "gfc-treatment", title: "GFC Treatment", category: "Hair Treatment" },
+  { slug: "prp-hair-treatment", title: "PRP Hair Treatment", category: "Hair Treatment" },
+  { slug: "hair-loss-treatment", title: "Hair Loss Treatment", category: "Hair Treatment" },
+  { slug: "minoxidil-finasteride", title: "Minoxidil / Finasteride Treatment", category: "Hair Treatment" },
   { slug: "laser-hair-removal", title: "Laser Hair Removal", category: "Laser" },
   { slug: "fractional-co2-laser", title: "Fractional CO2 Laser", category: "Laser" },
   { slug: "tattoo-removal", title: "Tattoo Removal", category: "Laser" },
@@ -1241,7 +1239,7 @@ Book a free patch test to see how your skin responds.`,
       "Both use your own blood. Both claim to regrow hair. We explain the difference in cost, process, and evidence.",
     date: "1 Sep 2026",
     author: "Dr. Anil Shakya",
-    category: "Hair Clinic",
+    category: "Hair Treatment",
     image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
     readTime: "6 min read",
     body: `PRP (Platelet-Rich Plasma) and GFC (Growth Factor Concentrate) are two hair loss treatments that both use your own blood. Patients ask me every week which is better. The honest answer: they're similar in effectiveness, but differ in process, cost, and convenience.
@@ -1393,5 +1391,64 @@ A chemical peel applies an acid solution (salicylic, glycolic, mandelic, or TCA)
 Neither is "better." They do different things. If you're unsure, book a consultation — we'll look at your skin and recommend the right one (or both, sequenced correctly).
 
 Don't choose based on price alone. A NPR 3,000 peel that's right for your skin is better value than a NPR 4,500 HydraFacial that doesn't address your concern.`,
+  },
+];
+
+// STD/STI packages as PackageCard-compatible cards
+export const STD_STI_PACKAGE_CARDS = [
+  {
+    name: "Basic STI",
+    price: "NPR 3,500",
+    unit: "package",
+    note: "4 tests — HIV, Hep B/C, Urine",
+    features: ["HIV ab + ag", "HBsAg (Hep B)", "Anti-HCV (Hep C)", "Urine RE/ME", "Pre & post-test counselling"],
+    popular: false,
+    color: "green",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    category: "STD / STI",
+  },
+  {
+    name: "STI R-10",
+    price: "NPR 6,500",
+    unit: "package",
+    note: "10 tests — most chosen",
+    features: ["HIV I&II", "HSV-1/2 IgG + IgM", "VDRL (Syphilis)", "TPHA confirmatory", "HBsAg + Anti-HCV + Urine"],
+    popular: true,
+    color: "brand",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    category: "STD / STI",
+  },
+  {
+    name: "STD Panel 1",
+    price: "NPR 13,100",
+    unit: "package",
+    note: "6-test with PCR",
+    features: ["Trichomonas PCR", "HSV PCR", "Standard STI panel", "PCR-based accuracy", "Doctor counselling"],
+    popular: false,
+    color: "cyan",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    category: "STD / STI",
+  },
+  {
+    name: "STD Panel 2",
+    price: "NPR 19,999",
+    unit: "package",
+    note: "Broad PCR + HPV",
+    features: ["Broad-spectrum PCR", "TPHA", "HPV DNA PCR", "Comprehensive panel", "Doctor counselling"],
+    popular: false,
+    color: "gold",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    category: "STD / STI",
+  },
+  {
+    name: "STD Panel 3",
+    price: "NPR 22,500",
+    unit: "package",
+    note: "Broadest — all of the above",
+    features: ["All Panel 1 + 2 tests", "Broadest coverage", "Doctor counselling", "Treatment plan if positive", "Confidential"],
+    popular: false,
+    color: "rust",
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    category: "STD / STI",
   },
 ];

@@ -158,7 +158,7 @@ export function BookAppointmentDialog({
                     id="ba-phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+977-98XXXXXXXX"
+                    placeholder="+977-9747223514"
                     required
                   />
                 </div>

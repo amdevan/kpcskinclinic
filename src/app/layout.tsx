@@ -22,7 +22,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic",
+  title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Treatment",
   description:
     "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal's leading skin and hair clinic. Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care.",
   keywords: [
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic",
+    title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Treatment",
     description:
       "Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care in Nepal.",
     url: "https://www.kpcskin.com",
