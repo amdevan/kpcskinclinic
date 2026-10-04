@@ -518,6 +518,43 @@ export const PRICING_FULL = [
   },
 ];
 
+// Flat list of all packages (used by admin seed + /packages page)
+// Built from PRICING_FULL plus enriched with image/color/popular flags.
+export const ALL_PACKAGES: {
+  name: string;
+  price: string;
+  unit: string;
+  note: string;
+  features: string[];
+  image: string;
+  category: string;
+  color: string;
+  popular: boolean;
+}[] = PRICING_FULL.flatMap((group) =>
+  group.items.map((item, idx) => ({
+    name: item.name,
+    price: item.price,
+    unit: item.unit,
+    note: item.note,
+    features: [],
+    image:
+      idx === 0
+        ? "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg"
+        : "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+    category: group.category,
+    color: group.category.toLowerCase().includes("hair")
+      ? "brand"
+      : group.category.toLowerCase().includes("surgery")
+        ? "rust"
+        : group.category.toLowerCase().includes("laser")
+          ? "cyan"
+          : "gold",
+    popular:
+      item.name.toLowerCase().includes("laser hair removal") ||
+      item.name.toLowerCase().includes("hydra"),
+  })),
+);
+
 export const FAQ = [
   {
     q: "Do I need to book in advance, or can I walk in?",

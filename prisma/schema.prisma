@@ -14,6 +14,7 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
+  role      String   @default("admin")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -51,4 +52,100 @@ model NewsletterSubscriber {
   source    String   @default("website_footer")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ===== CMS models =====
+
+model Doctor {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  role        String
+  credentials String
+  specialties String   @default("[]") // JSON array
+  bio         String   @default("")
+  fullBio     String   @default("")
+  education   String   @default("[]") // JSON array
+  treatments  String   @default("[]") // JSON array
+  approach    String   @default("")
+  image       String   @default("")
+  experience  String   @default("")
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Treatment {
+  id                String   @id @default(cuid())
+  slug              String   @unique
+  title             String
+  category          String   @default("")
+  heroImage         String   @default("")
+  tagline           String   @default("")
+  intro             String   @default("")
+  metaDescription   String   @default("")
+  startingPrice     String   @default("")
+  sessions          String   @default("")
+  note              String   @default("")
+  subsections       String   @default("[]") // JSON array
+  resultsReality    String   @default("")
+  suitabilityIdeal  String   @default("[]") // JSON array
+  suitabilityNotIdeal String @default("[]") // JSON array
+  faq               String   @default("[]") // JSON array
+  comparisonTable   String   @default("") // JSON object or empty
+  published         Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([category])
+}
+
+model Package {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  price     String   @default("")
+  unit      String   @default("")
+  note      String   @default("")
+  features  String   @default("[]") // JSON array
+  image     String   @default("")
+  category  String   @default("")
+  color     String   @default("")
+  popular   Boolean  @default(false)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+model BlogArticle {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  excerpt   String   @default("")
+  body      String   @default("")
+  date      String   @default("")
+  author    String   @default("")
+  category  String   @default("")
+  image     String   @default("")
+  readTime  String   @default("")
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+model StdTest {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  price       String   @default("")
+  composition String   @default("")
+  isPackage   Boolean  @default(false)
+  tests       Int      @default(0)
+  recommended Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
