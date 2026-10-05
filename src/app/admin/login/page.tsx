@@ -9,7 +9,7 @@ import { ArrowRight, ArrowLeft, Lock, Mail } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@kpcskin.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -122,13 +122,6 @@ export default function AdminLoginPage() {
               </>
             )}
           </button>
-
-          <div className="mt-4 rounded-md border border-cream/10 bg-ink/40 px-3 py-2 text-center text-[11px] text-cream/50">
-            Default credentials:{" "}
-            <span className="font-mono text-cream/80">admin@kpcskin.com</span>{" "}
-            /{" "}
-            <span className="font-mono text-cream/80">kpc-admin-2026</span>
-          </div>
         </form>
 
         <div className="mt-6 text-center">
