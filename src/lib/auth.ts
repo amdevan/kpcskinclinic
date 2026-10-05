@@ -6,6 +6,8 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@kpcskin.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "kpc-admin-2026";
 
 export const authOptions: NextAuthOptions = {
+  // Use env var, fallback to a default (prevents NO_SECRET crash in production)
+  secret: process.env.NEXTAUTH_SECRET || "kpc-skin-clinic-fallback-secret-2026-secure",
   providers: [
     CredentialsProvider({
       name: "Credentials",
