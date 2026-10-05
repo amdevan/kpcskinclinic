@@ -32,7 +32,7 @@ import { SERVICE_CATEGORIES, NAV_LINKS } from "@/lib/site-data";
 import { Logo } from "./logo";
 import { useBookAppointment } from "./book-appointment-context";
 
-export function Header() {
+export function Header({ logoUrl, clinicName, clinicTagline }: { logoUrl?: string; clinicName?: string; clinicTagline?: string; }) {
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { setOpen: setBookOpen } = useBookAppointment();
@@ -97,7 +97,7 @@ export function Header() {
         )}
       >
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 flex h-16 lg:h-[4.5rem] items-center justify-between gap-4">
-          <Logo />
+          <Logo logoUrl={logoUrl} clinicName={clinicName} clinicTagline={clinicTagline} />
 
           {/* Desktop nav — 9 items (Procedure + Offers removed) */}
           <NavigationMenu className="hidden xl:flex">
@@ -175,7 +175,7 @@ export function Header() {
               >
                 <SheetHeader className="px-5 pt-5 pb-3 border-b">
                   <SheetTitle className="text-left">
-                    <Logo />
+                    <Logo logoUrl={logoUrl} clinicName={clinicName} clinicTagline={clinicTagline} />
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex-1 overflow-y-auto px-2 py-3">
