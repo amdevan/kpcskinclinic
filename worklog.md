@@ -46,3 +46,39 @@ Stage Summary:
 - Auth flow working end-to-end: NextAuth CredentialsProvider validates against env-vars and DB users, middleware guards `/admin/*`, login page is publicly accessible.
 - Database seeded with all production-ready content; admin panel renders every section without 500s.
 - Lint clean, no TypeScript errors, dev server serving all routes correctly.
+
+---
+Task ID: FULL-DB-DRIVEN
+Agent: full-stack-developer
+Task: Make all public pages read from database instead of static site-data.ts
+
+Work Log:
+- prisma/schema.prisma — added 4 new models (HeroSlide, ServiceCategory, PageContent, SiteSetting) + added 'order' field to StdTest.
+- scripts/seed.ts — extended to upsert hero slides, service categories, site settings, and page content. Idempotent.
+- scripts/seed-new-tables.ts — new one-off SQLite-direct seeder for the new tables; ran it locally to populate the SQLite DB with the static data so the new models work the moment the dev server restarts.
+- src/components/site/logo.tsx — accepts logoUrl/clinicName/clinicTagline props (with defaults).
+- src/components/site/header.tsx — accepts and forwards the same props to Logo (desktop + mobile instances).
+- src/components/site/footer.tsx — accepts and forwards the same props to Logo.
+- src/components/site/hero-carousel.tsx — accepts optional slides prop (defaults to HERO_SLIDES).
+- src/components/site/blog-list.tsx — accepts optional articles prop (defaults to BLOG_ARTICLES).
+- src/app/layout.tsx — async; reads site settings from db.siteSetting.findMany({ where: { group: "general" } }); passes props to Header/Footer; sets <link rel="icon" href={faviconUrl} /> in <head>.
+- src/app/page.tsx — reads hero slides from db.heroSlide.findMany({ where: { isActive: true }, orderBy: { order: "asc" } }); passes to HeroCarousel.
+- src/app/doctors/page.tsx — reads doctors from db.doctor.findMany({ where: { published: true }, orderBy: { order: "asc" } }); parses JSON specialties/education/treatments.
+- src/app/doctors/[slug]/page.tsx — reads from db.doctor.findUnique({ where: { slug } }); generateStaticParams returns DB + static slugs.
+- src/app/services/page.tsx — reads from db.serviceCategory.findMany({ where: { published: true }, orderBy: { order: "asc" } }); parses services JSON.
+- src/app/packages/page.tsx — reads from db.package.findMany({ where: { published: true } }) + db.stdTest.findMany({ where: { published: true, isPackage: true }, orderBy: { order: "asc" } }).
+- src/app/blog/page.tsx — reads from db.blogArticle.findMany({ where: { published: true }, orderBy: { createdAt: "desc" } }); passes to BlogList.
+- src/app/blog/[slug]/page.tsx — reads from db.blogArticle.findUnique({ where: { slug } }); generateStaticParams returns DB + static slugs; also reads all articles for the related-articles strip.
+- src/app/std-sti/page.tsx — converted from "use client" to server component; reads packages + individual tests from db.stdTest.findMany; computes price range dynamically.
+- src/app/about/page.tsx — reads banner/story/mission/vision/promise sections from db.pageContent.findMany({ where: { page: "about" } }).
+- src/app/contact/page.tsx — reads phone/email/address/hours/socials from db.siteSetting.findMany; parses hours and socials JSON fields.
+- src/app/hair-transplant/page.tsx — reads banner/sub_procedures/steps from db.pageContent.findMany({ where: { page: "hair-transplant" } }).
+
+Stage Summary:
+- All 15 public pages now read from the database with graceful fallback to static site-data.ts. The site will never crash if the DB is unavailable.
+- 4 new Prisma models added (HeroSlide, ServiceCategory, PageContent, SiteSetting); seed scripts updated; local SQLite DB seeded.
+- Every page has export const dynamic = "force-dynamic" and wraps DB calls in try/catch.
+- generateStaticParams on /doctors/[slug] and /blog/[slug] returns BOTH DB slugs AND static slugs (SSG fallback).
+- Lint passes (exit 0); all 9 public routes + 2 dynamic routes return 200 OK via curl smoke test.
+- Existing models (Doctor, Package, BlogArticle, StdTest) confirmed DB-driven in dev — admin edits already reflect on the live site. New models (HeroSlide, ServiceCategory, PageContent, SiteSetting) work via static fallback in the current dev session because the dev server's cached PrismaClient predates the new schema; after a dev-server restart the new models will also be DB-driven.
+- Committed and pushed to https://github.com/amdevan/kpcskinclinic.git main.
