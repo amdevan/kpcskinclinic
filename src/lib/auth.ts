@@ -1,12 +1,10 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "@/lib/db";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@kpcskin.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "kpc-admin-2026";
 
 export const authOptions: NextAuthOptions = {
-  // Use env var, fallback to a default (prevents NO_SECRET crash in production)
   secret: process.env.NEXTAUTH_SECRET || "kpc-skin-clinic-fallback-secret-2026-secure",
   providers: [
     CredentialsProvider({
@@ -30,8 +28,9 @@ export const authOptions: NextAuthOptions = {
           } as any;
         }
 
-        // 2) Match against DB users
+        // 2) Match against DB users (lazy import to avoid crash if DB unavailable)
         try {
+          const { db } = await import("@/lib/db");
           const user = await db.user.findUnique({ where: { email } });
           if (user && password === ADMIN_PASSWORD) {
             return {

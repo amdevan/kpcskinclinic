@@ -10,37 +10,35 @@ import {
   Clock,
   ArrowRight,
 } from "lucide-react";
-import { db } from "@/lib/db";
 import { AdminStatCard } from "@/components/admin/admin-stat-card";
 import { AdminRecentAppointments } from "@/components/admin/admin-recent-appointments";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [
-    totalAppointments,
-    pendingAppointments,
-    confirmedAppointments,
-    doctorCount,
-    packageCount,
-    subscriberCount,
-    recent,
-  ] = await Promise.all([
-    db.appointment.count(),
-    db.appointment.count({ where: { status: "pending" } }),
-    db.appointment.count({ where: { status: "confirmed" } }),
-    db.doctor.count(),
-    db.package.count(),
-    db.newsletterSubscriber.count(),
-    db.appointment.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-  ]);
+  let totalAppointments = 0, pendingAppointments = 0, confirmedAppointments = 0;
+  let doctorCount = 0, packageCount = 0, subscriberCount = 0, completed = 0;
+  let recent: any[] = [];
 
-  const completed = await db.appointment.count({
-    where: { status: "completed" },
-  });
+  try {
+    const { db } = await import("@/lib/db");
+    const [
+      total, pending, confirmed, doctors, packages, subs, recentAppts,
+    ] = await Promise.all([
+      db.appointment.count().catch(() => 0),
+      db.appointment.count({ where: { status: "pending" } }).catch(() => 0),
+      db.appointment.count({ where: { status: "confirmed" } }).catch(() => 0),
+      db.doctor.count().catch(() => 0),
+      db.package.count().catch(() => 0),
+      db.newsletterSubscriber.count().catch(() => 0),
+      db.appointment.findMany({ orderBy: { createdAt: "desc" }, take: 5 }).catch(() => []),
+    ]);
+    totalAppointments = total; pendingAppointments = pending; confirmedAppointments = confirmed;
+    doctorCount = doctors; packageCount = packages; subscriberCount = subs; recent = recentAppts;
+    completed = await db.appointment.count({ where: { status: "completed" } }).catch(() => 0);
+  } catch {
+    // DB not available — show zeros
+  }
 
   const stats: { label: string; value: number; color: any; icon: any; hint?: string }[] = [
     { label: "Total Appointments", value: totalAppointments, color: "brand", icon: CalendarClock },
@@ -63,110 +61,78 @@ export default async function AdminDashboard() {
       label: "Confirmed",
       count: confirmedAppointments,
       pct: Math.round((confirmedAppointments / total) * 100),
-      color: "bg-brand",
+      color: "bg-green",
     },
     {
       label: "Completed",
       count: completed,
       pct: Math.round((completed / total) * 100),
-      color: "bg-green",
+      color: "bg-brand",
     },
-  ];
-
-  const quickActions = [
-    { label: "Appointments", href: "/admin/appointments", icon: CalendarClock },
-    { label: "Add a doctor", href: "/admin/doctors", icon: Stethoscope },
-    { label: "Add a package", href: "/admin/packages", icon: Package },
-    { label: "Write a blog post", href: "/admin/blog", icon: Mail },
+    {
+      label: "Cancelled",
+      count: totalAppointments - pendingAppointments - confirmedAppointments - completed,
+      pct: Math.round(((totalAppointments - pendingAppointments - confirmedAppointments - completed) / total) * 100),
+      color: "bg-rust",
+    },
   ];
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">
-            Dashboard
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Overview of bookings, content, and subscribers
-          </p>
-        </div>
-        <Link
-          href="/admin/appointments"
-          className="inline-flex w-fit items-center gap-1.5 rounded-md bg-brand px-3.5 py-2 text-sm font-medium text-brand-foreground transition hover:bg-brand/90"
-        >
-          <CalendarPlus className="size-4" />
-          Manage appointments
-        </Link>
+      <div>
+        <h1 className="font-display text-2xl font-bold text-ink">Dashboard</h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          Overview of your clinic&apos;s bookings, content, and subscribers.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {stats.map((s) => (
-          <AdminStatCard
-            key={s.label}
-            label={s.label}
-            value={s.value}
-            color={s.color}
-            icon={s.icon}
-            hint={s.hint}
-          />
+          <AdminStatCard key={s.label} {...s} />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <AdminRecentAppointments appointments={recent} />
         </div>
 
         <div className="space-y-4">
-          <div className="rounded-xl border bg-card p-5 shadow-sm">
-            <h3 className="font-display text-lg font-semibold text-foreground">
-              Appointment Status
+          <div className="bg-card rounded-xl border border-border p-5">
+            <h3 className="font-display text-base font-bold text-ink mb-4">
+              Quick actions
             </h3>
-            <p className="text-xs text-muted-foreground">
-              Breakdown by current status
-            </p>
-            <ul className="mt-4 space-y-3">
-              {breakdown.map((b) => (
-                <li key={b.label}>
-                  <div className="mb-1 flex items-center justify-between text-sm">
-                    <span className="font-medium text-foreground">{b.label}</span>
-                    <span className="tabular-nums text-muted-foreground">
-                      {b.count} · {b.pct}%
-                    </span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-muted">
-                    <div
-                      className={`h-full rounded-full ${b.color}`}
-                      style={{ width: `${b.pct}%` }}
-                    />
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <div className="space-y-2">
+              <Link href="/admin/appointments" className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-cream hover:bg-brand/10 transition-colors text-sm font-medium text-ink">
+                <CalendarClock className="h-4 w-4 text-brand" /> View all appointments
+              </Link>
+              <Link href="/admin/doctors" className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-cream hover:bg-brand/10 transition-colors text-sm font-medium text-ink">
+                <Stethoscope className="h-4 w-4 text-cyan" /> Manage doctors
+              </Link>
+              <Link href="/admin/blog" className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-cream hover:bg-brand/10 transition-colors text-sm font-medium text-ink">
+                <ArrowRight className="h-4 w-4 text-green" /> Write a blog post
+              </Link>
+              <Link href="/admin/packages" className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-cream hover:bg-brand/10 transition-colors text-sm font-medium text-ink">
+                <Package className="h-4 w-4 text-rust" /> Edit packages
+              </Link>
+            </div>
           </div>
 
-          <div className="rounded-xl border bg-card p-5 shadow-sm">
-            <h3 className="font-display text-lg font-semibold text-foreground">
-              Quick Actions
+          <div className="bg-card rounded-xl border border-border p-5">
+            <h3 className="font-display text-base font-bold text-ink mb-3">
+              Appointment status
             </h3>
-            <ul className="mt-3 grid grid-cols-2 gap-2">
-              {quickActions.map((a) => {
-                const Icon = a.icon;
-                return (
-                  <li key={a.href}>
-                    <Link
-                      href={a.href}
-                      className="group flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-medium text-foreground transition hover:border-brand/40 hover:bg-brand/5"
-                    >
-                      <Icon className="size-4 text-brand" />
-                      <span className="flex-1 truncate">{a.label}</span>
-                      <ArrowRight className="size-3.5 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-brand" />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="space-y-2">
+              {breakdown.map((b) => (
+                <div key={b.label} className="flex items-center justify-between text-sm">
+                  <span className="flex items-center gap-2 text-ink/70">
+                    <span className={`h-2.5 w-2.5 rounded-full ${b.color}`} />
+                    {b.label}
+                  </span>
+                  <span className="font-bold text-ink">{b.count}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
