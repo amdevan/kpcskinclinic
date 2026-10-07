@@ -11,7 +11,7 @@ const fields: AdminField[] = [
   { key: "category", label: "Category" },
   { key: "color", label: "Color theme", placeholder: "brand | cyan | green | gold | rust" },
   { key: "popular", label: "Popular (true/false)" },
-  { key: "image", label: "Image URL", full: true },
+  { key: "image", label: "Image", type: "image", full: true },
   { key: "note", label: "Note", full: true },
   {
     key: "features",

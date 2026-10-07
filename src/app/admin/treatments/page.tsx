@@ -8,7 +8,7 @@ const fields: AdminField[] = [
   { key: "title", label: "Title", required: true },
   { key: "slug", label: "Slug", required: true, placeholder: "acne-scar-treatment" },
   { key: "category", label: "Category" },
-  { key: "heroImage", label: "Hero image URL", full: true },
+  { key: "heroImage", label: "Hero Image", type: "image", full: true },
   { key: "tagline", label: "Tagline", full: true },
   { key: "intro", label: "Intro", type: "textarea", full: true },
   { key: "metaDescription", label: "Meta description", type: "textarea", full: true },

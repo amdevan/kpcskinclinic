@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "./image-upload";
 import { dbDoctorAction } from "@/app/admin/doctors/actions";
 
 type Doctor = {
@@ -320,8 +321,8 @@ function DoctorForm({
           <Field label="Experience">
             <Input value={form.experience} onChange={(e) => set("experience", e.target.value)} placeholder="5+ years" />
           </Field>
-          <Field label="Image URL">
-            <Input value={form.image} onChange={(e) => set("image", e.target.value)} />
+          <Field label="Image">
+            <ImageUpload value={form.image} onChange={(url) => set("image", url)} label="" />
           </Field>
           <Field label="Order">
             <Input type="number" value={form.order} onChange={(e) => set("order", e.target.value)} />

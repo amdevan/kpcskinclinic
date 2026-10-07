@@ -12,7 +12,7 @@ const fields: AdminField[] = [
   { key: "author", label: "Author" },
   { key: "date", label: "Date", placeholder: "20 Sep 2026" },
   { key: "readTime", label: "Read time", placeholder: "6 min read" },
-  { key: "image", label: "Image URL", full: true },
+  { key: "image", label: "Image", type: "image", full: true },
   { key: "excerpt", label: "Excerpt", type: "textarea", full: true },
   { key: "body", label: "Body (Markdown)", type: "textarea", full: true },
 ];

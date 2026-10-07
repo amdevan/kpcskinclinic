@@ -15,11 +15,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "./image-upload";
 
 export type AdminField = {
   key: string;
   label: string;
-  type?: "text" | "textarea";
+  type?: "text" | "textarea" | "image";
   required?: boolean;
   full?: boolean;
   placeholder?: string;
@@ -302,6 +303,12 @@ function SimpleForm({
                   value={form[f.key] ?? ""}
                   onChange={(e) => set(f.key, e.target.value)}
                   placeholder={f.placeholder}
+                />
+              ) : f.type === "image" ? (
+                <ImageUpload
+                  value={form[f.key] ?? ""}
+                  onChange={(url) => set(f.key, url)}
+                  label=""
                 />
               ) : (
                 <Input
