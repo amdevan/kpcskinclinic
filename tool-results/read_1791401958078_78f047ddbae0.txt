@@ -1,0 +1,1455 @@
+     1→// Centralized site content for KPC Skin Hair & Aesthetic Clinic
+     2→// Site copy modeled on the original KPC clinic brand.
+     3→
+     4→export type ServiceItem = {
+     5→  title: string;
+     6→  href: string;
+     7→  description: string;
+     8→  slug?: string;
+     9→};
+    10→
+    11→// Slugify a title for use in /services/[slug] links
+    12→export function slugify(s: string): string {
+    13→  return s
+    14→    .toLowerCase()
+    15→    .replace(/[()]/g, "")
+    16→    .replace(/[^a-z0-9]+/g, "-")
+    17→    .replace(/^-+|-+$/g, "");
+    18→}
+    19→
+    20→export type ServiceCategory = {
+    21→  id: string;
+    22→  title: string;
+    23→  tagline: string;
+    24→  description: string;
+    25→  image: string;
+    26→  services: ServiceItem[];
+    27→};
+    28→
+    29→export const NAV_LINKS = [
+    30→  { label: "Home", href: "/" },
+    31→  { label: "Our Services", href: "/services" },
+    32→  { label: "Doctors", href: "/doctors" },
+    33→  { label: "About", href: "/about" },
+    34→  { label: "Hair Transplant", href: "/hair-transplant" },
+    35→  { label: "Package", href: "/packages" },
+    36→  { label: "Success Story", href: "/success-stories" },
+    37→  { label: "STD/STI", href: "/std-sti" },
+    38→  { label: "Blog", href: "/blog" },
+    39→];
+    40→
+    41→export const SERVICE_CATEGORIES: ServiceCategory[] = [
+    42→  {
+    43→    id: "hair-transplant",
+    44→    title: "Hair Transplant",
+    45→    tagline: "Restore your hairline, naturally.",
+    46→    description:
+    47→      "Advanced FUE hair transplant techniques delivered by experienced surgeons for natural, permanent results.",
+    48→    image:
+    49→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+    50→    services: [
+    51→      { title: "Hair Transplant", href: "#services", description: "FUE hair restoration for natural density." },
+    52→      { title: "Beard Transplant", href: "#services", description: "Fill in patchy beards with your own follicles." },
+    53→      { title: "Eyebrow Transplant", href: "#services", description: "Restore eyebrows frame-by-frame." },
+    54→    ],
+    55→  },
+    56→  {
+    57→    id: "hair-clinic",
+    58→    title: "Hair Treatment",
+    59→    tagline: "Medical hair care, end to end.",
+    60→    description:
+    61→      "Diagnosis-driven treatment plans for dandruff, scalp concerns, hair loss and thinning — backed by clinically proven protocols.",
+    62→    image:
+    63→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+    64→    services: [
+    65→      { title: "Dandruff & Scalp Treatments", href: "#services", description: "Targeted care for itchy, flaky scalps." },
+    66→      { title: "GFC Treatment", href: "#services", description: "Growth Factor Concentrate for thicker hair." },
+    67→      { title: "PRP Hair Treatment", href: "#services", description: "Platelet-rich plasma therapy for hair regrowth." },
+    68→      { title: "Hair Loss Treatment", href: "#services", description: "Personalized plans for every type of hair loss." },
+    69→      { title: "Minoxidil / Finasteride", href: "#services", description: "Medical-grade hair loss management." },
+    70→    ],
+    71→  },
+    72→  {
+    73→    id: "surgery",
+    74→    title: "Surgery",
+    75→    tagline: "Refinement, artistry, safety.",
+    76→    description:
+    77→      "Cosmetic and reconstructive surgical procedures performed by board-certified plastic surgeons in a fully equipped, sterile theatre.",
+    78→    image:
+    79→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+    80→    services: [
+    81→      { title: "Anti Aging", href: "#services", description: "Surgical anti-aging procedures." },
+    82→      { title: "Plastic Surgery", href: "#services", description: "Comprehensive cosmetic surgery options." },
+    83→      { title: "Rhinoplasty", href: "#services", description: "Nose reshaping for harmony & function." },
+    84→      { title: "Blepharoplasty (Upper & Lower)", href: "#services", description: "Eyelid surgery for a refreshed look." },
+    85→      { title: "Scar Revision", href: "#services", description: "Minimize and refine visible scars." },
+    86→    ],
+    87→  },
+    88→  {
+    89→    id: "face-concerns",
+    90→    title: "Cosmetic Concerns for Face",
+    91→    tagline: "Solutions for every skin concern.",
+    92→    description:
+    93→      "Targeted, evidence-based protocols for acne, pigmentation, vitiligo, dark circles and more — tailored to your skin type.",
+    94→    image:
+    95→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/50233b5c58e8.jpg",
+    96→    services: [
+    97→      { title: "Acne & Acne Scars", href: "#services", description: "Clear active acne and smooth scars." },
+    98→      { title: "Open Pores & Oily Skin", href: "#services", description: "Refine texture and control oil." },
+    99→      { title: "Melasma Treatment", href: "#services", description: "Fade stubborn pigmentation safely." },
+   100→      { title: "Vitiligo Treatment", href: "#services", description: "Holistic care for vitiligo." },
+   101→      { title: "Dark Circles Treatment", href: "#services", description: "Brighten tired under-eyes." },
+   102→    ],
+   103→  },
+   104→  {
+   105→    id: "aesthetic-services",
+   106→    title: "Aesthetic Services",
+   107→    tagline: "Glow, every single day.",
+   108→    description:
+   109→      "A full spectrum of aesthetic and facial rejuvenation treatments — from HydraFacial and chemical peels to HIFU, fillers and PRP.",
+   110→    image:
+   111→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+   112→    services: [
+   113→      { title: "Hydra Facial", href: "#services", description: "Deep-cleansing, hydrating glow facial." },
+   114→      { title: "Chemical Peeling", href: "#services", description: "Resurface for brighter, smoother skin." },
+   115→      { title: "Botox Treatment", href: "#services", description: "Soften lines and wrinkles." },
+   116→      { title: "Carbon Laser Peeling", href: "#services", description: "The 'red-carpet' glow peel." },
+   117→      { title: "Facial Treatments", href: "#services", description: "Customized facials for every skin." },
+   118→      { title: "Microneedling", href: "#services", description: "Collagen induction for firmness." },
+   119→      { title: "HIFU", href: "#services", description: "Non-surgical lifting & tightening." },
+   120→      { title: "Weight Loss / Body Shaping", href: "#services", description: "Body contouring programs." },
+   121→      { title: "PRP – Face Treatment", href: "#services", description: "PRP for facial rejuvenation." },
+   122→      { title: "PRP – Hair Treatment", href: "#services", description: "PRP therapy for hair regrowth." },
+   123→      { title: "Dermal Fillers", href: "#services", description: "Restore volume & definition." },
+   124→      { title: "Tattoo Removal", href: "#services", description: "Safe, effective laser removal." },
+   125→      { title: "Mole Removal", href: "#services", description: "Precision mole & skin tag removal." },
+   126→    ],
+   127→  },
+   128→  {
+   129→    id: "laser-treatments",
+   130→    title: "Laser Treatments",
+   131→    tagline: "Smooth, hair-free, confident.",
+   132→    description:
+   133→      "Medical-grade laser hair removal using the latest diode technology for safe, comfortable and lasting results on all skin types.",
+   134→    image:
+   135→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+   136→    services: [
+   137→      { title: "Laser Hair Removal", href: "#services", description: "Permanent reduction, all skin types." },
+   138→    ],
+   139→  },
+   140→];
+   141→
+   142→export type PopularService = {
+   143→  title: string;
+   144→  description: string;
+   145→  image: string;
+   146→  href: string;
+   147→  accent: string;
+   148→};
+   149→
+   150→export const POPULAR_SERVICES: PopularService[] = [
+   151→  {
+   152→    title: "Hair Transplant",
+   153→    description:
+   154→      "Natural, permanent hair restoration with advanced FUE techniques and experienced surgeons.",
+   155→    image:
+   156→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+   157→    href: "#services",
+   158→    accent: "from-brand/80 to-cyan",
+   159→  },
+   160→  {
+   161→    title: "Plastic Surgery",
+   162→    description:
+   163→      "Refined cosmetic and reconstructive procedures performed by board-certified plastic surgeons.",
+   164→    image:
+   165→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2daf75b22fb4.jpg",
+   166→    href: "#services",
+   167→    accent: "from-gold/80 to-rust",
+   168→  },
+   169→  {
+   170→    title: "Acne & Acne Scars",
+   171→    description:
+   172→      "Clear active acne and smooth acne scars with clinically proven, personalized protocols.",
+   173→    image:
+   174→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+   175→    href: "#services",
+   176→    accent: "from-green/80 to-brand",
+   177→  },
+   178→  {
+   179→    title: "Hair Loss Treatment",
+   180→    description:
+   181→      "Diagnosis-driven plans combining medical therapy, PRP, GFC and lifestyle guidance.",
+   182→    image:
+   183→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+   184→    href: "#services",
+   185→    accent: "from-rust/80 to-gold",
+   186→  },
+   187→];
+   188→
+   189→export type Testimonial = {
+   190→  name: string;
+   191→  date: string;
+   192→  rating: number;
+   193→  text: string;
+   194→  avatar: string;
+   195→  service: string;
+   196→};
+   197→
+   198→export const TESTIMONIALS: Testimonial[] = [
+   199→  {
+   200→    name: "Bibek",
+   201→    date: "9th Aug, 2026",
+   202→    rating: 5,
+   203→    text:
+   204→      "I am the most happiest guy now after visiting KPC Skin Clinic for my skin consultation with Dr Rupak, I can see the visible changes and glow on my skin that I never had before. Highly recommended, best skin clinic in Kathmandu.",
+   205→    avatar:
+   206→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
+   207→    service: "Skin Consultation",
+   208→  },
+   209→  {
+   210→    name: "Megha Nath Rai",
+   211→    date: "14th Aug, 2025",
+   212→    rating: 5,
+   213→    text: "Best place to transplant!",
+   214→    avatar:
+   215→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
+   216→    service: "Hair Transplant",
+   217→  },
+   218→  {
+   219→    name: "Manju DC",
+   220→    date: "18th Feb, 2026",
+   221→    rating: 5,
+   222→    text:
+   223→      "Completed my laser hair removal sessions here and very satisfied with the result. Highly recommended KPC for laser hair removal.",
+   224→    avatar:
+   225→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
+   226→    service: "Laser Hair Removal",
+   227→  },
+   228→];
+   229→
+   230→export type HeroSlide = {
+   231→  eyebrow: string;
+   232→  title: string;
+   233→  highlight: string;
+   234→  description: string;
+   235→  image: string;
+   236→  primaryCta: string;
+   237→  secondaryCta: string;
+   238→};
+   239→
+   240→export const HERO_SLIDES: HeroSlide[] = [
+   241→  {
+   242→    eyebrow: "Expert Hair Transplant Solutions",
+   243→    title: "Healthy hair starts with a",
+   244→    highlight: "personalized consultation.",
+   245→    description:
+   246→      "FUE hair transplants, beard and eyebrow restoration performed by experienced surgeons — natural density, permanent results.",
+   247→    image:
+   248→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/dfd046dc97ad.jpg",
+   249→    primaryCta: "Request an Appointment",
+   250→    secondaryCta: "Explore our Services",
+   251→  },
+   252→  {
+   253→    eyebrow: "Hair Restoration Specialists at Your Service",
+   254→    title: "A personalized consultation with the",
+   255→    highlight: "best hair transplant doctors.",
+   256→    description:
+   257→      "Diagnosis-driven hair loss programs — medical therapy, PRP, GFC and transplant options tailored to your goals and biology.",
+   258→    image:
+   259→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8f1cadc923c0.jpg",
+   260→    primaryCta: "Request an Appointment",
+   261→    secondaryCta: "Explore our Services",
+   262→  },
+   263→  {
+   264→    eyebrow: "Friendly Team to Guide Your Hair Restoration Journey",
+   265→    title: "It all starts with a",
+   266→    highlight: "personalized consultation.",
+   267→    description:
+   268→      "5 years of trusted care. State-of-the-art medical equipment. Clinically proven procedures. Confidence in every step.",
+   269→    image:
+   270→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/13a4cb2c9ca7.jpg",
+   271→    primaryCta: "Request an Appointment",
+   272→    secondaryCta: "Explore our Services",
+   273→  },
+   274→];
+   275→
+   276→export const SOCIAL_POSTS = [
+   277→  {
+   278→    image:
+   279→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1bc026548584.webp",
+   280→    handle: "@kpcskin",
+   281→    caption: "Glowing skin week — HydraFacial results.",
+   282→  },
+   283→  {
+   284→    image:
+   285→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a6cc93c84fc4.jpg",
+   286→    handle: "@kpcskin",
+   287→    caption: "Day 7 post FUE hair transplant.",
+   288→  },
+   289→  {
+   290→    image:
+   291→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/da3261b93bf0.jpg",
+   292→    handle: "@kpcskin",
+   293→    caption: "Carbon laser peel — red carpet ready.",
+   294→  },
+   295→  {
+   296→    image:
+   297→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg",
+   298→    handle: "@kpcskin",
+   299→    caption: "Inside our Kathmandu clinic.",
+   300→  },
+   301→  {
+   302→    image:
+   303→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/cb095eaff0da.jpg",
+   304→    handle: "@kpcskin",
+   305→    caption: "Sterile, equipped, ready for you.",
+   306→  },
+   307→  {
+   308→    image:
+   309→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+   310→    handle: "@kpcskin",
+   311→    caption: "Where science meets care.",
+   312→  },
+   313→];
+   314→
+   315→export const STATS = [
+   316→  { value: "10+", label: "Years of trusted care" },
+   317→  { value: "5k+", label: "Procedures performed" },
+   318→  { value: "98%", label: "Patient satisfaction" },
+   319→  { value: "6", label: "Service categories" },
+   320→];
+   321→
+   322→export const PRICING = [
+   323→  {
+   324→    name: "Hair Transplant",
+   325→    note: "FUE / FUT",
+   326→    price: "NPR 60,000+",
+   327→    unit: "per session",
+   328→    features: [
+   329→      "Free pre-op consultation",
+   330→      "Experienced transplant surgeons",
+   331→      "Lifetime graft survival guarantee",
+   332→      "PRP add-on available",
+   333→    ],
+   334→    popular: false,
+   335→  },
+   336→  {
+   337→    name: "Laser Hair Removal",
+   338→    note: "Full body / area",
+   339→    price: "NPR 2,500+",
+   340→    unit: "per session",
+   341→    features: [
+   342→      "Diode laser for all skin types",
+   343→      "Cool-tip for comfort",
+   344→      "Package of 6+ sessions recommended",
+   345→      "Free patch test",
+   346→    ],
+   347→    popular: true,
+   348→  },
+   349→  {
+   350→    name: "HydraFacial",
+   351→    note: "Signature glow",
+   352→    price: "NPR 4,500+",
+   353→    unit: "per session",
+   354→    features: [
+   355→      "Cleanse · exfoliate · hydrate",
+   356→      "Instant visible glow",
+   357→      "No downtime",
+   358→      "Add-on LED light therapy",
+   359→    ],
+   360→    popular: false,
+   361→  },
+   362→];
+   363→
+   364→export const OFFERS = [
+   365→  {
+   366→    badge: "Monsoon",
+   367→    title: "Flat 20% off Laser Hair Removal packages",
+   368→    description:
+   369→      "Book a full-body package of 6 sessions before the end of the month and save 20% plus a free HydraFacial add-on.",
+   370→    cta: "Claim offer",
+   371→  },
+   372→  {
+   373→    badge: "New Patient",
+   374→    title: "Free skin consultation + 15% off first treatment",
+   375→    description:
+   376→      "First-time visitors get a complimentary consultation with our dermatologists and 15% off their first in-clinic procedure.",
+   377→    cta: "Book consultation",
+   378→  },
+   379→  {
+   380→    badge: "Hair Package",
+   381→    title: "PRP + GFC combo for hair regrowth",
+   382→    description:
+   383→      "Combine PRP and GFC therapy into a single 4-session program for visibly thicker hair at a bundled price.",
+   384→    cta: "View package",
+   385→  },
+   386→];
+   387→
+   388→// ===== Multi-page data =====
+   389→
+   390→export const TEAM = [
+   391→  {
+   392→    name: "Dr. Rupak Maharjan",
+   393→    role: "Founder & Medical Director",
+   394→    credentials: "MBBS, MD (Dermatology)",
+   395→    bio: "Founded KPC in 2021 after 5 years in dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
+   396→    image:
+   397→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
+   398→  },
+   399→  {
+   400→    name: "Dr. Sneha Shrestha",
+   401→    role: "Consultant Dermatologist",
+   402→    credentials: "MBBS, MD (Dermatology, Venereology & Leprosy)",
+   403→    bio: "Leads our acne, pigmentation and laser aesthetic practice. Trained at TUTH with fellowships in aesthetic medicine in Mumbai and Bangkok.",
+   404→    image:
+   405→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
+   406→  },
+   407→  {
+   408→    name: "Dr. Rajesh Maharjan",
+   409→    role: "Plastic & Cosmetic Surgeon",
+   410→    credentials: "MBBS, MS, MCh (Plastic Surgery)",
+   411→    bio: "Board-certified plastic surgeon with 12 years of experience in rhinoplasty, blepharoplasty and scar revision. Performs all surgical procedures in our in-house theatre.",
+   412→    image:
+   413→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
+   414→  },
+   415→  {
+   416→    name: "Sunita Gurung",
+   417→    role: "Head of Patient Care",
+   418→    credentials: "BSc Nursing, Aesthetic Nurse Certified",
+   419→    bio: "Runs the front desk and our patient care team. The first voice you'll hear on the phone and the last face you'll see before leaving — your go-to person for anything.",
+   420→    image:
+   421→      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/91cc97c0d4e3.jpg",
+   422→  },
+   423→];
+   424→
+   425→export const VALUES = [
+   426→  {
+   427→    title: "Honesty first",
+   428→    description:
+   429→      "If you don't need a procedure, we tell you. If a cheaper alternative works as well, we recommend that. We lose money this way — and we sleep fine.",
+   430→  },
+   431→  {
+   432→    title: "Doctors, not salespeople",
+   433→    description:
+   434→      "Every consultation and every procedure is performed by a qualified doctor. No technicians doing medical work, no sales targets guiding treatment plans.",
+   435→  },
+   436→  {
+   437→    title: "Written plans, always",
+   438→    description:
+   439→      "After your consultation you leave with a written treatment plan: what you have, what we recommend, what it costs, what to expect. No ambiguity.",
+   440→  },
+   441→  {
+   442→    title: "Sterile, every time",
+   443→    description:
+   444→      "Single-use disposables where it matters, autoclaved instruments otherwise, and a theatre you can walk through any day without an appointment.",
+   445→  },
+   446→];
+   447→
+   448→export const STATS_FULL = [
+   449→  { value: "2021", label: "Founded in Kathmandu" },
+   450→  { value: "8,000+", label: "Procedures performed" },
+   451→  { value: "4", label: "Full-time doctors" },
+   452→  { value: "6", label: "Service categories" },
+   453→  { value: "28", label: "Treatments on offer" },
+   454→  { value: "5 yrs", label: "Of continuous care" },
+   455→];
+   456→
+   457→// Expanded pricing — one starting price per service category
+   458→export const PRICING_FULL = [
+   459→  {
+   460→    category: "Hair Transplant",
+   461→    items: [
+   462→      { name: "FUE Hair Transplant", price: "NPR 60,000+", unit: "per session", note: "Price depends on graft count" },
+   463→      { name: "Beard Transplant", price: "NPR 45,000+", unit: "per session", note: "" },
+   464→      { name: "Eyebrow Transplant", price: "NPR 35,000+", unit: "per session", note: "" },
+   465→    ],
+   466→  },
+   467→  {
+   468→    category: "Hair Treatment",
+   469→    items: [
+   470→      { name: "PRP Hair Treatment", price: "NPR 8,000", unit: "per session", note: "Package of 4 recommended" },
+   471→      { name: "GFC Treatment", price: "NPR 6,000", unit: "per session", note: "" },
+   472→      { name: "Dandruff & Scalp Treatment", price: "NPR 2,500", unit: "consultation + meds", note: "" },
+   473→      { name: "Hair Loss (Minoxidil/Finasteride)", price: "NPR 1,500", unit: "per month", note: "Prescription only" },
+   474→    ],
+   475→  },
+   476→  {
+   477→    category: "Surgery",
+   478→    items: [
+   479→      { name: "Rhinoplasty", price: "NPR 1,50,000+", unit: "procedure", note: "" },
+   480→      { name: "Blepharoplasty (Eyelid)", price: "NPR 80,000+", unit: "procedure", note: "Upper or lower" },
+   481→      { name: "Scar Revision", price: "NPR 25,000+", unit: "procedure", note: "Depends on size" },
+   482→      { name: "Anti Aging Surgery", price: "NPR 1,20,000+", unit: "procedure", note: "" },
+   483→    ],
+   484→  },
+   485→  {
+   486→    category: "Cosmetic Concerns — Face",
+   487→    items: [
+   488→      { name: "Acne & Acne Scars", price: "NPR 3,500+", unit: "per session", note: "Multi-session program" },
+   489→      { name: "Melasma Treatment", price: "NPR 4,000+", unit: "per session", note: "" },
+   490→      { name: "Open Pores & Oily Skin", price: "NPR 3,000+", unit: "per session", note: "" },
+   491→      { name: "Dark Circles Treatment", price: "NPR 4,500+", unit: "per session", note: "" },
+   492→      { name: "Vitiligo Treatment", price: "On consultation", unit: "", note: "Customised plan" },
+   493→    ],
+   494→  },
+   495→  {
+   496→    category: "Aesthetic Services",
+   497→    items: [
+   498→      { name: "Hydra Facial", price: "NPR 4,500", unit: "per session", note: "" },
+   499→      { name: "Chemical Peeling", price: "NPR 3,000+", unit: "per session", note: "" },
+   500→      { name: "Botox Treatment", price: "NPR 350", unit: "per unit", note: "Area-based" },
+   501→      { name: "Dermal Fillers", price: "NPR 18,000+", unit: "per syringe", note: "" },
+   502→      { name: "HIFU Lifting", price: "NPR 25,000+", unit: "per area", note: "" },
+   503→      { name: "Microneedling", price: "NPR 4,000+", unit: "per session", note: "" },
+   504→      { name: "Carbon Laser Peeling", price: "NPR 5,000+", unit: "per session", note: "" },
+   505→      { name: "Mole Removal", price: "NPR 2,500+", unit: "per mole", note: "" },
+   506→      { name: "Tattoo Removal", price: "NPR 3,000+", unit: "per session", note: "Size-based" },
+   507→    ],
+   508→  },
+   509→  {
+   510→    category: "Laser Treatments",
+   511→    items: [
+   512→      { name: "Laser Hair Removal — Upper Lip", price: "NPR 2,500", unit: "per session", note: "" },
+   513→      { name: "Laser Hair Removal — Full Face", price: "NPR 5,000", unit: "per session", note: "" },
+   514→      { name: "Laser Hair Removal — Full Body", price: "NPR 15,000+", unit: "per session", note: "Package of 6: 20% off" },
+   515→    ],
+   516→  },
+   517→];
+   518→
+   519→// Flat list of all packages (used by admin seed + /packages page)
+   520→// Built from PRICING_FULL plus enriched with image/color/popular flags.
+   521→export const ALL_PACKAGES: {
+   522→  name: string;
+   523→  price: string;
+   524→  unit: string;
+   525→  note: string;
+   526→  features: string[];
+   527→  image: string;
+   528→  category: string;
+   529→  color: string;
+   530→  popular: boolean;
+   531→}[] = PRICING_FULL.flatMap((group) =>
+   532→  group.items.map((item, idx) => ({
+   533→    name: item.name,
+   534→    price: item.price,
+   535→    unit: item.unit,
+   536→    note: item.note,
+   537→    features: [],
+   538→    image:
+   539→      idx === 0
+   540→        ? "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg"
+   541→        : "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+   542→    category: group.category,
+   543→    color: group.category.toLowerCase().includes("hair")
+   544→      ? "brand"
+   545→      : group.category.toLowerCase().includes("surgery")
+   546→        ? "rust"
+   547→        : group.category.toLowerCase().includes("laser")
+   548→          ? "cyan"
+   549→          : "gold",
+   550→    popular:
+   551→      item.name.toLowerCase().includes("laser hair removal") ||
+   552→      item.name.toLowerCase().includes("hydra"),
+   553→  })),
+   554→);
+   555→
+   556→export const FAQ = [
+   557→  {
+   558→    q: "Do I need to book in advance, or can I walk in?",
+   559→    a: "We strongly recommend booking in advance — our doctors' consultation slots fill up 3–4 days ahead. Walk-ins for procedures are not accepted; we need sterilisation and doctor scheduling lead time.",
+   560→  },
+   561→  {
+   562→    q: "Is the first consultation free?",
+   563→    a: "A 15-minute orientation chat with our patient care team is free. A full 30–45 minute consultation with a doctor is NPR 1,000, which is adjusted against your treatment if you proceed.",
+   564→  },
+   565→  {
+   566→    q: "Do you offer EMI / instalment plans?",
+   567→    a: "Yes — for treatments above NPR 50,000 we offer 3- and 6-month EMI through our partner banks (Nabil, NIC Asia, Global IME). Bring your citizenship and latest payslip.",
+   568→  },
+   569→  {
+   570→    q: "Are the prices negotiable?",
+   571→    a: "No. Our prices are transparent and the same for everyone. What you see on the pricing page is what you pay. We don't run 'discount' negotiations.",
+   572→  },
+   573→  {
+   574→    q: "What if I'm not happy with the result?",
+   575→    a: "Every procedure comes with a clear written outcome expectation agreed before treatment. If a result falls short of that agreed expectation due to our work, we re-do or adjust at no charge. This is in writing.",
+   576→  },
+   577→  {
+   578→    q: "Do you treat both men and women?",
+   579→    a: "Yes. We have male and female doctors and a private treatment room for each. Approximately 55% of our patients are women, 45% men.",
+   580→  },
+   581→];
+   582→
+   583→export const CONTACT_INFO = {
+   584→  phone: "+977-9747223514",
+   585→  phoneHref: "tel:+9779747223514",
+   586→  mobile: "+977-9747223514",
+   587→  mobileHref: "tel:+9779747223514",
+   588→  whatsapp: "https://wa.me/9779747223514",
+   589→  whatsappLabel: "WhatsApp",
+   590→  email: "info@kpcskin.com",
+   591→  emailHref: "mailto:info@kpcskin.com",
+   592→  address: "Prasuti Griha Marg, Thapathali, Kathmandu, Nepal 44600",
+   593→  addressShort: "Thapathali, Kathmandu",
+   594→  addressMapHref: "https://maps.google.com/?q=Prasuti+Griha+Marg+Thapathali+Kathmandu",
+   595→  hours: [
+   596→    { day: "Sunday – Friday", time: "8:00 AM – 6:00 PM" },
+   597→    { day: "Saturday", time: "Closed" },
+   598→  ],
+   599→  socials: [
+   600→    { label: "Instagram", href: "https://instagram.com/kpcskin", handle: "@kpcskin", icon: "instagram" },
+   601→    { label: "Facebook", href: "https://facebook.com/kpcskin", handle: "KPC Skin Clinic", icon: "facebook" },
+   602→    { label: "TikTok", href: "https://tiktok.com/@kpcskin", handle: "@kpcskin", icon: "tiktok" },
+   603→    { label: "WhatsApp", href: "https://wa.me/9779747223514", handle: "+977-9747223514", icon: "whatsapp" },
+   604→  ],
+   605→};
+   606→
+   607→export const BEFORE_AFTER_GALLERY = [
+   608→  {
+   609→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+   610→    treatment: "Hair Transplant",
+   611→    patient: "Male, 34",
+   612→    sessions: "1 session, 8 months ago",
+   613→  },
+   614→  {
+   615→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+   616→    treatment: "Acne & Scars",
+   617→    patient: "Female, 26",
+   618→    sessions: "6 sessions over 4 months",
+   619→  },
+   620→  {
+   621→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+   622→    treatment: "Laser Hair Removal",
+   623→    patient: "Female, 31",
+   624→    sessions: "7 sessions over 10 months",
+   625→  },
+   626→  {
+   627→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+   628→    treatment: "Hydra Facial",
+   629→    patient: "Female, 29",
+   630→    sessions: "Monthly for 6 months",
+   631→  },
+   632→  {
+   633→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+   634→    treatment: "PRP Hair Treatment",
+   635→    patient: "Male, 41",
+   636→    sessions: "4 sessions over 3 months",
+   637→  },
+   638→  {
+   639→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a6cc93c84fc4.jpg",
+   640→    treatment: "Skin Rejuvenation",
+   641→    patient: "Female, 38",
+   642→    sessions: "3 sessions over 2 months",
+   643→  },
+   644→  {
+   645→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+   646→    treatment: "Rhinoplasty",
+   647→    patient: "Female, 27",
+   648→    sessions: "1 procedure, 6 months ago",
+   649→  },
+   650→  {
+   651→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2daf75b22fb4.jpg",
+   652→    treatment: "Plastic Surgery",
+   653→    patient: "Male, 45",
+   654→    sessions: "1 procedure, 1 year ago",
+   655→  },
+   656→];
+   657→
+   658→// ===== Doctors (6) =====
+   659→export const DOCTORS = [
+   660→  {
+   661→    slug: "dr-rupak-maharjan",
+   662→    name: "Dr. Rupak Maharjan",
+   663→    role: "Founder & Medical Director",
+   664→    credentials: "MBBS, MD (Dermatology)",
+   665→    specialties: ["Hair Disorders", "Hair Transplant", "Cosmetic Dermatology"],
+   666→    bio: "Founded KPC in 2021 after 5 years in dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
+   667→    fullBio: "Dr. Rupak Maharjan graduated from the Institute of Medicine, Maharajgunj, and completed his MD in Dermatology at TUTH. After 5 years in practice — including 3 years leading the dermatology department at a major Kathmandu hospital — he founded KPC in 2021 with a single rule: never recommend a treatment he wouldn't do on his own family. Five years on, that rule hasn't changed. He personally oversees every hair transplant case and leads the clinic's medical dermatology practice.",
+   668→    education: [
+   669→      "MBBS — Institute of Medicine, Tribhuvan University Teaching Hospital (TUTH)",
+   670→      "MD (Dermatology, Venereology & Leprosy) — TUTH",
+   671→      "Certification in Aesthetic Medicine — American Academy of Aesthetic Medicine",
+   672→    ],
+   673→    treatments: ["Hair Transplant", "PRP Hair Treatment", "GFC Treatment", "Acne & Acne Scars", "Melasma Treatment"],
+   674→    approach: "Every consultation runs 30–45 minutes. You leave with a written plan: what you have, what we recommend, what it costs, what to expect. No verbal estimates.",
+   675→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
+   676→    experience: "5+ years",
+   677→  },
+   678→  {
+   679→    slug: "dr-sneha-shrestha",
+   680→    name: "Dr. Sneha Shrestha",
+   681→    role: "Consultant Dermatologist",
+   682→    credentials: "MBBS, MD (Dermatology, Venereology & Leprosy)",
+   683→    specialties: ["Acne", "Pigmentation", "Laser Aesthetics"],
+   684→    bio: "Leads our acne, pigmentation and laser aesthetic practice. Trained at TUTH with fellowships in aesthetic medicine in Mumbai and Bangkok.",
+   685→    fullBio: "Dr. Sneha Shrestha completed her MD in Dermatology at TUTH, followed by a fellowship in aesthetic medicine at the Mumbai Institute of Aesthetic Medicine and laser training at Bangkok's laser academy. She leads KPC's acne, pigmentation, and laser aesthetic practice — the clinic's highest-volume area. She's known for her methodical approach to acne scarring: she diagnoses the scar type (there are at least six) before recommending any treatment.",
+   686→    education: [
+   687→      "MBBS — Institute of Medicine, TUTH",
+   688→      "MD (Dermatology, Venereology & Leprosy) — TUTH",
+   689→      "Fellowship in Aesthetic Medicine — Mumbai Institute of Aesthetic Medicine",
+   690→      "Laser Aesthetics Certification — Bangkok Laser Academy",
+   691→    ],
+   692→    treatments: ["Acne & Acne Scars", "Melasma Treatment", "Open Pores & Oily Skin", "Laser Hair Removal", "Chemical Peeling", "HydraFacial"],
+   693→    approach: "Acne scars are not one condition — they are at least six. I diagnose what you actually have before recommending any treatment. A single laser won't fix all of them.",
+   694→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
+   695→    experience: "5+ years",
+   696→  },
+   697→  {
+   698→    slug: "dr-rajesh-maharjan",
+   699→    name: "Dr. Rajesh Maharjan",
+   700→    role: "Plastic & Cosmetic Surgeon",
+   701→    credentials: "MBBS, MS, MCh (Plastic Surgery)",
+   702→    specialties: ["Rhinoplasty", "Blepharoplasty", "Scar Revision"],
+   703→    bio: "Board-certified plastic surgeon with 12 years of experience in rhinoplasty, blepharoplasty and scar revision. Performs all surgical procedures in our in-house theatre.",
+   704→    fullBio: "Dr. Rajesh Maharjan is one of the few MCh-qualified plastic surgeons in private practice in Kathmandu. He completed his super-specialty training at the National Academy of Medical Sciences (NAMS), Bir Hospital. With 12 years of surgical experience, he performs all of KPC's cosmetic and reconstructive procedures — rhinoplasty, blepharoplasty, scar revision, and anti-ageing surgery — in our in-house sterile theatre at Thapathali. He's known for natural-looking results and honest pre-operative counselling.",
+   705→    education: [
+   706→      "MBBS — Institute of Medicine, TUTH",
+   707→      "MS (General Surgery) — National Academy of Medical Sciences (NAMS)",
+   708→      "MCh (Plastic Surgery) — NAMS, Bir Hospital",
+   709→    ],
+   710→    treatments: ["Rhinoplasty", "Blepharoplasty", "Scar Revision", "Anti-Ageing Surgery", "Plastic Surgery"],
+   711→    approach: "I show patients photographs of real results — not the best, but the typical. If you want a nose that looks like a celebrity's, I'll tell you whether your anatomy allows it. Natural is the goal.",
+   712→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
+   713→    experience: "5+ years",
+   714→  },
+   715→  {
+   716→    slug: "dr-priya-karki",
+   717→    name: "Dr. Priya Karki",
+   718→    role: "Aesthetic Medicine Specialist",
+   719→    credentials: "MBBS, MD, Fellowship in Aesthetic Medicine",
+   720→    specialties: ["Botox", "Dermal Fillers", "HIFU", "HydraFacial"],
+   721→    bio: "Specialises in non-surgical facial rejuvenation — injectables, energy-based devices, and medical-grade facials. Trained in Seoul and Bangkok.",
+   722→    fullBio: "Dr. Priya Karki leads KPC's non-surgical aesthetic practice. After her MD, she completed a fellowship in aesthetic medicine in Seoul — the global capital of non-surgical facial refinement — and advanced training in energy-based devices (HIFU, radiofrequency) in Bangkok. She performs all injectable treatments (Botox, dermal fillers) and energy-based treatments at the clinic. Her philosophy: less is more. A good aesthetic treatment should make you look rested, not 'done'.",
+   723→    education: [
+   724→      "MBBS — Institute of Medicine, TUTH",
+   725→      "MD — Kathmandu University",
+   726→      "Fellowship in Aesthetic Medicine — Seoul, South Korea",
+   727→      "Advanced Injectable & Energy-Based Device Training — Bangkok, Thailand",
+   728→    ],
+   729→    treatments: ["Botox Treatment", "Dermal Fillers", "HIFU", "HydraFacial", "Carbon Laser Peel", "Microneedling", "PRP Face Treatment"],
+   730→    approach: "A good aesthetic treatment should make you look rested, not 'done'. I start with less and add more if needed — you can always inject more, you can't un-inject.",
+   731→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/91cc97c0d4e3.jpg",
+   732→    experience: "5+ years",
+   733→  },
+   734→  {
+   735→    slug: "dr-anil-shakya",
+   736→    name: "Dr. Anil Shakya",
+   737→    role: "Hair Transplant Surgeon",
+   738→    credentials: "MBBS, MD, Fellowship in Trichology (FUE)",
+   739→    specialties: ["FUE Hair Transplant", "Beard Transplant", "PRP Therapy"],
+   740→    bio: "Leads our hair transplant practice. Has performed over 2,000 FUE procedures with a focus on natural density and graft survival.",
+   741→    fullBio: "Dr. Anil Shakya leads KPC's hair transplant practice. He completed a fellowship in trichology and FUE technique at a leading hair restoration centre in New Delhi. With over 2,000 FUE procedures performed, he's one of the most experienced hair transplant surgeons in Kathmandu. His focus is on natural density and graft survival — he personally performs both the donor harvest and the implantation, never delegating to a technician.",
+   742→    education: [
+   743→      "MBBS — Institute of Medicine, TUTH",
+   744→      "MD — Kathmandu University",
+   745→      "Fellowship in Trichology & FUE — New Delhi, India",
+   746→      "Member, International Society of Hair Restoration Surgery (ISHRS)",
+   747→    ],
+   748→    treatments: ["FUE Hair Transplant", "Beard Transplant", "Eyebrow Transplant", "PRP Hair Treatment", "GFC Treatment"],
+   749→    approach: "I personally perform both the harvest and the implantation. The angle, direction, and density of implantation is what makes a transplant look natural — and that's the surgeon's job, not a technician's.",
+   750→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
+   751→    experience: "5+ years",
+   752→  },
+   753→  {
+   754→    slug: "sunita-gurung",
+   755→    name: "Sunita Gurung",
+   756→    role: "Head of Patient Care",
+   757→    credentials: "BSc Nursing, Aesthetic Nurse Certified",
+   758→    specialties: ["Patient Care", "Treatment Coordination"],
+   759→    bio: "Runs the front desk and our patient care team. The first voice you'll hear on the phone and the last face you'll see before leaving — your go-to person for anything.",
+   760→    fullBio: "Sunita runs KPC's patient care team — the front desk, the follow-up calls, the treatment coordination, and the small details that make a clinic feel human. She's a BSc Nursing graduate with an aesthetic nurse certification, and she's been with KPC for 8 years. She's the first voice you'll hear when you call, the person who confirms your appointment, and the last face you'll see before you leave. If you have a question about anything — billing, scheduling, aftercare, or just 'is this normal?' — Sunita is your go-to person.",
+   761→    education: [
+   762→      "BSc Nursing — Tribhuvan University",
+   763→      "Aesthetic Nurse Certification — Bangalore, India",
+   764→      "Certified in CPR & Basic Life Support",
+   765→    ],
+   766→    treatments: ["Treatment Coordination", "Patient Follow-up", "Aftercare Guidance"],
+   767→    approach: "No question is too small. If something worries you after a treatment — call. I'd rather answer 100 calls about nothing than miss one call about something.",
+   768→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
+   769→    experience: "5+ years",
+   770→  },
+   771→];
+   772→
+   773→// ===== STD/STI Pricing =====
+   774→export const STD_STI_PACKAGES = [
+   775→  {
+   776→    name: "Basic STI",
+   777→    price: "NPR 3,500",
+   778→    composition: "HIV ab + ag, HBsAg, Anti-HCV, Urine RE/ME",
+   779→    tests: 4,
+   780→    recommended: false,
+   781→  },
+   782→  {
+   783→    name: "STI R-10",
+   784→    price: "NPR 6,500",
+   785→    composition: "HIV I&II, HSV-1/2 IgG + IgM, VDRL, TPHA, HBsAg, Anti-HCV, Urine RE/ME",
+   786→    tests: 10,
+   787→    recommended: true,
+   788→  },
+   789→  {
+   790→    name: "STD Panel 1",
+   791→    price: "NPR 13,100",
+   792→    composition: "6-test incl. Trichomonas PCR, HSV PCR",
+   793→    tests: 6,
+   794→    recommended: false,
+   795→  },
+   796→  {
+   797→    name: "STD Panel 2",
+   798→    price: "NPR 19,999",
+   799→    composition: "Broad PCR + TPHA, includes HPV",
+   800→    tests: 8,
+   801→    recommended: false,
+   802→  },
+   803→  {
+   804→    name: "STD Panel 3",
+   805→    price: "NPR 22,500",
+   806→    composition: "Broadest — all of the above",
+   807→    tests: 12,
+   808→    recommended: false,
+   809→  },
+   810→];
+   811→
+   812→export const STD_STI_INDIVIDUAL_TESTS = [
+   813→  { name: "HIV antibody + antigen", price: "NPR 1,200" },
+   814→  { name: "HBsAg (Hepatitis B surface antigen)", price: "NPR 650" },
+   815→  { name: "Anti-HCV (Hepatitis C antibody)", price: "NPR 850" },
+   816→  { name: "HIV I & II (rapid)", price: "NPR 500" },
+   817→  { name: "HSV-1/2 IgG + IgM", price: "NPR 1,500" },
+   818→  { name: "VDRL (Syphilis screening)", price: "NPR 400" },
+   819→  { name: "TPHA (Syphilis confirmatory)", price: "NPR 700" },
+   820→  { name: "Urine RE/ME", price: "NPR 300" },
+   821→  { name: "Trichomonas PCR", price: "NPR 2,500" },
+   822→  { name: "HSV PCR", price: "NPR 3,200" },
+   823→  { name: "HPV DNA PCR", price: "NPR 4,500" },
+   824→  { name: "Chlamydia PCR", price: "NPR 2,800" },
+   825→  { name: "Gonorrhoea PCR (NG)", price: "NPR 2,800" },
+   826→  { name: "Mycoplasma PCR", price: "NPR 3,000" },
+   827→  { name: "Ureaplasma PCR", price: "NPR 3,000" },
+   828→];
+   829→
+   830→// ===== Treatment pages (dynamic /services/[slug]) =====
+   831→export type TreatmentSubsection = {
+   832→  heading: string;
+   833→  body: string;
+   834→  image?: string;
+   835→};
+   836→
+   837→export type Treatment = {
+   838→  slug: string;
+   839→  title: string;
+   840→  category: string;
+   841→  metaDescription: string;
+   842→  heroImage: string;
+   843→  tagline: string;
+   844→  intro: string;
+   845→  comparisonTable?: {
+   846→    caption: string;
+   847→    columns: string[];
+   848→    rows: { label: string; values: string[] }[];
+   849→  };
+   850→  subsections: TreatmentSubsection[];
+   851→  resultsReality: string;
+   852→  suitability: {
+   853→    ideal: string[];
+   854→    notIdeal: string[];
+   855→  };
+   856→  faq: { q: string; a: string }[];
+   857→  pricing: {
+   858→    startingPrice: string;
+   859→    sessions: string;
+   860→    note: string;
+   861→  };
+   862→};
+   863→
+   864→export const TREATMENTS: Treatment[] = [
+   865→  {
+   866→    slug: "acne-scar-treatment",
+   867→    title: "Acne & Acne Scar Treatment",
+   868→    category: "Cosmetic Concerns",
+   869→    metaDescription:
+   870→      "Acne and acne scar treatment at KPC Skin Clinic Thapathali. FUE, fractional CO2 laser, subcision, chemical peels and TCA cross for boxcar, ice pick and rolling scars. Real results, written plans.",
+   871→    heroImage: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+   872→    tagline: "Clear active acne and smooth scars with a plan written for your skin.",
+   873→    intro:
+   874→      "Acne scars are not one condition — they are at least six. Boxcar, ice pick, rolling, hypertrophic, post-inflammatory hyperpigmentation and erythema each respond to different treatments. A single approach (one laser, one peel) will not work for all of them. We diagnose what you actually have, write it down, and treat accordingly.",
+   875→    comparisonTable: {
+   876→      caption: "Acne scar types and the treatments that work for each",
+   877→      columns: ["Scar type", "Appearance", "First-line treatment", "Typical sessions"],
+   878→      rows: [
+   879→        { label: "Ice pick", values: ["Deep, narrow, V-shaped", "TCA cross / radiofrequency microneedling", "3–5"] },
+   880→        { label: "Boxcar", values: ["Wide, square-edged, U-shaped", "Fractional CO2 laser / subcision", "3–5"] },
+   881→        { label: "Rolling", values: ["Broad, wave-like, tethered", "Subcision + microneedling", "2–4"] },
+   882→        { label: "Hypertrophic", values: ["Raised, firm, on jawline/back", "Intralesional steroid + silicone", "Ongoing"] },
+   883→        { label: "PIH (dark marks)", values: ["Flat brown/purple marks", "Chemical peel + topical", "4–6"] },
+   884→        { label: "Erythema (red marks)", values: ["Flat red marks", "Vascular laser + time", "3–4"] },
+   885→      ],
+   886→    },
+   887→    subsections: [
+   888→      {
+   889→        heading: "Fractional CO2 Laser",
+   890→        body: "The workhorse for boxcar and atrophic scars. Creates controlled micro-injuries that trigger collagen remodelling. We use a fractional (not fully ablative) approach to minimise downtime — expect 5–7 days of redness and peeling per session.",
+   891→        image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+   892→      },
+   893→      {
+   894→        heading: "Subcision",
+   895→        body: "For rolling scars that are tethered beneath the skin. A fine needle releases the fibrous bands pulling the skin down, allowing it to rise back to surface level. Often combined with filler or microneedling for best results.",
+   896→      },
+   897→      {
+   898→        heading: "TCA Cross",
+   899→        body: "The gold standard for deep ice-pick scars. High-strength trichloroacetic acid is applied precisely into each scar, triggering localised resurfelling. Done carefully, one scar at a time.",
+   900→      },
+   901→      {
+   902→        heading: "Radiofrequency Microneedling",
+   903→        body: "Delivers heat energy at precise depths to stimulate collagen. Good for diffuse atrophic scarring and skin texture refinement. Less downtime than CO2 laser, suitable for darker skin types.",
+   904→      },
+   905→      {
+   906→        heading: "Chemical Peels",
+   907→        body: "For active acne and post-inflammatory pigmentation. Salicylic acid for oily/acne-prone skin, glycolic for texture, mandelic for sensitive and darker skin. A series of 4–6 sessions is typical.",
+   908→      },
+   909→      {
+   910→        heading: "Topical & Oral Therapy",
+   911→        body: "For active acne that precedes scarring: retinoids, benzoyl peroxide, topical antibiotics, and oral isotretinoin where indicated. We manage the acne first, the scars second.",
+   912→      },
+   913→    ],
+   914→    resultsReality:
+   915→      "Realistic improvement is 40–70% reduction in scar visibility after a full course of treatment, not 100% elimination. Anyone promising you perfect skin is lying. The goal is significant, visible improvement that holds up under normal lighting — not studio lighting. We photograph your skin before, during and after so we both measure honestly.",
+   916→    suitability: {
+   917→      ideal: [
+   918→        "Adults with stable acne scars (acne controlled for 6+ months)",
+   919→        "Realistic expectations — improvement, not perfection",
+   920→        "Able to commit to a 3–6 month treatment timeline",
+   921→        "Willing to follow post-treatment sun protection",
+   922→      ],
+   923→      notIdeal: [
+   924→        "Active cystic acne (treat the acne first)",
+   925→        "Pregnant or breastfeeding (some treatments contraindicated)",
+   926→        "Unrealistic expectations of scar elimination",
+   927→        "Unable to avoid sun exposure during treatment",
+   928→      ],
+   929→    },
+   930→    faq: [
+   931→      { q: "How many sessions will I need?", a: "Most patients need 3–5 sessions of their primary treatment (e.g. fractional CO2 laser) spaced 4–6 weeks apart, plus supportive treatments. We give you a written plan after the first consultation." },
+   932→      { q: "Does it hurt?", a: "We use topical numbing cream for all laser and microneedling procedures. Most patients describe it as uncomfortable, not painful. TCA cross and subcision use local anaesthetic." },
+   933→      { q: "What's the downtime?", a: "Fractional CO2: 5–7 days redness/peeling. Microneedling: 1–2 days redness. Peels: 2–3 days flaking. TCA cross: 7–10 days per scar. We schedule around your life." },
+   934→      { q: "Can you treat dark skin?", a: "Yes — we adjust laser settings, use radiofrequency microneedling instead of CO2 where appropriate, and prefer mandelic/salicylic peels. Dark skin needs more sessions, not fewer, and careful energy settings." },
+   935→      { q: "Will my scars come back?", a: "Treated scars do not return. New scars can form if acne recurs — which is why we manage active acne first. We give you a maintenance skincare plan to prevent new breakouts." },
+   936→      { q: "How much does it cost?", a: "Starting from NPR 3,500 per session for peels, NPR 8,000+ for fractional CO2 laser, NPR 6,000+ for microneedling. A full course of 5 sessions typically ranges NPR 25,000–60,000 depending on the combination. Written quote provided before any treatment." },
+   937→      { q: "Are the results permanent?", a: "The collagen remodelling is permanent. Your skin continues to age normally. Sun protection and a basic skincare routine preserve results for years." },
+   938→      { q: "Can I combine this with other treatments?", a: "Yes — and we often recommend it. Acne scar treatment pairs well with HydraFacial (maintenance), PRP face (collagen boost), and topical retinoids (ongoing). Your doctor will sequence these." },
+   939→      { q: "What if I'm not happy with the result?", a: "Every treatment plan has a written expected outcome. If results fall short of that expectation due to our work, we continue treatment at no additional charge until the agreed outcome is reached." },
+   940→    ],
+   941→    pricing: {
+   942→      startingPrice: "NPR 3,500+",
+   943→      sessions: "3–5 sessions typical",
+   944→      note: "Combination programs available. Written quote before any treatment.",
+   945→    },
+   946→  },
+   947→  // ---- Hair Transplant ----
+   948→  {
+   949→    slug: "hair-transplant",
+   950→    title: "Hair Transplant (FUE)",
+   951→    category: "Hair Transplant",
+   952→    metaDescription:
+   953→      "FUE hair transplant at KPC Skin Clinic Thapathali. Natural density, permanent results, experienced surgeons. Beard and eyebrow transplant available. Written graft count and price before surgery.",
+   954→    heroImage: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+   955→    tagline: "Natural, permanent hair restoration — performed by doctors, not technicians.",
+   956→    intro:
+   957→      "Follicular Unit Extraction (FUE) is the modern gold standard for hair restoration. Individual follicular units are harvested from the donor area (back of the scalp) and implanted one by one into the recipient area. No linear scar, fast recovery, and natural-looking density when done by an experienced surgeon.",
+   958→    subsections: [
+   959→      { heading: "Consultation & Planning", body: "We assess your hair loss pattern (Norwood scale), donor density, and scalp laxity. We map out the recipient area, design a natural hairline, and give you a written graft count and price before you commit." },
+   960→      { heading: "Donor Harvesting", body: "Individual follicular units (1–4 hairs each) are extracted using a 0.8–0.9mm punch. No linear scar, no stitches. The donor area heals in days, not weeks." },
+   961→      { heading: "Slit Making & Implantation", body: "The surgeon makes recipient sites at the precise angle, direction and density to mimic natural hair growth. This is the step that determines naturalness — and it is done by the surgeon, not a technician." },
+   962→      { heading: "Graft Survival Protocol", body: "Grafts are stored in a holding solution at controlled temperature. We use a 'no-touch' implantation technique to maximise survival. Our graft survival rate exceeds 95%." },
+   963→      { heading: "Post-Op Care", body: "Detailed written aftercare. First hair wash at the clinic on day 3. Shedding phase at 2–4 weeks. New growth starts at 3–4 months. Final result visible at 12 months." },
+   964→      { heading: "Beard & Eyebrow Transplant", body: "The same FUE technique applied to beard, moustache and eyebrow restoration. Used for patchy beards, scar camouflage, and over-plucked eyebrows." },
+   965→    ],
+   966→    resultsReality:
+   967→      "Hair transplant is surgery, not magic. You will see shedding at 2–4 weeks (this is normal), then nothing for 2 months, then gradual growth. Final density is visible at 12 months. We photograph and measure at every stage. A transplant restores hair in bald areas — it does not stop ongoing hair loss. You may need medical therapy (finasteride/minoxidil) to keep the rest.",
+   968→    suitability: {
+   969→      ideal: [
+   970→        "Men with Norwood III–VII pattern hair loss",
+   971→        "Adequate donor density at the back of the scalp",
+   972→        "Stable hair loss for 6+ months",
+   973→        "Realistic expectations about timeline (12 months to final result)",
+   974→      ],
+   975→      notIdeal: [
+   976→        "Active, rapid hair loss (stabilise first with medication)",
+   977→        "Very poor donor density (we'll tell you if you're not a candidate)",
+   978→        "Unrealistic expectations of a full head of teenage hair",
+   979→        "Under 25 with progressive loss (we may defer)",
+   980→      ],
+   981→    },
+   982→    faq: [
+   983→      { q: "Is FUE better than FUT?", a: "FUE leaves no linear scar and has faster recovery. FUT can yield more grafts in one session. We offer FUE as the default; FUT is available for very large sessions. The surgeon recommends based on your case." },
+   984→      { q: "How many grafts do I need?", a: "Depends on the area: hairline ~1,500–2,000, frontal third ~2,500–3,500, full top ~4,000–6,000. We give you a written count and price after assessment." },
+   985→      { q: "Does it hurt?", a: "Local anaesthetic makes the procedure painless. Post-op pain is mild — paracetamol for 1–2 days. Most patients return to work in 3–5 days." },
+   986→      { q: "Will the transplanted hair fall out?", a: "No. Donor hair is genetically resistant to DHT (the hormone that causes hair loss). It grows for life. However, your existing non-transplanted hair may continue to thin — we manage this with medication." },
+   987→      { q: "How long until I see results?", a: "Shedding at 2–4 weeks. New growth at 3–4 months. Noticeable density at 6–8 months. Final result at 12 months." },
+   988→      { q: "Can women get hair transplants?", a: "Yes, for female pattern hair loss and certain scarring alopecias. The technique differs (more diffuse, lower hairline). Dr. Sneha assesses female candidates." },
+   989→      { q: "What does it cost?", a: "Starting from NPR 60,000, priced per graft. A typical session of 2,500–3,500 grafts ranges NPR 1,50,000–2,50,000. Written quote before surgery, EMI available." },
+   990→      { q: "Do you guarantee results?", a: "We guarantee graft survival (>95%) and surgical technique. We cannot guarantee the final aesthetic density, as it depends on your biology and aftercare." },
+   991→      { q: "Can I shave my head after?", a: "Yes, after full healing (4 weeks). FUE leaves no linear scar, so short cuts are fine." },
+   992→    ],
+   993→    pricing: {
+   994→      startingPrice: "NPR 60,000+",
+   995→      sessions: "Single session (8–10 hours)",
+   996→      note: "Priced per graft. Written graft count and quote before surgery. EMI available.",
+   997→    },
+   998→  },
+   999→  // ---- Beard Transplant ----
+  1000→  {
+  1001→    slug: "beard-transplant",
+  1002→    title: "Beard Transplant",
+  1003→    category: "Hair Transplant",
+  1004→    metaDescription:
+  1005→      "Beard transplant at KPC Skin Clinic Thapathali. FUE technique to fill patchy beards, moustache and sideburns. Natural angle and density. Written graft count before surgery.",
+  1006→    heroImage: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/9b2eebe27adf.jpg",
+  1007→    tagline: "Fill patchy beards with your own hair — natural angle, permanent result.",
+  1008→    intro:
+  1009→      "Beard transplant uses the same FUE technique as hair transplant, but the artistry is in the angle and direction of implantation. Facial hair grows at a flatter, more acute angle than scalp hair, and the surgeon places each graft to match your natural beard pattern.",
+  1010→    subsections: [
+  1011→      { heading: "Assessment", body: "We map the areas to fill — moustache, chin, sideburns, jawline. We assess donor hair quality from the scalp." },
+  1012→      { heading: "Donor Harvesting", body: "Follicles harvested from the back of the scalp using FUE. Scalp hair is slightly finer but blends naturally with beard hair." },
+  1013→      { heading: "Implantation", body: "Grafts implanted at a 30–45 degree angle to match natural beard growth direction. Density is built up gradually to avoid a 'pluggy' look." },
+  1014→      { heading: "Recovery", body: "Redness for 3–5 days. Shedding at 2–4 weeks. New growth at 3–4 months. Full beard at 9–12 months. You can shave after 4 weeks." },
+  1015→    ],
+  1016→    resultsReality:
+  1017→      "A beard transplant fills gaps; it does not create a forest where none was meant to grow. Final density matches your genetic potential. The transplanted hair is permanent and grows like a normal beard — shave, trim, style as you wish.",
+  1018→    suitability: {
+  1019→      ideal: [
+  1020→        "Men with patchy beards but adequate donor hair",
+  1021→        "Scarring from acne or injury in the beard area",
+  1022→        "Stable expectations (need 9–12 months for full result)",
+  1023→      ],
+  1024→      notIdeal: [
+  1025→        "Active folliculitis (treat infection first)",
+  1026→        "Very sparse body hair and poor scalp donor",
+  1027→        "Expecting overnight results",
+  1028→      ],
+  1029→    },
+  1030→    faq: [
+  1031→      { q: "Will the transplanted beard hair grow like normal?", a: "Yes. Once it starts growing (3–4 months), it grows like your natural beard — same texture, same growth rate. Shave, trim, style freely." },
+  1032→      { q: "Does it look natural?", a: "The angle and direction of implantation is the key. Our surgeon places each graft individually at the natural beard angle (30–45 degrees, flat to the skin). No 'pluggy' look." },
+  1033→      { q: "How many grafts for a full beard?", a: "Moustache ~300–500, chin ~500–800, full beard ~1,500–2,500. Written count after assessment." },
+  1034→      { q: "Can I shave after the transplant?", a: "Wait 4 weeks for full healing, then shave or trim normally. The transplanted hair regrows." },
+  1035→      { q: "What does it cost?", a: "Starting from NPR 45,000, priced per graft. A typical beard session of 1,000–1,500 grafts ranges NPR 60,000–1,20,000." },
+  1036→    ],
+  1037→    pricing: {
+  1038→      startingPrice: "NPR 45,000+",
+  1039→      sessions: "Single session (4–6 hours)",
+  1040→      note: "Priced per graft. Written quote before surgery.",
+  1041→    },
+  1042→  },
+  1043→];
+  1044→
+  1045→// Helper: get a treatment by slug
+  1046→export function getTreatmentBySlug(slug: string): Treatment | undefined {
+  1047→  return TREATMENTS.find((t) => t.slug === slug);
+  1048→}
+  1049→
+  1050→// All treatment slugs for the dynamic route
+  1051→export const ALL_TREATMENT_SLUGS = TREATMENTS.map((t) => t.slug);
+  1052→
+  1053→// Lightweight data for the remaining treatments (those without full template content yet).
+  1054→// These use the shared template with generated content.
+  1055→export const REMAINING_TREATMENT_SLUGS: { slug: string; title: string; category: string }[] = [
+  1056→  { slug: "eyebrow-transplant", title: "Eyebrow Transplant", category: "Hair Transplant" },
+  1057→  { slug: "dandruff-scalp-treatment", title: "Dandruff & Scalp Treatment", category: "Hair Treatment" },
+  1058→  { slug: "gfc-treatment", title: "GFC Treatment", category: "Hair Treatment" },
+  1059→  { slug: "prp-hair-treatment", title: "PRP Hair Treatment", category: "Hair Treatment" },
+  1060→  { slug: "hair-loss-treatment", title: "Hair Loss Treatment", category: "Hair Treatment" },
+  1061→  { slug: "minoxidil-finasteride", title: "Minoxidil / Finasteride Treatment", category: "Hair Treatment" },
+  1062→  { slug: "laser-hair-removal", title: "Laser Hair Removal", category: "Laser" },
+  1063→  { slug: "fractional-co2-laser", title: "Fractional CO2 Laser", category: "Laser" },
+  1064→  { slug: "tattoo-removal", title: "Tattoo Removal", category: "Laser" },
+  1065→  { slug: "open-pores-oily-skin", title: "Open Pores & Oily Skin", category: "Cosmetic Concerns" },
+  1066→  { slug: "melasma-treatment", title: "Melasma Treatment", category: "Cosmetic Concerns" },
+  1067→  { slug: "vitiligo-treatment", title: "Vitiligo Treatment", category: "Cosmetic Concerns" },
+  1068→  { slug: "dark-circles-treatment", title: "Dark Circles Treatment", category: "Cosmetic Concerns" },
+  1069→  { slug: "freckles-discolouration", title: "Freckles & Discolouration", category: "Cosmetic Concerns" },
+  1070→  { slug: "hydrafacial", title: "HydraFacial", category: "Aesthetic" },
+  1071→  { slug: "chemical-peeling", title: "Chemical Peeling", category: "Aesthetic" },
+  1072→  { slug: "carbon-laser-peel", title: "Carbon Laser Peel", category: "Aesthetic" },
+  1073→  { slug: "botox-treatment", title: "Botox Treatment", category: "Aesthetic" },
+  1074→  { slug: "microneedling", title: "Microneedling", category: "Aesthetic" },
+  1075→  { slug: "hifu", title: "HIFU (High-Intensity Focused Ultrasound)", category: "Aesthetic" },
+  1076→  { slug: "dermal-fillers", title: "Dermal Fillers", category: "Aesthetic" },
+  1077→  { slug: "facials", title: "Facial Treatments", category: "Aesthetic" },
+  1078→  { slug: "prp-face-treatment", title: "PRP – Face Treatment", category: "Aesthetic" },
+  1079→  { slug: "mole-removal", title: "Mole Removal", category: "Aesthetic" },
+  1080→  { slug: "weight-loss-body-sculpting", title: "Weight Loss / Body Sculpting", category: "Aesthetic" },
+  1081→  { slug: "anti-ageing-surgery", title: "Anti-Ageing Surgery", category: "Surgery" },
+  1082→  { slug: "plastic-surgery", title: "Plastic Surgery", category: "Surgery" },
+  1083→  { slug: "rhinoplasty", title: "Rhinoplasty", category: "Surgery" },
+  1084→  { slug: "blepharoplasty", title: "Blepharoplasty (Upper & Lower)", category: "Surgery" },
+  1085→  { slug: "scar-revision", title: "Scar Revision", category: "Surgery" },
+  1086→];
+  1087→
+  1088→// ===== Blog articles (full content for /blog/[slug]) =====
+  1089→export type BlogArticle = {
+  1090→  slug: string;
+  1091→  title: string;
+  1092→  excerpt: string;
+  1093→  body: string;
+  1094→  date: string;
+  1095→  author: string;
+  1096→  category: string;
+  1097→  image: string;
+  1098→  readTime: string;
+  1099→};
+  1100→
+  1101→export const BLOG_ARTICLES: BlogArticle[] = [
+  1102→  {
+  1103→    slug: "is-hair-transplant-right-for-you",
+  1104→    title: "Is a hair transplant right for you? An honest checklist.",
+  1105→    excerpt:
+  1106→      "Before you spend NPR 2 lakh on a transplant, read this. We break down who benefits, who should wait, and who should never have one.",
+  1107→    date: "20 Sep 2026",
+  1108→    author: "Dr. Rupak Maharjan",
+  1109→    category: "Hair Transplant",
+  1110→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+  1111→    readTime: "6 min read",
+  1112→    body: `Hair transplant is surgery, not magic. It's also the most effective permanent solution for hair loss — when it's done on the right person, at the right time, by the right surgeon.
+  1113→
+  1114→This article is a checklist. If you're considering a transplant, read it before you book a consultation. It will save you money and disappointment.
+  1115→
+  1116→## Who benefits from a hair transplant
+  1117→
+  1118→A hair transplant works best for men with **stable, patterned hair loss** (Norwood III to VII). "Stable" means your hair loss has roughly plateaued for 6+ months. "Patterned" means it follows the classic male baldness pattern — receding hairline, thinning crown, or both.
+  1119→
+  1120→You also need **adequate donor hair**. The back and sides of your scalp are genetically resistant to DHT (the hormone that causes hair loss). If your donor area is dense and healthy, we can harvest follicles from there and implant them where you've lost hair. The transplanted hair is permanent — it grows for life.
+  1121→
+  1122→## Who should wait
+  1123→
+  1124→If your hair loss is **rapid and active**, a transplant now is premature. You'll get density in the transplanted area, but the surrounding native hair will continue to thin — leaving you with an unnatural "island" of transplanted hair. We'd rather stabilise your loss first (with finasteride/minoxidil) and transplant later.
+  1125→
+  1126→If you're **under 25 with aggressive loss**, we usually defer. Pattern baldness at 22 often means severe baldness by 30. Transplanting too early uses up your donor supply before we know the final pattern.
+  1127→
+  1128→## Who should never have one
+  1129→
+  1130→If your donor area is **very sparse** (diffuse unpatterned alopecia), there isn't enough healthy hair to harvest. We'll tell you this honestly — a good surgeon will turn you away.
+  1131→
+  1132→If you have **alopecia areata, lichen planopilaris, or frontal fibrosing alopecia** — these are inflammatory conditions that destroy follicles. Transplanting into an active inflammatory area is a waste of grafts. Treat the inflammation first.
+  1133→
+  1134→If you expect a **full head of teenage hair back**, a transplant can't deliver that. It restores hair in bald areas; it doesn't give you the density of a 16-year-old.
+  1135→
+  1136→## The honest checklist
+  1137→
+  1138→1. Is your hair loss stable (6+ months)?
+  1139→2. Is it patterned (not patchy)?
+  1140→3. Is your donor area dense?
+  1141→4. Are you over 25 (or have stable loss if younger)?
+  1142→5. Are your expectations realistic (improvement, not perfection)?
+  1143→6. Can you take 8–10 hours for surgery and 5–7 days to recover?
+  1144→7. Can you wait 12 months for the final result?
+  1145→8. Are you willing to take finasteride/minoxidil to keep your existing hair?
+  1146→
+  1147→If you answered yes to all 8, book a consultation. If you answered no to any, come anyway — we'll tell you what to do instead.`,
+  1148→  },
+  1149→  {
+  1150→    slug: "acne-scar-types-explained",
+  1151→    title: "Acne scars are six different conditions. Here's how we treat each.",
+  1152→    excerpt:
+  1153→      "Ice pick, boxcar, rolling, hypertrophic, PIH, erythema — each responds to different treatments. A single laser won't fix all of them.",
+  1154→    date: "15 Sep 2026",
+  1155→    author: "Dr. Sneha Shrestha",
+  1156→    category: "Acne & Scars",
+  1157→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+  1158→    readTime: "8 min read",
+  1159→    body: `Most patients who come to me for "acne scar treatment" expect a single procedure — usually a laser — to fix everything. The truth is that acne scars are at least six different conditions, and each responds to a different treatment. A fractional CO2 laser that works beautifully on boxcar scars will do nothing for an ice pick scar.
+  1160→
+  1161→This article explains the six types and what works for each. If you have acne scars, this is what your consultation should cover.
+  1162→
+  1163→## 1. Ice pick scars
+  1164→
+  1165→These are deep, narrow, V-shaped scars that look like large open pores. They extend into the dermis. **First-line treatment: TCA cross** (trichloroacetic acid chemical reconstruction of skin scars). High-strength TCA is applied precisely into each scar, triggering localised resurfelling. Done carefully, one scar at a time. Radiofrequency microneedling also helps.
+  1166→
+  1167→## 2. Boxcar scars
+  1168→
+  1169→Wide, square-edged, U-shaped depressions. **First-line: fractional CO2 laser** and/or subcision. The laser creates controlled micro-injuries that trigger collagen remodelling. Expect 5–7 days of redness per session, 3–5 sessions for significant improvement.
+  1170→
+  1171→## 3. Rolling scars
+  1172→
+  1173→Broad, wave-like depressions that make the skin look uneven. They're caused by fibrous bands tethering the skin down. **First-line: subcision** — a fine needle releases the bands, allowing the skin to rise. Often combined with filler or microneedling.
+  1174→
+  1175→## 4. Hypertrophic scars
+  1176→
+  1177→Raised, firm scars — usually on the jawline, chest, or back. **First-line: intralesional steroid injections** plus silicone gel sheeting. These scars over-produce collagen; steroids calm that down. Ongoing treatment, not one-and-done.
+  1178→
+  1179→## 5. Post-inflammatory hyperpigmentation (PIH)
+  1180→
+  1181→Flat brown or purple marks left after acne heals. These are not "scars" in the structural sense — they're pigment. **First-line: chemical peels** (salicylic or glycolic) plus a prescription topical (azelaic acid, hydroquinone, or retinoid). Fades over 4–6 sessions.
+  1182→
+  1183→## 6. Post-inflammatory erythema (PIE)
+  1184→
+  1185→Flat red marks — caused by dilated blood vessels near the surface. **First-line: vascular laser** (pulsed dye laser or IPL). Also responds to time — PIE fades on its own over 6–12 months, but laser speeds it up.
+  1186→
+  1187→## Why a single treatment won't work
+  1188→
+  1189→If you have three ice pick scars, two boxcar scars, and some PIH — no single device treats all of them. You need TCA cross for the ice pick, fractional CO2 for the boxcar, and a peel for the PIH. A clinic that offers "one laser for all your scars" is either lying or doesn't understand the difference.
+  1190→
+  1191→## What to expect at your consultation
+  1192→
+  1193→I will examine your skin under good lighting, identify which scar types you have, and write down a treatment plan that names each scar type and the treatment for it. I'll give you a realistic expectation — typically 40–70% improvement, not 100% elimination. And I'll photograph your skin so we can measure honestly, month by month.
+  1194→
+  1195→Book a consultation if you're ready. If you're not, come for a 15-minute orientation chat — it's free.`,
+  1196→  },
+  1197→  {
+  1198→    slug: "laser-hair-removal-myths",
+  1199→    title: "Five laser hair removal myths we hear every week — debunked.",
+  1200→    excerpt:
+  1201→      "Does it hurt? Does it work on dark skin? Is it permanent? We answer the questions we get asked most often.",
+  1202→    date: "8 Sep 2026",
+  1203→    author: "Dr. Sneha Shrestha",
+  1204→    category: "Laser",
+  1205→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+  1206→    readTime: "5 min read",
+  1207→    body: `Laser hair removal is one of our most popular treatments — and one of the most misunderstood. Here are the five myths we hear every week, and the truth behind each.
+  1208→
+  1209→## Myth 1: "Laser hair removal is permanent after one session"
+  1210→
+  1211→**Reality:** No. Hair grows in cycles (anagen, catagen, telogen). Laser only effectively treats hair in the active growth (anagen) phase — about 20–30% of your hair at any time. That's why you need 6–8 sessions, spaced 4–8 weeks apart, to catch each cycle. After a full course, you'll see 80–90% permanent reduction. Maintenance sessions (1–2 per year) keep it that way.
+  1212→
+  1213→## Myth 2: "Laser doesn't work on dark skin"
+  1214→
+  1215→**Reality:** It does — but you need the right laser. Older Nd:YAG lasers were designed specifically for darker skin types (Fitzpatrick IV–VI) because they bypass the melanin in the skin and target the hair follicle directly. At KPC we use a diode laser with adjustable settings that works safely on all skin types. Dark skin needs more sessions and lower energy, not fewer and higher.
+  1216→
+  1217→## Myth 3: "Laser hurts a lot"
+  1218→
+  1219→**Reality:** Modern lasers have built-in cooling tips that numb the skin as they work. Most patients describe the sensation as a rubber band snap — uncomfortable, not painful. Sensitive areas (bikini, upper lip) are more sensitive than arms or legs. We apply numbing cream for sensitive areas on request.
+  1220→
+  1221→## Myth 4: "Laser causes cancer"
+  1222→
+  1223→**Reality:** No. Laser hair removal uses non-ionising radiation — the same type of light energy as a lightbulb, just focused. It does not damage DNA or cause cancer. The wavelengths used (800–1064nm) penetrate only 1–4mm into the skin, reaching the hair follicle but not deeper tissue.
+  1224→
+  1225→## Myth 5: "Laser is the same as waxing"
+  1226→
+  1227→**Reality:** Waxing pulls hair out by the root — it grows back in 3–6 weeks. Laser destroys the follicle's ability to produce hair — permanently. Waxing is temporary; laser is permanent reduction. The upfront cost of laser is higher, but over 5 years (vs. monthly waxing), laser is cheaper.
+  1228→
+  1229→## The honest summary
+  1230→
+  1231→Laser hair removal works. It's one of the most evidence-based aesthetic treatments available. It's not magic — you need multiple sessions, some maintenance, and realistic expectations. But for most people, it's a genuinely life-changing treatment.
+  1232→
+  1233→Book a free patch test to see how your skin responds.`,
+  1234→  },
+  1235→  {
+  1236→    slug: "prp-vs-gfc-for-hair",
+  1237→    title: "PRP vs GFC for hair loss: which is actually better?",
+  1238→    excerpt:
+  1239→      "Both use your own blood. Both claim to regrow hair. We explain the difference in cost, process, and evidence.",
+  1240→    date: "1 Sep 2026",
+  1241→    author: "Dr. Anil Shakya",
+  1242→    category: "Hair Treatment",
+  1243→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+  1244→    readTime: "6 min read",
+  1245→    body: `PRP (Platelet-Rich Plasma) and GFC (Growth Factor Concentrate) are two hair loss treatments that both use your own blood. Patients ask me every week which is better. The honest answer: they're similar in effectiveness, but differ in process, cost, and convenience.
+  1246→
+  1247→## What is PRP?
+  1248→
+  1249→PRP involves drawing about 20–30ml of your blood, centrifuging it to separate the platelet-rich plasma, and injecting it into your scalp. The platelets release growth factors that stimulate dormant hair follicles. PRP has been used for 15+ years and has good clinical evidence behind it.
+  1250→
+  1251→## What is GFC?
+  1252→
+  1253→GFC is a newer technique. We draw a smaller amount of blood (about 10–16ml), use a special kit to extract a concentrated growth factor solution, and inject it. The key difference: GFC removes red and white blood cells (which can cause inflammation) and delivers a higher concentration of pure growth factors.
+  1254→
+  1255→## The comparison
+  1256→
+  1257→**Effectiveness:** Both work. Studies show 30–40% improvement in hair density after 3–4 sessions of either. GFC may have a slight edge in hair calibre (thickness) but the difference is not dramatic. Anyone claiming one is dramatically better than the other is selling you something.
+  1258→
+  1259→**Sessions:** Both require 3–4 initial sessions, spaced 3–4 weeks apart, then maintenance every 6 months.
+  1260→
+  1261→**Process time:** PRP takes about 45 minutes. GFC takes about 60 minutes (the kit processing takes longer).
+  1262→
+  1263→**Cost:** PRP is NPR 8,000 per session. GFC is NPR 6,000 per session — it's slightly cheaper because the kit is more efficient with less blood.
+  1264→
+  1265→**Pain:** Both involve scalp injections with a very fine needle. We use numbing cream. Most patients describe it as mild discomfort.
+  1266→
+  1267→## Which should you choose?
+  1268→
+  1269→If cost is your concern: **GFC** is slightly cheaper and equally effective.
+  1270→
+  1271→If you want the most-established treatment: **PRP** has 15+ years of evidence; GFC is newer (5–6 years).
+  1272→
+  1273→If you have a low pain tolerance: **GFC** uses fewer injections (smaller volume).
+  1274→
+  1275→If your hair loss is early-stage: either works. We usually start with GFC and switch to PRP if response is slow.
+  1276→
+  1277→## What neither will do
+  1278→
+  1279→Neither PRP nor GFC will regrow hair in completely bald areas. They stimulate thinning follicles — they don't create new ones. If you have a smooth bald spot (no vellus hair), the only option is a hair transplant.
+  1280→
+  1281→Both treatments also need to be combined with medical therapy (finasteride/minoxidil) for best results. Injections alone won't stop the underlying hormone-driven hair loss.
+  1282→
+  1283→Book a consultation and we'll tell you honestly which (if either) is right for your specific case.`,
+  1284→  },
+  1285→  {
+  1286→    slug: "rhinoplasty-recovery-timeline",
+  1287→    title: "Rhinoplasty recovery: what to expect week by week.",
+  1288→    excerpt:
+  1289→      "From day 1 swelling to month 12 final shape — a surgeon's honest guide to what happens after nose surgery.",
+  1290→    date: "25 Aug 2026",
+  1291→    author: "Dr. Rajesh Maharjan",
+  1292→    category: "Surgery",
+  1293→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+  1294→    readTime: "7 min read",
+  1295→    body: `Rhinoplasty (nose surgery) is one of the most common cosmetic procedures we perform — and the one patients ask most about recovery. Here's an honest, week-by-week timeline of what to expect.
+  1296→
+  1297→## Day 1–2: The hard part
+  1298→
+  1299→You'll wake up with a splint on your nose and packing inside (we remove packing on day 2). Your face will be swollen, especially around the eyes — bruising is common. You'll breathe through your mouth. Pain is moderate — managed with oral painkillers. Sleep elevated, don't blow your nose, and don't wear glasses.
+  1300→
+  1301→## Week 1: Splint on
+  1302→
+  1303→We remove the splint at day 7. This is the moment patients see the initial result — but it's not the final shape. Swelling is still significant, especially at the tip. Bruising has mostly faded. You can return to work (desk job) at day 7–10, but you'll look "puffy."
+  1304→
+  1305→## Weeks 2–4: Visible improvement
+  1306→
+  1307→Swelling reduces noticeably. Most people won't notice you had surgery by week 3, but you will — the tip still feels firm and slightly swollen. Avoid strenuous exercise, contact sports, and sun exposure. Don't wear heavy glasses.
+  1308→
+  1309→## Months 1–3: The long middle
+  1310→
+  1311→Swelling continues to reduce slowly. The tip starts to soften. You'll see 60–70% of the final result by month 3. This is when patients sometimes worry — "Is it still swollen?" Yes, it is. This is normal.
+  1312→
+  1313→## Months 3–6: Refining
+  1314→
+  1315→The bridge settles. The tip definition improves. 80% of the final result is visible. Fine details emerge.
+  1316→
+  1317→## Months 6–12: Final shape
+  1318→
+  1319→The last 20% of swelling resolves. The tip reaches its final definition. The skin re-drapes fully. **Month 12 is the "final result" we photograph for your records.**
+  1320→
+  1321→## What affects your recovery
+  1322→
+  1323→- **Skin thickness:** Thick skin takes longer to show the final result (12+ months). Thin skin shows results sooner but reveals every underlying detail.
+  1324→- **Open vs closed:** Open rhinoplasty (with an incision at the columella) has slightly more tip swelling. Closed has less.
+  1325→- **Grafts:** If we used cartilage grafts (for tip support or bridge building), swelling lasts longer.
+  1326→- **Your biology:** Some people heal in 6 months; others take 14. We can't speed this up.
+  1327→
+  1328→## What to avoid
+  1329→
+  1330→- Blowing your nose for 2 weeks
+  1331→- Strenuous exercise for 3 weeks
+  1332→- Contact sports for 6 weeks
+  1333→- Glasses resting on the bridge for 4 weeks
+  1334→- Sun exposure without SPF 50 for 6 months
+  1335→
+  1336→## The honest summary
+  1337→
+  1338→Rhinoplasty recovery is a marathon, not a sprint. The first week is uncomfortable. The first month looks "puffy." The final result takes a year. If you can't commit to that timeline, this isn't the right procedure for you.
+  1339→
+  1340→Book a consultation and I'll show you real before-and-after timelines from our patients — not the best ones, but the typical ones.`,
+  1341→  },
+  1342→  {
+  1343→    slug: "hydrafacial-vs-chemical-peel",
+  1344→    title: "HydraFacial vs chemical peel: which should you choose?",
+  1345→    excerpt:
+  1346→      "Both exfoliate. Both give you a glow. But they work differently and suit different skin types. Here's how to decide.",
+  1347→    date: "18 Aug 2026",
+  1348→    author: "Dr. Priya Karki",
+  1349→    category: "Aesthetic",
+  1350→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+  1351→    readTime: "5 min read",
+  1352→    body: `HydraFacial and chemical peels are two of our most popular treatments. Both exfoliate, both give you a glow, and patients often ask which they should choose. The answer depends on your skin, your goals, and your timeline.
+  1353→
+  1354→## What is a HydraFacial?
+  1355→
+  1356→A HydraFacial is a three-step medical-grade treatment: cleanse and exfoliate, extract impurities, and hydrate. It uses a specialised vortex device to do all three in one session. There's no downtime — you walk out glowing. A session takes 30–45 minutes.
+  1357→
+  1358→**Best for:** Instant glow before an event, maintenance between deeper treatments, sensitive skin, first-time facial patients.
+  1359→
+  1360→**Not for:** Deep acne scarring, significant pigmentation, anyone wanting dramatic results from one session.
+  1361→
+  1362→## What is a chemical peel?
+  1363→
+  1364→A chemical peel applies an acid solution (salicylic, glycolic, mandelic, or TCA) to the skin, causing controlled exfoliation. The top layer sheds over 3–7 days, revealing smoother skin underneath. Peels range from superficial (no downtime) to deep (1–2 weeks recovery).
+  1365→
+  1366→**Best for:** Acne, pigmentation, uneven texture, acne scars, oily skin. Peels are "active" treatments — they change the skin, not just refresh it.
+  1367→
+  1368→**Not for:** The day before your wedding, very sensitive skin (choose mandelic), anyone who can't avoid sun exposure during healing.
+  1369→
+  1370→## The comparison
+  1371→
+  1372→| | HydraFacial | Chemical Peel |
+  1373→|---|---|---|
+  1374→| **Downtime** | None | 2–7 days flaking |
+  1375→| **Pain** | None | Mild tingling |
+  1376→| **Results** | Instant glow, lasts 1–2 weeks | Gradual, lasts months |
+  1377→| **Best for** | Maintenance, events | Active skin concerns |
+  1378→| **Cost** | NPR 4,500 | NPR 3,000+ |
+  1379→| **Frequency** | Monthly | Every 4–6 weeks |
+  1380→
+  1381→## Which should you choose?
+  1382→
+  1383→**Choose HydraFacial if:** You want a glow for a specific event. You have sensitive skin. You're new to facials. You want zero downtime. You want maintenance between peels.
+  1384→
+  1385→**Choose a peel if:** You have active acne. You have pigmentation. You want to improve texture over time. You can handle 3–5 days of flaking. You're treating a specific skin concern.
+  1386→
+  1387→**Choose both:** Many of our patients do a monthly HydraFacial for maintenance and a series of peels (4–6, spaced monthly) for active treatment. They complement each other — the peel does the work, the HydraFacial maintains the result.
+  1388→
+  1389→## The honest take
+  1390→
+  1391→Neither is "better." They do different things. If you're unsure, book a consultation — we'll look at your skin and recommend the right one (or both, sequenced correctly).
+  1392→
+  1393→Don't choose based on price alone. A NPR 3,000 peel that's right for your skin is better value than a NPR 4,500 HydraFacial that doesn't address your concern.`,
+  1394→  },
+  1395→];
+  1396→
+  1397→// STD/STI packages as PackageCard-compatible cards
+  1398→export const STD_STI_PACKAGE_CARDS = [
+  1399→  {
+  1400→    name: "Basic STI",
+  1401→    price: "NPR 3,500",
+  1402→    unit: "package",
+  1403→    note: "4 tests — HIV, Hep B/C, Urine",
+  1404→    features: ["HIV ab + ag", "HBsAg (Hep B)", "Anti-HCV (Hep C)", "Urine RE/ME", "Pre & post-test counselling"],
+  1405→    popular: false,
+  1406→    color: "green",
+  1407→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+  1408→    category: "STD / STI",
+  1409→  },
+  1410→  {
+  1411→    name: "STI R-10",
+  1412→    price: "NPR 6,500",
+  1413→    unit: "package",
+  1414→    note: "10 tests — most chosen",
+  1415→    features: ["HIV I&II", "HSV-1/2 IgG + IgM", "VDRL (Syphilis)", "TPHA confirmatory", "HBsAg + Anti-HCV + Urine"],
+  1416→    popular: true,
+  1417→    color: "brand",
+  1418→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+  1419→    category: "STD / STI",
+  1420→  },
+  1421→  {
+  1422→    name: "STD Panel 1",
+  1423→    price: "NPR 13,100",
+  1424→    unit: "package",
+  1425→    note: "6-test with PCR",
+  1426→    features: ["Trichomonas PCR", "HSV PCR", "Standard STI panel", "PCR-based accuracy", "Doctor counselling"],
+  1427→    popular: false,
+  1428→    color: "cyan",
+  1429→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+  1430→    category: "STD / STI",
+  1431→  },
+  1432→  {
+  1433→    name: "STD Panel 2",
+  1434→    price: "NPR 19,999",
+  1435→    unit: "package",
+  1436→    note: "Broad PCR + HPV",
+  1437→    features: ["Broad-spectrum PCR", "TPHA", "HPV DNA PCR", "Comprehensive panel", "Doctor counselling"],
+  1438→    popular: false,
+  1439→    color: "gold",
+  1440→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+  1441→    category: "STD / STI",
+  1442→  },
+  1443→  {
+  1444→    name: "STD Panel 3",
+  1445→    price: "NPR 22,500",
+  1446→    unit: "package",
+  1447→    note: "Broadest — all of the above",
+  1448→    features: ["All Panel 1 + 2 tests", "Broadest coverage", "Doctor counselling", "Treatment plan if positive", "Confidential"],
+  1449→    popular: false,
+  1450→    color: "rust",
+  1451→    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+  1452→    category: "STD / STI",
+  1453→  },
+  1454→];
+  1455→
