@@ -1,4 +1,3 @@
-import { db } from "@/lib/db";
 import { AdminAppointmentsTable } from "@/components/admin/admin-appointments-table";
 
 export const dynamic = "force-dynamic";
@@ -18,45 +17,42 @@ export default async function AdminAppointmentsPage({
       ? { status }
       : undefined;
 
-  const [appointments, counts] = await Promise.all([
-    db.appointment.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-    }),
-    Promise.all(
-      ["all", ...validStatuses].map(async (s) => ({
-        status: s,
-        count:
-          s === "all"
-            ? await db.appointment.count()
-            : await db.appointment.count({ where: { status: s } }),
-      })),
-    ),
-  ]);
+  let appointments: any[] = [];
+  let countMap: Record<string, number> = { all: 0, pending: 0, confirmed: 0, completed: 0, cancelled: 0 };
 
-  const countMap: Record<string, number> = {};
-  for (const c of counts) countMap[c.status] = c.count;
+  try {
+    const { db } = await import("@/lib/db");
+    const [appts, allCount, ...statusCounts] = await Promise.all([
+      db.appointment.findMany({ where, orderBy: { createdAt: "desc" } }).catch(() => []),
+      db.appointment.count().catch(() => 0),
+      ...validStatuses.map((s) => db.appointment.count({ where: { status: s } }).catch(() => 0)),
+    ]);
+    
+    appointments = appts.map((a: any) => ({
+      ...a,
+      preferredDate: a.preferredDate?.toISOString() || "",
+      createdAt: a.createdAt?.toISOString() || "",
+      updatedAt: a.updatedAt?.toISOString() || "",
+    }));
+    
+    countMap = {
+      all: allCount,
+      pending: statusCounts[0] || 0,
+      confirmed: statusCounts[1] || 0,
+      completed: statusCounts[2] || 0,
+      cancelled: statusCounts[3] || 0,
+    };
+  } catch {
+    // DB not available — show empty
+  }
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-foreground">
-          Appointments
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Review and manage incoming booking requests
-        </p>
+        <h1 className="font-display text-2xl font-bold text-foreground">Appointments</h1>
+        <p className="text-sm text-muted-foreground">Review and manage incoming booking requests</p>
       </div>
-      <AdminAppointmentsTable
-        appointments={appointments.map((a) => ({
-          ...a,
-          preferredDate: a.preferredDate.toISOString(),
-          createdAt: a.createdAt.toISOString(),
-          updatedAt: a.updatedAt.toISOString(),
-        }))}
-        counts={countMap}
-        activeStatus={status}
-      />
+      <AdminAppointmentsTable appointments={appointments} counts={countMap} activeStatus={status} />
     </div>
   );
 }
