@@ -427,6 +427,10 @@ async function main() {
   }
   console.log(`  ✓ ${pageContentCount} page content rows upserted`);
 
+  await seedPopups();
+  await seedSeoMeta();
+  await seedAdminUser();
+
   console.log("\n✅ Seed complete.");
 }
 
@@ -438,3 +442,103 @@ main()
   .finally(async () => {
     await db.$disconnect();
   });
+
+// ===== Seed Popups =====
+async function seedPopups() {
+  console.log("\n📦 Seeding Popups...");
+  const popups = [
+    {
+      title: "Welcome to KPC Skin Clinic",
+      description: "Book a consultation this month and get a free skin analysis worth NPR 2,000. Our expert dermatologists are ready to help you achieve healthy, glowing skin.",
+      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+      buttonText: "Book Now",
+      buttonLink: "/contact",
+      isActive: true,
+      dismissible: true,
+      showOnAll: true,
+      pagePath: "",
+      order: 0,
+    },
+    {
+      title: "Monsoon Offer — 20% Off Laser Hair Removal",
+      description: "Book a full-body laser hair removal package before the end of the month and save 20% plus a free HydraFacial add-on.",
+      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+      buttonText: "Claim Offer",
+      buttonLink: "/packages",
+      isActive: false,
+      dismissible: true,
+      showOnAll: true,
+      pagePath: "",
+      order: 1,
+    },
+    {
+      title: "Free Skin Consultation for First-Time Visitors",
+      description: "New to KPC? Get a complimentary 15-minute skin consultation with our dermatologists and 15% off your first treatment.",
+      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg",
+      buttonText: "Book Consultation",
+      buttonLink: "/contact",
+      isActive: false,
+      dismissible: true,
+      showOnAll: false,
+      pagePath: "/",
+      order: 2,
+    },
+  ];
+  let count = 0;
+  for (const p of popups) {
+    const existing = await db.popup.findFirst({ where: { title: p.title } });
+    if (existing) {
+      await db.popup.update({ where: { id: existing.id }, data: p });
+    } else {
+      await db.popup.create({ data: p });
+    }
+    count++;
+  }
+  console.log(`  ✓ ${count} popups seeded`);
+}
+
+// ===== Seed SeoMeta =====
+async function seedSeoMeta() {
+  console.log("\n🔍 Seeding SEO Metadata...");
+  const seoPages = [
+    { url: "/", title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic", description: "KPC Skin Hair & Aesthetic Clinic — Nepal's leading skin and hair clinic in Thapathali, Kathmandu. Expert hair transplants, laser treatments, cosmetic surgery, and dermatology care.", keywords: "skin clinic kathmandu, hair transplant nepal, laser hair removal, dermatologist nepal", canonical: "https://www.kpcskinclinic.com/" },
+    { url: "/about", title: "About Us | KPC Skin Hair & Aesthetic Clinic", description: "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — founded 2021 in Thapathali, Kathmandu. Meet our doctors, our values, and the story behind Nepal's leading skin & hair clinic.", keywords: "about kpc, skin clinic nepal, dermatologist kathmandu", canonical: "https://www.kpcskinclinic.com/about" },
+    { url: "/doctors", title: "Our Doctors | KPC Skin Hair & Aesthetic Clinic", description: "Meet the five full-time doctors at KPC Skin Clinic Thapathali — dermatologists, a plastic surgeon, an aesthetic specialist, and a hair transplant surgeon.", keywords: "dermatologist nepal, skin doctor kathmandu, hair transplant surgeon", canonical: "https://www.kpcskinclinic.com/doctors" },
+    { url: "/services", title: "Our Services | KPC Skin Hair & Aesthetic Clinic", description: "All 28 treatments across 6 categories — hair transplant, hair treatment, laser, cosmetic concerns, aesthetic services, and surgery.", keywords: "skin treatment nepal, hair transplant, laser treatment, cosmetic surgery", canonical: "https://www.kpcskinclinic.com/services" },
+    { url: "/packages", title: "Packages & Pricing | KPC Skin Hair & Aesthetic Clinic", description: "Transparent starting prices for every KPC treatment. No hidden charges. EMI available. Thapathali, Kathmandu.", keywords: "skin treatment price nepal, hair transplant cost, laser hair removal price", canonical: "https://www.kpcskinclinic.com/packages" },
+    { url: "/hair-transplant", title: "Hair Transplant | KPC Skin Clinic Thapathali", description: "FUE hair transplant, beard transplant and eyebrow transplant at KPC Skin Clinic Thapathali. Performed by experienced surgeons. Written graft count and price before surgery.", keywords: "hair transplant nepal, fue hair transplant kathmandu, beard transplant", canonical: "https://www.kpcskinclinic.com/hair-transplant" },
+    { url: "/success-stories", title: "Success Stories | KPC Skin Hair & Aesthetic Clinic", description: "Real patient transformations — before & after gallery, video stories, and Google reviews from patients treated at KPC Skin Clinic, Kathmandu.", keywords: "hair transplant results, before after acne treatment, patient reviews nepal", canonical: "https://www.kpcskinclinic.com/success-stories" },
+    { url: "/std-sti", title: "STD/STI Testing | KPC Skin Clinic Thapathali", description: "Confidential, doctor-counselled STD and STI testing at KPC Skin Clinic Thapathali. Pre- and post-test counselling included. Results within 2-5 working days.", keywords: "std test nepal, sti testing kathmandu, hiv test nepal", canonical: "https://www.kpcskinclinic.com/std-sti" },
+    { url: "/blog", title: "Blog | KPC Skin Hair & Aesthetic Clinic", description: "Skincare tips, treatment explainers, and clinic news from the doctors at KPC Skin Clinic Thapathali. Honest, doctor-written, no listicles.", keywords: "skin care blog nepal, hair transplant blog, dermatology tips", canonical: "https://www.kpcskinclinic.com/blog" },
+    { url: "/contact", title: "Contact Us | KPC Skin Hair & Aesthetic Clinic", description: "Get in touch with KPC Skin Clinic in Thapathali, Kathmandu. Call, email, or send us a message — we reply within one working day.", keywords: "contact skin clinic kathmandu, kpc skin clinic phone, dermatologist contact nepal", canonical: "https://www.kpcskinclinic.com/contact" },
+  ];
+  let count = 0;
+  for (const s of seoPages) {
+    const existing = await db.seoMeta.findUnique({ where: { url: s.url } });
+    if (existing) {
+      await db.seoMeta.update({ where: { id: existing.id }, data: s });
+    } else {
+      await db.seoMeta.create({ data: s });
+    }
+    count++;
+  }
+  console.log(`  ✓ ${count} SEO entries seeded`);
+}
+
+// ===== Seed Admin User =====
+async function seedAdminUser() {
+  console.log("\n👤 Seeding Admin User...");
+  const admin = {
+    email: "admin@kpcskin.com",
+    name: "KPC Admin",
+    role: "admin",
+    password: "kpc-admin-2026",
+  };
+  const existing = await db.user.findUnique({ where: { email: admin.email } });
+  if (existing) {
+    await db.user.update({ where: { id: existing.id }, data: admin });
+  } else {
+    await db.user.create({ data: admin });
+  }
+  console.log(`  ✓ Admin user seeded (admin@kpcskin.com)`);
+}
