@@ -15,6 +15,13 @@ import {
   Mail,
   LogOut,
   ExternalLink,
+  Settings,
+  FileCode,
+  Image as ImageIcon,
+  Bell,
+  LayoutGrid,
+  Search,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,8 +36,42 @@ const nav = [
   { label: "Subscribers", href: "/admin/subscribers", icon: Mail },
 ];
 
+const cmsNav = [
+  { label: "Site Info", href: "/admin/site-info", icon: Settings },
+  { label: "Page Content", href: "/admin/pages", icon: FileCode },
+  { label: "Hero Slides", href: "/admin/hero", icon: ImageIcon },
+  { label: "Popups", href: "/admin/popup", icon: Bell },
+  { label: "Services", href: "/admin/services", icon: LayoutGrid },
+  { label: "SEO", href: "/admin/seo", icon: Search },
+  { label: "Users", href: "/admin/users", icon: Users },
+];
+
 export function AdminSidebar() {
   const pathname = usePathname();
+
+  const renderItem = (item: { label: string; href: string; icon: any }) => {
+    const active =
+      item.href === "/admin"
+        ? pathname === "/admin"
+        : pathname?.startsWith(item.href);
+    const Icon = item.icon;
+    return (
+      <li key={item.href}>
+        <Link
+          href={item.href}
+          className={cn(
+            "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+            active
+              ? "bg-brand text-cream"
+              : "text-cream/70 hover:bg-cream/5 hover:text-cream",
+          )}
+        >
+          <Icon className="size-4 shrink-0" />
+          <span>{item.label}</span>
+        </Link>
+      </li>
+    );
+  };
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-ink text-cream lg:flex">
@@ -60,29 +101,14 @@ export function AdminSidebar() {
           Manage
         </p>
         <ul className="space-y-1">
-          {nav.map((item) => {
-            const active =
-              item.href === "/admin"
-                ? pathname === "/admin"
-                : pathname?.startsWith(item.href);
-            const Icon = item.icon;
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                    active
-                      ? "bg-brand text-cream"
-                      : "text-cream/70 hover:bg-cream/5 hover:text-cream",
-                  )}
-                >
-                  <Icon className="size-4 shrink-0" />
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            );
-          })}
+          {nav.map(renderItem)}
+        </ul>
+
+        <p className="px-2 pb-2 pt-5 text-[10px] uppercase tracking-[0.16em] text-cream/40">
+          CMS
+        </p>
+        <ul className="space-y-1">
+          {cmsNav.map(renderItem)}
         </ul>
       </nav>
 

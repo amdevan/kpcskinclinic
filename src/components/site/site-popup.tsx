@@ -17,23 +17,27 @@ type Popup = {
   pagePath: string;
 };
 
+const DISMISS_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
 export function SitePopup() {
   const [show, setShow] = useState(false);
   const [popup, setPopup] = useState<Popup | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-     
+    let cancelled = false;
+
     // Fetch active popups from API (client-side, doesn't block page render)
     fetch("/api/popups")
-      .then((r) => r.ok ? r.json() : [])
+      .then((r) => (r.ok ? r.json() : []))
       .then((popups: Popup[]) => {
-        if (!popups || popups.length === 0) return;
+        if (cancelled || !popups || popups.length === 0) return;
 
-        const now = new Date();
         const active = popups.find((p) => {
           if (!p.isActive) return false;
-          if (!p.showOnAll && p.pagePath && p.pagePath !== pathname) return false;
+          if (!p.showOnAll && p.pagePath && p.pagePath !== pathname) {
+            return false;
+          }
           return true;
         });
 
@@ -42,7 +46,7 @@ export function SitePopup() {
         const key = `popup-dismissed-${active.id}`;
         const dismissed = localStorage.getItem(key);
         if (dismissed) {
-          if (Date.now() - parseInt(dismissed) < 24 * 60 * 60 * 1000) return;
+          if (Date.now() - parseInt(dismissed, 10) < DISMISS_TTL_MS) return;
         }
 
         setPopup(active);
@@ -52,12 +56,20 @@ export function SitePopup() {
       .catch(() => {
         // API not available — no popup shown
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [pathname]);
 
   function dismiss() {
     if (!popup) return;
     if (popup.dismissible) {
-      localStorage.setItem(`popup-dismissed-${popup.id}`, Date.now().toString());
+      try {
+        localStorage.setItem(`popup-dismissed-${popup.id}`, Date.now().toString());
+      } catch {
+        // localStorage unavailable — ignore
+      }
     }
     setShow(false);
   }
@@ -68,6 +80,9 @@ export function SitePopup() {
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-ink/60 backdrop-blur-sm"
       onClick={dismiss}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="popup-title"
     >
       <div
         className="relative bg-card rounded-2xl overflow-hidden shadow-2xl max-w-md w-full"
@@ -84,13 +99,21 @@ export function SitePopup() {
         )}
         {popup.image && (
           <div className="aspect-[16/9] overflow-hidden bg-secondary">
-            <img src={popup.image} alt={popup.title} className="h-full w-full object-cover" />
+            <img
+              src={popup.image}
+              alt={popup.title || "Promotional popup"}
+              className="h-full w-full object-cover"
+            />
           </div>
         )}
         <div className="p-6">
-          <h3 className="font-display text-xl font-bold text-ink">{popup.title}</h3>
+          <h3 id="popup-title" className="font-display text-xl font-bold text-ink">
+            {popup.title}
+          </h3>
           {popup.description && (
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{popup.description}</p>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+              {popup.description}
+            </p>
           )}
           <div className="mt-4 flex gap-2">
             {popup.buttonText && popup.buttonLink && (

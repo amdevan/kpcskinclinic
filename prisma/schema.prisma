@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -202,4 +202,34 @@ model SiteSetting {
   value        String   @default("")
   group        String   @default("general") // general | contact | social
   updatedAt    DateTime @updatedAt
+}
+
+model Popup {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  image       String   @default("")
+  buttonText  String   @default("")
+  buttonLink  String   @default("")
+  isActive    Boolean  @default(false)
+  dismissible Boolean  @default(true)
+  showOnAll   Boolean  @default(true)
+  pagePath    String   @default("")
+  startDate   DateTime?
+  endDate     DateTime?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SeoMeta {
+  id          String   @id @default(cuid())
+  url         String   @unique
+  title       String   @default("")
+  description String   @default("")
+  keywords    String   @default("")
+  ogImage     String   @default("")
+  canonical   String   @default("")
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
 }
