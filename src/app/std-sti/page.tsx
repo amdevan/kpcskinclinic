@@ -1,6 +1,3 @@
-"use client";
-
-import * as React from "react";
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
 import { STD_STI_PACKAGES, STD_STI_INDIVIDUAL_TESTS } from "@/lib/site-data";
@@ -11,8 +8,74 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ShieldCheck, Lock, Clock, AlertCircle } from "lucide-react";
+import { db } from "@/lib/db";
 
-export default function StdStiPage() {
+export const dynamic = "force-dynamic";
+
+export const metadata = {
+  title: "STD / STI Testing | KPC Skin Hair & Aesthetic Clinic",
+  description:
+    "Confidential, doctor-counselled STD and STI testing at KPC Skin Clinic Thapathali. Pre- and post-test counselling included. Results within 2–5 working days.",
+  alternates: { canonical: "/std-sti" },
+};
+
+type StdPackage = (typeof STD_STI_PACKAGES)[number];
+type StdTest = (typeof STD_STI_INDIVIDUAL_TESTS)[number];
+
+async function getPackages(): Promise<StdPackage[]> {
+  try {
+    const rows = await db.stdTest.findMany({
+      where: { published: true, isPackage: true },
+      orderBy: { order: "asc" },
+    });
+    if (rows && rows.length > 0) {
+      return rows.map((r: any) => ({
+        name: r.name,
+        price: r.price,
+        composition: r.composition,
+        tests: r.tests,
+        recommended: !!r.recommended,
+      }));
+    }
+  } catch {
+    // DB not available — fall back to static
+  }
+  return STD_STI_PACKAGES;
+}
+
+async function getTests(): Promise<StdTest[]> {
+  try {
+    const rows = await db.stdTest.findMany({
+      where: { published: true, isPackage: false },
+    });
+    if (rows && rows.length > 0) {
+      return rows.map((r: any) => ({
+        name: r.name,
+        price: r.price,
+      }));
+    }
+  } catch {
+    // DB not available — fall back to static
+  }
+  return STD_STI_INDIVIDUAL_TESTS;
+}
+
+export default async function StdStiPage() {
+  const packages = await getPackages();
+  const tests = await getTests();
+  const priceRange =
+    tests.length > 0
+      ? (() => {
+          const nums = tests
+            .map((t) => parseInt(t.price.replace(/[^0-9]/g, ""), 10))
+            .filter((n) => !isNaN(n));
+          if (nums.length === 0) return "NPR 150 – 9,050";
+          const min = Math.min(...nums);
+          const max = Math.max(...nums);
+          return `NPR ${min.toLocaleString()} – ${max.toLocaleString()}`;
+        })()
+      : "NPR 150 – 9,050";
+
   return (
     <>
       <PageBanner
@@ -44,7 +107,7 @@ export default function StdStiPage() {
         </div>
       </section>
 
-      {/* Package cards — 6 by default (spec requirement) */}
+      {/* Package cards */}
       <section className="py-20 sm:py-28 bg-background">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
@@ -60,7 +123,7 @@ export default function StdStiPage() {
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {STD_STI_PACKAGES.map((p, i) => {
+            {packages.map((p, i) => {
               const styles = [
                 { bar: "bg-brand", text: "text-brand", ring: "border-brand/30", soft: "bg-brand/5" },
                 { bar: "bg-cyan", text: "text-cyan", ring: "border-cyan/30", soft: "bg-cyan/5" },
@@ -92,10 +155,10 @@ export default function StdStiPage() {
             {/* Individual tests card */}
             <article className="relative rounded-2xl border-2 border-dashed border-border p-6 flex flex-col justify-center items-center text-center">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-                32 tests
+                {tests.length} tests
               </p>
               <h3 className="font-display text-xl font-bold text-ink">Individual tests</h3>
-              <p className="font-display text-2xl font-bold mt-2 text-brand">NPR 150 – 9,050</p>
+              <p className="font-display text-2xl font-bold mt-2 text-brand">{priceRange}</p>
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                 Priced per test. See full list below.
               </p>
@@ -120,7 +183,7 @@ export default function StdStiPage() {
           <Accordion type="single" collapsible>
             <AccordionItem value="individual" className="border-b-0">
               <AccordionTrigger className="text-base font-semibold text-ink hover:no-underline">
-                View all individual tests (32 tests, NPR 150 – 9,050)
+                View all individual tests ({tests.length} tests, {priceRange})
               </AccordionTrigger>
               <AccordionContent>
                 <div className="pt-4">
@@ -136,7 +199,7 @@ export default function StdStiPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {STD_STI_INDIVIDUAL_TESTS.map((t, i) => (
+                        {tests.map((t, i) => (
                           <tr key={i} className="hover:bg-paper/60 transition-colors">
                             <td className="text-ink/80 px-4 py-2.5 border-b border-border/60">{t.name}</td>
                             <td className="text-right font-medium text-brand px-4 py-2.5 border-b border-border/60 tabular-nums">{t.price}</td>

@@ -1,36 +1,80 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BLOG_ARTICLES } from "@/lib/site-data";
+import { BLOG_ARTICLES, type BlogArticle } from "@/lib/site-data";
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
 import { Calendar, Clock, ArrowRight, ArrowLeft } from "lucide-react";
+import { db } from "@/lib/db";
 
-export function generateStaticParams() {
-  return BLOG_ARTICLES.map((a) => ({ slug: a.slug }));
+export const dynamic = "force-dynamic";
+
+function transformArticle(a: any): BlogArticle {
+  return {
+    slug: a.slug,
+    title: a.title,
+    excerpt: a.excerpt || "",
+    body: a.body || "",
+    date: a.date || "",
+    author: a.author || "",
+    category: a.category || "",
+    image: a.image || "",
+    readTime: a.readTime || "",
+  };
 }
 
-export function generateMetadata({
+async function getArticle(slug: string): Promise<BlogArticle | null> {
+  // Try DB first
+  try {
+    const row = await db.blogArticle.findUnique({ where: { slug } });
+    if (row && row.published) return transformArticle(row);
+  } catch {
+    // DB not available — fall through to static lookup
+  }
+  // Fall back to static
+  return BLOG_ARTICLES.find((a) => a.slug === slug) || null;
+}
+
+export async function generateStaticParams() {
+  const params: { slug: string }[] = BLOG_ARTICLES.map((a) => ({ slug: a.slug }));
+  try {
+    const rows = await db.blogArticle.findMany({
+      where: { published: true },
+      select: { slug: true },
+    });
+    if (rows && rows.length > 0) {
+      for (const r of rows) {
+        if (!params.some((p) => p.slug === r.slug)) {
+          params.push({ slug: r.slug });
+        }
+      }
+    }
+  } catch {
+    // DB not available — static params only
+  }
+  return params;
+}
+
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  return params.then(({ slug }) => {
-    const a = BLOG_ARTICLES.find((art) => art.slug === slug);
-    if (a) {
-      return {
-        title: `${a.title} | KPC Skin Clinic Blog`,
+  const { slug } = await params;
+  const a = await getArticle(slug);
+  if (a) {
+    return {
+      title: `${a.title} | KPC Skin Clinic Blog`,
+      description: a.excerpt,
+      alternates: { canonical: `/blog/${a.slug}` },
+      openGraph: {
+        title: a.title,
         description: a.excerpt,
-        alternates: { canonical: `/blog/${a.slug}` },
-        openGraph: {
-          title: a.title,
-          description: a.excerpt,
-          type: "article",
-        },
-      };
-    }
-    return { title: "Article | KPC Skin Clinic" };
-  });
+        type: "article",
+      },
+    };
+  }
+  return { title: "Article | KPC Skin Clinic" };
 }
 
 export default async function ArticlePage({
@@ -39,13 +83,28 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = BLOG_ARTICLES.find((a) => a.slug === slug);
+  const article = await getArticle(slug);
   if (!article) notFound();
 
   // Convert markdown-ish body to simple HTML
   const paragraphs = article.body.split("\n\n");
   const styles = ["text-brand", "text-cyan", "text-green", "text-gold", "text-rust"];
   const catColor = styles[Math.abs(article.slug.charCodeAt(0)) % styles.length];
+
+  // Build a list of all other articles for the "Related articles" section
+  let allArticles: BlogArticle[] = BLOG_ARTICLES;
+  try {
+    const rows = await db.blogArticle.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    });
+    if (rows && rows.length > 0) {
+      allArticles = rows.map(transformArticle);
+    }
+  } catch {
+    // DB not available — use static BLOG_ARTICLES
+  }
+  const related = allArticles.filter((a) => a.slug !== article.slug).slice(0, 3);
 
   return (
     <>
@@ -171,36 +230,34 @@ export default async function ArticlePage({
             Related articles
           </h2>
           <div className="grid sm:grid-cols-3 gap-6">
-            {BLOG_ARTICLES.filter((a) => a.slug !== article.slug)
-              .slice(0, 3)
-              .map((a, i) => {
-                const colors = ["text-brand", "text-cyan", "text-green"];
-                return (
-                  <Link
-                    key={a.slug}
-                    href={`/blog/${a.slug}`}
-                    className="group bg-card rounded-2xl border border-border overflow-hidden card-lift"
-                  >
-                    <div className="relative overflow-hidden aspect-[16/10] bg-secondary">
-                      { }
-                      <img
-                        src={a.image}
-                        alt={a.title}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <span className={`absolute top-3 left-3 rounded-full bg-cream/95 backdrop-blur px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider ${colors[i % colors.length]}`}>
-                        {a.category}
-                      </span>
-                    </div>
-                    <div className="p-4">
-                      <p className="text-[11px] text-muted-foreground mb-1">{a.date} · {a.readTime}</p>
-                      <h3 className="font-display text-base font-bold text-ink leading-snug group-hover:text-brand transition-colors">
-                        {a.title}
-                      </h3>
-                    </div>
-                  </Link>
-                );
-              })}
+            {related.map((a, i) => {
+              const colors = ["text-brand", "text-cyan", "text-green"];
+              return (
+                <Link
+                  key={a.slug}
+                  href={`/blog/${a.slug}`}
+                  className="group bg-card rounded-2xl border border-border overflow-hidden card-lift"
+                >
+                  <div className="relative overflow-hidden aspect-[16/10] bg-secondary">
+                    { }
+                    <img
+                      src={a.image}
+                      alt={a.title}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <span className={`absolute top-3 left-3 rounded-full bg-cream/95 backdrop-blur px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider ${colors[i % colors.length]}`}>
+                      {a.category}
+                    </span>
+                  </div>
+                  <div className="p-4">
+                    <p className="text-[11px] text-muted-foreground mb-1">{a.date} · {a.readTime}</p>
+                    <h3 className="font-display text-base font-bold text-ink leading-snug group-hover:text-brand transition-colors">
+                      {a.title}
+                    </h3>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

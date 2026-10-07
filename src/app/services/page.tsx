@@ -1,8 +1,11 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
-import { SERVICE_CATEGORIES, slugify } from "@/lib/site-data";
+import { SERVICE_CATEGORIES, slugify, type ServiceCategory } from "@/lib/site-data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { db } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Our Services | KPC Skin Hair & Aesthetic Clinic",
@@ -10,7 +13,49 @@ export const metadata = {
     "All 28 treatments across 6 categories — hair transplant, hair clinic, surgery, cosmetic face concerns, aesthetic services, and laser treatments. Performed by doctors, in-house.",
 };
 
-export default function ServicesPage() {
+function parseJsonArray<T>(value: string | null | undefined, fallback: T[] = []): T[] {
+  if (!value) return fallback;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? (parsed as T[]) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function transformCategory(c: any): ServiceCategory {
+  return {
+    id: c.slug || c.id,
+    title: c.title,
+    tagline: c.tagline || "",
+    description: c.description || "",
+    image: c.image || "",
+    services: parseJsonArray<any>(c.services).map((s: any) => ({
+      title: s.title,
+      href: s.href || "#services",
+      description: s.description || "",
+      slug: s.slug,
+    })),
+  };
+}
+
+async function getCategories(): Promise<ServiceCategory[]> {
+  try {
+    const rows = await db.serviceCategory.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+    });
+    if (rows && rows.length > 0) {
+      return rows.map(transformCategory);
+    }
+  } catch {
+    // DB not available — fall back to static
+  }
+  return SERVICE_CATEGORIES;
+}
+
+export default async function ServicesPage() {
+  const categories = await getCategories();
   return (
     <>
       <PageBanner
@@ -25,7 +70,7 @@ export default function ServicesPage() {
       {/* Services list by category */}
       <section className="py-20 sm:py-28 bg-background">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 space-y-16 sm:space-y-20">
-          {SERVICE_CATEGORIES.map((cat, idx) => {
+          {categories.map((cat, idx) => {
             const styles = [
               { text: "text-brand", bar: "bg-brand", soft: "bg-brand/10" },
               { text: "text-cyan", bar: "bg-cyan", soft: "bg-cyan/10" },
@@ -56,7 +101,7 @@ export default function ServicesPage() {
                       {cat.tagline}
                     </p>
                     <p className="section-index text-[11px] text-cream/60">
-                      0{idx + 1} / 0{SERVICE_CATEGORIES.length}
+                      0{idx + 1} / 0{categories.length}
                     </p>
                   </div>
                 </div>

@@ -5,20 +5,29 @@ import { cn } from "@/lib/utils";
 export function Logo({
   className,
   variant = "default",
+  logoUrl,
+  clinicName,
+  clinicTagline,
 }: {
   className?: string;
   variant?: "default" | "light";
+  logoUrl?: string;
+  clinicName?: string;
+  clinicTagline?: string;
 }) {
+  const src = logoUrl || "/kpc-logo.png";
+  const name = clinicName || "KPC";
+  const tagline = clinicTagline || "Skin · Hair · Aesthetic";
   return (
     <Link
       href="/"
       className={cn("flex items-center gap-2.5 group", className)}
-      aria-label="KPC Skin Hair & Aesthetic Clinic home"
+      aria-label={`${name} home`}
     >
       <span className="relative inline-flex h-10 w-10 lg:h-11 lg:w-11 items-center justify-center rounded-xl bg-cream shadow-sm overflow-hidden ring-1 ring-brand/15">
         <Image
-          src="/kpc-logo.png"
-          alt="KPC Skin Hair & Aesthetic Clinic logo"
+          src={src}
+          alt={`${name} logo`}
           fill
           className="object-cover"
           sizes="44px"
@@ -32,7 +41,7 @@ export function Logo({
             variant === "light" ? "text-cream" : "text-ink"
           )}
         >
-          KPC
+          {name}
         </span>
         <span
           className={cn(
@@ -40,7 +49,7 @@ export function Logo({
             variant === "light" ? "text-cream/70" : "text-brand"
           )}
         >
-          Skin · Hair · Aesthetic
+          {tagline}
         </span>
       </span>
     </Link>

@@ -5,27 +5,83 @@ import { DOCTORS } from "@/lib/site-data";
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
 import { ArrowRight, GraduationCap, Stethoscope, Quote } from "lucide-react";
+import { db } from "@/lib/db";
 
-export function generateStaticParams() {
-  return DOCTORS.map((d) => ({ slug: d.slug }));
+export const dynamic = "force-dynamic";
+
+type Doctor = (typeof DOCTORS)[number];
+
+function parseJsonArray<T>(value: string | null | undefined, fallback: T[] = []): T[] {
+  if (!value) return fallback;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? (parsed as T[]) : fallback;
+  } catch {
+    return fallback;
+  }
 }
 
-export function generateMetadata({
+function transformDoctor(d: any): Doctor {
+  return {
+    slug: d.slug,
+    name: d.name,
+    role: d.role,
+    credentials: d.credentials,
+    specialties: parseJsonArray<string>(d.specialties),
+    bio: d.bio || "",
+    fullBio: d.fullBio || d.bio || "",
+    education: parseJsonArray<string>(d.education),
+    treatments: parseJsonArray<string>(d.treatments),
+    approach: d.approach || "",
+    image: d.image,
+    experience: d.experience || "",
+  };
+}
+
+async function getDoctor(slug: string): Promise<Doctor | null> {
+  // Try DB first
+  try {
+    const row = await db.doctor.findUnique({ where: { slug } });
+    if (row) return transformDoctor(row);
+  } catch {
+    // DB not available — fall through to static lookup
+  }
+  // Fall back to static
+  return DOCTORS.find((d) => d.slug === slug) || null;
+}
+
+export async function generateStaticParams() {
+  const params: { slug: string }[] = DOCTORS.map((d) => ({ slug: d.slug }));
+  try {
+    const rows = await db.doctor.findMany({ where: { published: true }, select: { slug: true } });
+    if (rows && rows.length > 0) {
+      for (const r of rows) {
+        if (!params.some((p) => p.slug === r.slug)) {
+          params.push({ slug: r.slug });
+        }
+      }
+    }
+  } catch {
+    // DB not available — static params only
+  }
+  return params;
+}
+
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  return params.then(({ slug }) => {
-    const d = DOCTORS.find((doc) => doc.slug === slug);
-    if (d) {
-      return {
-        title: `${d.name} — ${d.role} | KPC Skin Clinic Thapathali`,
-        description: `${d.bio} Book a consultation with ${d.name} at KPC Skin Clinic, Thapathali.`,
-        alternates: { canonical: `/doctors/${d.slug}` },
-      };
-    }
-    return { title: "Doctor | KPC Skin Clinic" };
-  });
+  const { slug } = await params;
+  const d = await getDoctor(slug);
+  if (d) {
+    return {
+      title: `${d.name} — ${d.role} | KPC Skin Clinic Thapathali`,
+      description: `${d.bio} Book a consultation with ${d.name} at KPC Skin Clinic, Thapathali.`,
+      alternates: { canonical: `/doctors/${d.slug}` },
+    };
+  }
+  return { title: "Doctor | KPC Skin Clinic" };
 }
 
 export default async function DoctorDetailPage({
@@ -34,7 +90,7 @@ export default async function DoctorDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const doctor = DOCTORS.find((d) => d.slug === slug);
+  const doctor = await getDoctor(slug);
   if (!doctor) notFound();
 
   const styles = [
@@ -46,7 +102,7 @@ export default async function DoctorDetailPage({
     { text: "text-brand", bg: "bg-brand", soft: "bg-brand/10" },
   ];
   const idx = DOCTORS.findIndex((d) => d.slug === slug);
-  const s = styles[idx % styles.length];
+  const s = styles[idx >= 0 ? idx % styles.length : 0];
 
   return (
     <>

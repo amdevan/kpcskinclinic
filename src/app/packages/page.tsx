@@ -5,6 +5,9 @@ import { ALL_PACKAGES, STD_STI_PACKAGE_CARDS, FAQ, CONTACT_INFO } from "@/lib/si
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Info } from "lucide-react";
 import Link from "next/link";
+import { db } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Packages & Pricing | KPC Skin Hair & Aesthetic Clinic",
@@ -13,8 +16,89 @@ export const metadata = {
   alternates: { canonical: "/packages" },
 };
 
-export default function PackagesPage() {
-  const categories = Array.from(new Set(ALL_PACKAGES.map((p) => p.category)));
+type PackageCardType = (typeof ALL_PACKAGES)[number];
+
+function parseJsonArray<T>(value: string | null | undefined, fallback: T[] = []): T[] {
+  if (!value) return fallback;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? (parsed as T[]) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function transformPackage(p: any): PackageCardType {
+  return {
+    name: p.name,
+    price: p.price || "",
+    unit: p.unit || "",
+    note: p.note || "",
+    features: parseJsonArray<string>(p.features),
+    image: p.image || "",
+    category: p.category || "",
+    color: p.color || "brand",
+    popular: !!p.popular,
+  };
+}
+
+function transformStdToPackageCard(t: any): PackageCardType {
+  // Map STD test color scheme — use 'green' for recommended, 'brand' for others, fallback by index
+  const colorMap: Record<string, string> = {
+    "Basic STI": "green",
+    "STI R-10": "brand",
+    "STD Panel 1": "cyan",
+    "STD Panel 2": "gold",
+    "STD Panel 3": "rust",
+  };
+  const features =
+    t.composition && t.composition.length > 0
+      ? t.composition.split(/[,+]/).map((s: string) => s.trim()).filter(Boolean)
+      : [];
+  return {
+    name: t.name,
+    price: t.price || "",
+    unit: "package",
+    note: `${t.tests || 0} tests`,
+    features:
+      features.length > 0
+        ? [...features, "Pre & post-test counselling"]
+        : ["Pre & post-test counselling"],
+    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    category: "STD / STI",
+    color: colorMap[t.name] || "brand",
+    popular: !!t.recommended,
+  };
+}
+
+async function getPackages(): Promise<{ packages: PackageCardType[]; stdPackages: PackageCardType[] }> {
+  let packages: PackageCardType[] = ALL_PACKAGES;
+  let stdPackages: PackageCardType[] = STD_STI_PACKAGE_CARDS;
+  try {
+    const rows = await db.package.findMany({ where: { published: true } });
+    if (rows && rows.length > 0) {
+      packages = rows.map(transformPackage);
+    }
+  } catch {
+    // DB not available — fall back to static
+  }
+  try {
+    const rows = await db.stdTest.findMany({
+      where: { published: true, isPackage: true },
+      orderBy: { order: "asc" },
+    });
+    if (rows && rows.length > 0) {
+      stdPackages = rows.map(transformStdToPackageCard);
+    }
+  } catch {
+    // DB not available — fall back to static
+  }
+  return { packages, stdPackages };
+}
+
+export default async function PackagesPage() {
+  const { packages, stdPackages } = await getPackages();
+  const categories = Array.from(new Set(packages.map((p) => p.category)));
   return (
     <>
       <PageBanner eyebrow="Packages & Pricing" title="Honest starting prices." highlight="No hidden charges." description="What you see is what you pay. Every package has a transparent starting price — click any package to book instantly." image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/cb095eaff0da.jpg" crumbs={[{ label: "Home", href: "/" }, { label: "Packages" }]} />
@@ -26,7 +110,7 @@ export default function PackagesPage() {
             <p className="mt-4 text-muted-foreground">Browse every treatment package. Each card shows the starting price, what&apos;s included, and a booking button.</p>
           </div>
           {categories.map((cat) => {
-            const catPackages = ALL_PACKAGES.filter((p) => p.category === cat);
+            const catPackages = packages.filter((p) => p.category === cat);
             return (
               <div key={cat} className="mb-16">
                 <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink mb-6 pb-3 border-b border-border">{cat}</h3>
@@ -39,7 +123,7 @@ export default function PackagesPage() {
               <h3 className="font-display text-2xl sm:text-3xl font-bold text-ink">STD / STI Testing</h3>
               <Link href="/std-sti" className="text-sm font-medium text-brand hover:text-ink transition-colors">View full test list →</Link>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{STD_STI_PACKAGE_CARDS.map((p) => <PackageCard key={p.name} p={p} />)}</div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{stdPackages.map((p) => <PackageCard key={p.name} p={p} />)}</div>
           </div>
           <p className="text-xs text-muted-foreground max-w-2xl">All prices include pre-treatment consultation and post-treatment care guidance. Final pricing is confirmed in writing before any procedure.</p>
         </div>

@@ -146,6 +146,60 @@ model StdTest {
   tests       Int      @default(0)
   recommended Boolean  @default(false)
   published   Boolean  @default(true)
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// ===== Public site content =====
+
+model HeroSlide {
+  id           String   @id @default(cuid())
+  eyebrow      String   @default("")
+  title        String   @default("")
+  highlight    String   @default("")
+  description  String   @default("")
+  image        String   @default("")
+  primaryCta   String   @default("")
+  secondaryCta String   @default("")
+  isActive     Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ServiceCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  tagline     String   @default("")
+  description String   @default("")
+  image       String   @default("")
+  services    String   @default("[]") // JSON array of { title, href, description }
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PageContent {
+  id        String   @id @default(cuid())
+  page      String   // e.g. "about", "hair-transplant"
+  section   String   // e.g. "banner", "story", "mission"
+  title     String   @default("")
+  body      String   @default("") // can be JSON-encoded structured content
+  image     String   @default("")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([page])
+}
+
+model SiteSetting {
+  id           String   @id @default(cuid())
+  key          String   @unique
+  value        String   @default("")
+  group        String   @default("general") // general | contact | social
+  updatedAt    DateTime @updatedAt
 }

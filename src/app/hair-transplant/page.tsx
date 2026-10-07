@@ -3,6 +3,9 @@ import { CtaSection } from "@/components/site/cta-section";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Hair Transplant | KPC Skin Clinic Thapathali",
@@ -11,7 +14,7 @@ export const metadata = {
   alternates: { canonical: "/hair-transplant" },
 };
 
-const SUB_PROCEDURES = [
+const DEFAULT_SUB_PROCEDURES = [
   {
     slug: "hair-transplant",
     title: "FUE Hair Transplant",
@@ -35,22 +38,71 @@ const SUB_PROCEDURES = [
   },
 ];
 
-const STEPS = [
+const DEFAULT_STEPS = [
   { step: "01", title: "Consultation", body: "We assess your hair loss pattern (Norwood scale), donor density, and design a natural hairline. You get a written graft count and price." },
   { step: "02", title: "Surgery", body: "FUE harvest + implantation by the surgeon, not a technician. 8–10 hours, local anaesthetic, painless. No linear scar." },
   { step: "03", title: "Recovery", body: "Redness 3–5 days. Shedding 2–4 weeks. New growth 3–4 months. Full result 12 months." },
   { step: "04", title: "Follow-up", body: "Review at 1 week, 1 month, 4 months, 8 months, 12 months. We photograph and measure at every stage." },
 ];
 
-export default function HairTransplantHubPage() {
+const DEFAULT_BANNER = {
+  title: "Hair Transplant at KPC.",
+  description:
+    "Natural, permanent hair restoration performed by experienced surgeons at our Thapathali clinic. Written graft count and price before surgery — no surprises.",
+  image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+};
+
+function parseJson<T>(value: string | null | undefined, fallback: T): T {
+  if (!value) return fallback;
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+async function getHairTransplantContent() {
+  let banner = DEFAULT_BANNER;
+  let subProcedures = DEFAULT_SUB_PROCEDURES;
+  let steps = DEFAULT_STEPS;
+  try {
+    const rows = await db.pageContent.findMany({
+      where: { page: "hair-transplant" },
+      orderBy: { order: "asc" },
+    });
+    if (rows && rows.length > 0) {
+      for (const r of rows) {
+        if (r.section === "banner") {
+          banner = {
+            title: r.title,
+            description: r.body,
+            image: r.image || DEFAULT_BANNER.image,
+          };
+        } else if (r.section === "sub_procedures") {
+          const parsed = parseJson<typeof DEFAULT_SUB_PROCEDURES>(r.body, DEFAULT_SUB_PROCEDURES);
+          if (Array.isArray(parsed) && parsed.length > 0) subProcedures = parsed;
+        } else if (r.section === "steps") {
+          const parsed = parseJson<typeof DEFAULT_STEPS>(r.body, DEFAULT_STEPS);
+          if (Array.isArray(parsed) && parsed.length > 0) steps = parsed;
+        }
+      }
+    }
+  } catch {
+    // DB not available — fall back to defaults
+  }
+  return { banner, subProcedures, steps };
+}
+
+export default async function HairTransplantHubPage() {
+  const { banner, subProcedures, steps } = await getHairTransplantContent();
   return (
     <>
       <PageBanner
         eyebrow="Flagship Treatment"
-        title="Hair Transplant"
+        title={banner.title.split(" at KPC")[0]}
         highlight="at KPC."
-        description="Natural, permanent hair restoration performed by experienced surgeons at our Thapathali clinic. Written graft count and price before surgery — no surprises."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg"
+        description={banner.description}
+        image={banner.image}
         crumbs={[{ label: "Home", href: "/" }, { label: "Hair Transplant" }]}
       />
 
@@ -64,7 +116,7 @@ export default function HairTransplantHubPage() {
             Three transplant procedures
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SUB_PROCEDURES.map((p, i) => {
+            {subProcedures.map((p, i) => {
               const styles = ["text-brand", "text-gold", "text-cyan"];
               return (
                 <Link
@@ -107,7 +159,7 @@ export default function HairTransplantHubPage() {
             From consultation to full result
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {STEPS.map((s, i) => {
+            {steps.map((s, i) => {
               const colors = ["text-brand", "text-cyan", "text-green", "text-rust"];
               return (
                 <div key={s.step} className="border-l-2 border-brand/20 pl-5">

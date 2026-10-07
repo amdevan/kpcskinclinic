@@ -3,20 +3,20 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
-import { BLOG_ARTICLES } from "@/lib/site-data";
+import { BLOG_ARTICLES, type BlogArticle } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 
-const ALL_CATEGORIES = ["All", ...Array.from(new Set(BLOG_ARTICLES.map((a) => a.category)))];
-
-export function BlogList() {
+export function BlogList({ articles }: { articles?: BlogArticle[] } = {}) {
+  const list = articles && articles.length > 0 ? articles : BLOG_ARTICLES;
+  const categories = ["All", ...Array.from(new Set(list.map((a) => a.category)))];
   const [active, setActive] = React.useState("All");
-  const filtered = active === "All" ? BLOG_ARTICLES : BLOG_ARTICLES.filter((a) => a.category === active);
+  const filtered = active === "All" ? list : list.filter((a) => a.category === active);
 
   return (
     <section className="py-20 sm:py-28 bg-background">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         <div className="flex flex-wrap items-center gap-2 mb-10">
-          {ALL_CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button key={cat} onClick={() => setActive(cat)} className={cn("px-4 py-2 rounded-full text-sm font-medium transition-all border", active === cat ? "bg-brand text-cream border-brand shadow-sm" : "bg-card text-ink/70 border-border hover:border-brand/40 hover:text-brand")}>{cat}</button>
           ))}
         </div>

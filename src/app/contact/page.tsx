@@ -2,6 +2,9 @@ import { PageBanner } from "@/components/site/page-banner";
 import { ContactForm } from "@/components/site/contact-form";
 import { CONTACT_INFO } from "@/lib/site-data";
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, Navigation } from "lucide-react";
+import { db } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Contact Us | KPC Skin Hair & Aesthetic Clinic",
@@ -9,7 +12,65 @@ export const metadata = {
     "Get in touch with KPC Skin Clinic in Thapathali, Kathmandu. Call, email, or send us a message — we reply within one working day.",
 };
 
-export default function ContactPage() {
+type HoursEntry = { day: string; time: string };
+type SocialEntry = { label: string; href: string; handle: string; icon: string };
+
+type ContactInfo = {
+  phone: string;
+  phoneHref: string;
+  mobile: string;
+  mobileHref: string;
+  whatsapp: string;
+  whatsappLabel: string;
+  email: string;
+  emailHref: string;
+  address: string;
+  addressShort: string;
+  addressMapHref: string;
+  hours: HoursEntry[];
+  socials: SocialEntry[];
+};
+
+function parseJson<T>(value: string | null | undefined, fallback: T): T {
+  if (!value) return fallback;
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+async function getContactInfo(): Promise<ContactInfo> {
+  let info: ContactInfo = { ...CONTACT_INFO };
+  try {
+    const rows = await db.siteSetting.findMany();
+    if (rows && rows.length > 0) {
+      const map: Record<string, string> = {};
+      for (const r of rows) map[r.key] = r.value;
+      info = {
+        phone: map.phone || CONTACT_INFO.phone,
+        phoneHref: map.phone_href || CONTACT_INFO.phoneHref,
+        mobile: map.mobile || CONTACT_INFO.mobile,
+        mobileHref: map.mobile_href || CONTACT_INFO.mobileHref,
+        whatsapp: map.whatsapp || CONTACT_INFO.whatsapp,
+        whatsappLabel: CONTACT_INFO.whatsappLabel,
+        email: map.email || CONTACT_INFO.email,
+        emailHref: map.email_href || CONTACT_INFO.emailHref,
+        address: map.address || CONTACT_INFO.address,
+        addressShort: map.address_short || CONTACT_INFO.addressShort,
+        addressMapHref: map.address_map_href || CONTACT_INFO.addressMapHref,
+        hours: parseJson<HoursEntry[]>(map.hours, CONTACT_INFO.hours),
+        socials: parseJson<SocialEntry[]>(map.socials, CONTACT_INFO.socials),
+      };
+    }
+  } catch {
+    // DB not available — fall back to static
+  }
+  return info;
+}
+
+export default async function ContactPage() {
+  const CONTACT = await getContactInfo();
   return (
     <>
       <PageBanner
@@ -39,7 +100,7 @@ export default function ContactPage() {
 
               <div className="space-y-5">
                 <a
-                  href={CONTACT_INFO.phoneHref}
+                  href={CONTACT.phoneHref}
                   className="flex items-start gap-4 group"
                 >
                   <span className="h-11 w-11 rounded-xl bg-brand/10 flex items-center justify-center shrink-0">
@@ -50,13 +111,13 @@ export default function ContactPage() {
                       Clinic phone
                     </p>
                     <p className="font-display text-lg font-semibold text-ink group-hover:text-brand transition-colors">
-                      {CONTACT_INFO.phone}
+                      {CONTACT.phone}
                     </p>
                   </div>
                 </a>
 
                 <a
-                  href={CONTACT_INFO.mobileHref}
+                  href={CONTACT.mobileHref}
                   className="flex items-start gap-4 group"
                 >
                   <span className="h-11 w-11 rounded-xl bg-brand/10 flex items-center justify-center shrink-0">
@@ -67,13 +128,13 @@ export default function ContactPage() {
                       Mobile / WhatsApp
                     </p>
                     <p className="font-display text-lg font-semibold text-ink group-hover:text-brand transition-colors">
-                      {CONTACT_INFO.mobile}
+                      {CONTACT.mobile}
                     </p>
                   </div>
                 </a>
 
                 <a
-                  href={CONTACT_INFO.emailHref}
+                  href={CONTACT.emailHref}
                   className="flex items-start gap-4 group"
                 >
                   <span className="h-11 w-11 rounded-xl bg-brand/10 flex items-center justify-center shrink-0">
@@ -84,13 +145,13 @@ export default function ContactPage() {
                       Email
                     </p>
                     <p className="font-display text-lg font-semibold text-ink group-hover:text-brand transition-colors">
-                      {CONTACT_INFO.email}
+                      {CONTACT.email}
                     </p>
                   </div>
                 </a>
 
                 <a
-                  href={CONTACT_INFO.addressMapHref}
+                  href={CONTACT.addressMapHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-4 group"
@@ -103,7 +164,7 @@ export default function ContactPage() {
                       Address
                     </p>
                     <p className="font-medium text-ink group-hover:text-brand transition-colors">
-                      {CONTACT_INFO.address}
+                      {CONTACT.address}
                     </p>
                     <p className="text-[11px] text-brand mt-1 inline-flex items-center gap-1">
                       <Navigation className="h-3 w-3" />
@@ -121,7 +182,7 @@ export default function ContactPage() {
                       Opening hours
                     </p>
                     <div className="mt-1 space-y-0.5">
-                      {CONTACT_INFO.hours.map((h) => (
+                      {CONTACT.hours.map((h) => (
                         <p key={h.day} className="text-sm text-ink">
                           <span className="font-medium">{h.day}:</span>{" "}
                           <span className="text-muted-foreground">{h.time}</span>
@@ -138,20 +199,26 @@ export default function ContactPage() {
                   Follow us
                 </p>
                 <div className="flex items-center gap-2">
-                  <a
-                    href="#"
-                    aria-label="Instagram"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-brand hover:text-brand-foreground hover:border-brand transition-all"
-                  >
-                    <Instagram className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="#"
-                    aria-label="Facebook"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-brand hover:text-brand-foreground hover:border-brand transition-all"
-                  >
-                    <Facebook className="h-4 w-4" />
-                  </a>
+                  {CONTACT.socials.map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      aria-label={s.label}
+                      target={s.href.startsWith("http") ? "_blank" : undefined}
+                      rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-brand hover:text-brand-foreground hover:border-brand transition-all"
+                    >
+                      {s.icon === "instagram" ? (
+                        <Instagram className="h-4 w-4" />
+                      ) : s.icon === "facebook" ? (
+                        <Facebook className="h-4 w-4" />
+                      ) : s.icon === "tiktok" ? (
+                        <span className="text-xs font-bold">TT</span>
+                      ) : (
+                        <Phone className="h-4 w-4" />
+                      )}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -191,10 +258,10 @@ export default function ContactPage() {
                   KPC Skin Hair &amp; Aesthetic Clinic
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Thapathali, Kathmandu
+                  {CONTACT.addressShort}
                 </p>
                 <a
-                  href={CONTACT_INFO.addressMapHref}
+                  href={CONTACT.addressMapHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:text-ink transition-colors link-underline"

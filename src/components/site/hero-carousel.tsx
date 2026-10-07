@@ -4,22 +4,23 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ShieldCheck, Award, Users } from "lucide-react";
-import { HERO_SLIDES } from "@/lib/site-data";
+import { HERO_SLIDES, type HeroSlide } from "@/lib/site-data";
 import { useBookAppointment } from "./book-appointment-context";
 
 const AUTOPLAY_MS = 7000;
 
-export function HeroCarousel() {
+export function HeroCarousel({ slides }: { slides?: HeroSlide[] } = {}) {
+  const list = slides && slides.length > 0 ? slides : HERO_SLIDES;
   const [active, setActive] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
   const { setOpen } = useBookAppointment();
 
   const next = React.useCallback(() => {
-    setActive((p) => (p + 1) % HERO_SLIDES.length);
-  }, []);
+    setActive((p) => (p + 1) % list.length);
+  }, [list.length]);
   const prev = React.useCallback(() => {
-    setActive((p) => (p - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  }, []);
+    setActive((p) => (p - 1 + list.length) % list.length);
+  }, [list.length]);
 
   React.useEffect(() => {
     if (paused) return;
@@ -27,7 +28,7 @@ export function HeroCarousel() {
     return () => clearInterval(t);
   }, [next, paused]);
 
-  const slide = HERO_SLIDES[active];
+  const slide = list[active];
 
   return (
     <section
@@ -129,7 +130,7 @@ export function HeroCarousel() {
       {/* Controls — bottom right */}
       <div className="absolute bottom-7 right-6 sm:right-10 lg:right-16 z-10 flex items-center gap-4">
         <div className="flex items-center gap-2">
-          {HERO_SLIDES.map((s, i) => (
+          {list.map((s, i) => (
             <button
               key={i}
               aria-label={`Go to slide ${i + 1}`}
