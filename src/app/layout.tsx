@@ -53,49 +53,24 @@ export const metadata: Metadata = {
   },
 };
 
-export const dynamic = "force-dynamic";
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch active popups + site settings from DB
-  // All wrapped in try/catch so the page NEVER crashes if DB is unavailable
-  let popups: any[] = [];
-  let settings: Record<string, string> = {};
-  try {
-    const { db } = await import("@/lib/db");
-    [popups] = await Promise.all([
-      db.popup.findMany({ where: { isActive: true } }).catch(() => []),
-    ]);
-    const rows = await db.siteSetting.findMany().catch(() => []);
-    for (const r of rows) settings[r.key] = r.value;
-  } catch {
-    // DB not available — use defaults
-  }
-
-  const logoUrl = settings["logo_url"] || "/kpc-logo.png";
-  const faviconUrl = settings["favicon_url"] || "/favicon.svg";
-  const clinicName = settings["clinic_name"] || "KPC";
-  const clinicTagline = settings["clinic_tagline"] || "Skin · Hair · Aesthetic";
-
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href={faviconUrl} />
-      </head>
       <body
         className={`${inter.variable} ${poppins.variable} antialiased bg-background text-foreground font-sans`}
       >
         <BookAppointmentProvider>
           <div className="flex min-h-screen flex-col bg-background">
-            <Header logoUrl={logoUrl} clinicName={clinicName} clinicTagline={clinicTagline} />
+            <Header />
             <main className="flex-1">{children}</main>
-            <Footer logoUrl={logoUrl} clinicName={clinicName} clinicTagline={clinicTagline} />
+            <Footer />
           </div>
           <FloatingButtons />
-          {popups.length > 0 && <SitePopup popups={popups} />}
+          <SitePopup />
         </BookAppointmentProvider>
         <Toaster />
       </body>

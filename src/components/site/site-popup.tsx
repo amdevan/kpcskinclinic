@@ -17,34 +17,42 @@ type Popup = {
   pagePath: string;
 };
 
-export function SitePopup({ popups }: { popups: Popup[] }) {
+export function SitePopup() {
   const [show, setShow] = useState(false);
   const [popup, setPopup] = useState<Popup | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
-    if (popups.length === 0) return;
+     
+    // Fetch active popups from API (client-side, doesn't block page render)
+    fetch("/api/popups")
+      .then((r) => r.ok ? r.json() : [])
+      .then((popups: Popup[]) => {
+        if (!popups || popups.length === 0) return;
 
-    const now = new Date();
-    const active = popups.find((p) => {
-      if (!p.isActive) return false;
-      if (!p.showOnAll && p.pagePath && p.pagePath !== pathname) return false;
-      return true;
-    });
+        const now = new Date();
+        const active = popups.find((p) => {
+          if (!p.isActive) return false;
+          if (!p.showOnAll && p.pagePath && p.pagePath !== pathname) return false;
+          return true;
+        });
 
-    if (!active) return;
+        if (!active) return;
 
-    const key = `popup-dismissed-${active.id}`;
-    const dismissed = localStorage.getItem(key);
-    if (dismissed) {
-      if (Date.now() - parseInt(dismissed) < 24 * 60 * 60 * 1000) return;
-    }
+        const key = `popup-dismissed-${active.id}`;
+        const dismissed = localStorage.getItem(key);
+        if (dismissed) {
+          if (Date.now() - parseInt(dismissed) < 24 * 60 * 60 * 1000) return;
+        }
 
-    setPopup(active);
-    const timer = setTimeout(() => setShow(true), 2000);
-    return () => clearTimeout(timer);
-  }, [popups, pathname]);
+        setPopup(active);
+        const timer = setTimeout(() => setShow(true), 2000);
+        return () => clearTimeout(timer);
+      })
+      .catch(() => {
+        // API not available — no popup shown
+      });
+  }, [pathname]);
 
   function dismiss() {
     if (!popup) return;

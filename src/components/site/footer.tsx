@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function Footer({ logoUrl, clinicName, clinicTagline }: { logoUrl?: string; clinicName?: string; clinicTagline?: string; }) {
+export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer
@@ -51,7 +51,7 @@ export function Footer({ logoUrl, clinicName, clinicTagline }: { logoUrl?: strin
         <div className="grid lg:grid-cols-12 gap-10">
           {/* Brand + contact — uses CONTACT_INFO */}
           <div className="lg:col-span-5">
-            <Logo logoUrl={logoUrl} clinicName={clinicName} clinicTagline={clinicTagline} />
+            <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-sm">
               KPC Skin Hair &amp; Aesthetic Clinic Pvt. Ltd — Nepal&apos;s
               leading skin &amp; hair clinic. 5 years of trusted care,
