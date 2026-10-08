@@ -1,116 +1,85 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { promises as fs } from "fs";
-import path from "path";
-import { randomUUID } from "crypto";
+import { writeFileSync, mkdirSync } from "fs";
+import { join } from "path";
 
-// Rate limiter (in-memory): 20 uploads/min per IP
 const RATE: Record<string, { count: number; reset: number }> = {};
 const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 20;
+const MAX = 20;
 
-function rateLimited(ip: string) {
+export async function POST(req: NextRequest) {
+  // Auth check
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
+  } catch {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  // Rate limiting
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const now = Date.now();
   const entry = RATE[ip];
   if (!entry || entry.reset < now) {
     RATE[ip] = { count: 1, reset: now + WINDOW_MS };
-    return false;
+  } else {
+    entry.count += 1;
+    if (entry.count > MAX) {
+      return NextResponse.json({ error: "too_many_requests" }, { status: 429 });
+    }
   }
-  entry.count += 1;
-  return entry.count > MAX_PER_WINDOW;
-}
-
-function getIp(req: NextRequest) {
-  const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
-  return "unknown";
-}
-
-const ALLOWED_TYPES = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-  "image/svg+xml",
-]);
-
-const ALLOWED_EXTENSIONS = new Set(["jpg", "jpeg", "png", "webp", "gif", "svg"]);
-const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
-
-export async function POST(req: NextRequest) {
-  // 1) Auth check — must be a logged-in admin
-  let session: any = null;
-  try {
-    session = await getServerSession(authOptions);
-  } catch {
-    // NextAuth failed — treat as unauthenticated
-  }
-  if (!session) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
-
-  // 2) Rate limit
-  const ip = getIp(req);
-  if (rateLimited(ip)) {
-    return NextResponse.json({ error: "too_many_requests" }, { status: 429 });
-  }
-
-  // 3) Parse multipart form data
-  let formData: FormData;
-  try {
-    formData = await req.formData();
-  } catch {
-    return NextResponse.json({ error: "invalid_form_data" }, { status: 400 });
-  }
-
-  const file = formData.get("file");
-  if (!file || !(file instanceof File)) {
-    return NextResponse.json({ error: "no_file_provided" }, { status: 400 });
-  }
-
-  // 4) Validate file size
-  if (file.size > MAX_BYTES) {
-    return NextResponse.json(
-      { error: "file_too_large", maxBytes: MAX_BYTES },
-      { status: 400 },
-    );
-  }
-
-  // 5) Validate file type by mime + extension
-  const mimeType = file.type.toLowerCase();
-  if (!ALLOWED_TYPES.has(mimeType)) {
-    return NextResponse.json(
-      { error: "unsupported_file_type", mimeType },
-      { status: 400 },
-    );
-  }
-
-  const ext = (file.name.split(".").pop() || "").toLowerCase();
-  if (!ALLOWED_EXTENSIONS.has(ext)) {
-    return NextResponse.json(
-      { error: "unsupported_extension", ext },
-      { status: 400 },
-    );
-  }
-
-  // 6) Save to public/uploads/ with a unique filename
-  const uniqueName = `${randomUUID()}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  const filePath = path.join(uploadDir, uniqueName);
-  const publicUrl = `/uploads/${uniqueName}`;
 
   try {
-    await fs.mkdir(uploadDir, { recursive: true });
-    const buf = Buffer.from(await file.arrayBuffer());
-    await fs.writeFile(filePath, buf);
+    const formData = await req.formData();
+    const file = formData.get("file") as File | null;
+
+    if (!file) {
+      return NextResponse.json({ error: "no_file" }, { status: 400 });
+    }
+
+    // File type validation (whitelist)
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json({ error: "invalid_file_type" }, { status: 400 });
+    }
+
+    // File size validation (max 10MB)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      return NextResponse.json({ error: "file_too_large" }, { status: 400 });
+    }
+
+    // Filename sanitization (prevent path traversal)
+    const safeExt = (file.name.split(".").pop() || "jpg").replace(/[^a-z0-9]/gi, "").toLowerCase().slice(0, 5);
+    if (!["jpg", "jpeg", "png", "webp", "gif", "svg"].includes(safeExt)) {
+      return NextResponse.json({ error: "invalid_extension" }, { status: 400 });
+    }
+
+    const filename = `img-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${safeExt}`;
+
+    // Ensure upload directory exists
+    const uploadDir = join(process.cwd(), "public", "uploads");
+    try {
+      mkdirSync(uploadDir, { recursive: true });
+    } catch {}
+
+    // Write file
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const filepath = join(uploadDir, filename);
+    writeFileSync(filepath, buffer);
+
+    const url = `/uploads/${filename}`;
+
+    // Security headers on response
+    const res = NextResponse.json({ ok: true, url, filename, size: file.size, type: file.type });
+    res.headers.set("X-Content-Type-Options", "nosniff");
+    return res;
   } catch (err) {
-    console.error("[upload] write failed", err);
-    return NextResponse.json(
-      { error: "server_error_writing_file" },
-      { status: 500 },
-    );
+    console.error("[upload] failed", err);
+    return NextResponse.json({ error: "server_error" }, { status: 500 });
   }
-
-  return NextResponse.json({ ok: true, url: publicUrl });
 }

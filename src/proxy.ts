@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Next.js 16 uses proxy.ts (middleware.ts is deprecated)
-// Simple, resilient auth check that doesn't crash if NEXTAUTH_SECRET is missing
+// Resilient auth check — protects /admin/* routes
 
 export function proxy(req: NextRequest) {
   const path = req.nextUrl.pathname;
@@ -12,7 +12,7 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for NextAuth session cookie (works with or without NEXTAUTH_SECRET)
+  // Check for NextAuth session cookie
   const sessionCookie =
     req.cookies.get("next-auth.session-token") ||
     req.cookies.get("__Secure-next-auth.session-token");
@@ -23,7 +23,15 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  // Security headers for admin responses
+  const res = NextResponse.next();
+  res.headers.set("X-Content-Type-Options", "nosniff");
+  res.headers.set("X-Frame-Options", "DENY");
+  res.headers.set("X-XSS-Protection", "1; mode=block");
+  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+
+  return res;
 }
 
 export const config = {
