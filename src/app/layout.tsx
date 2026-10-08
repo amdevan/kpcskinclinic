@@ -63,9 +63,7 @@ type SiteSettings = {
 
 async function getSiteSettings(): Promise<SiteSettings> {
   try {
-    const rows = await db.siteSetting.findMany({
-      where: { group: "general" },
-    });
+    const rows = await db.siteSetting.findMany();
     if (!rows || rows.length === 0) return {};
     const map: Record<string, string> = {};
     for (const r of rows) map[r.key] = r.value;
@@ -76,7 +74,6 @@ async function getSiteSettings(): Promise<SiteSettings> {
       clinicTagline: map.clinic_tagline,
     };
   } catch {
-    // DB not available — fall back to static defaults
     return {};
   }
 }

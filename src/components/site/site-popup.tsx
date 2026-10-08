@@ -27,6 +27,9 @@ export function SitePopup() {
   useEffect(() => {
     let cancelled = false;
 
+    // Don't show popup on admin pages
+    if (pathname?.startsWith("/admin")) return;
+
     // Fetch active popups from API (client-side, doesn't block page render)
     fetch("/api/popups")
       .then((r) => (r.ok ? r.json() : []))

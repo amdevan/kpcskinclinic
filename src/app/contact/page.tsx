@@ -47,20 +47,29 @@ async function getContactInfo(): Promise<ContactInfo> {
     if (rows && rows.length > 0) {
       const map: Record<string, string> = {};
       for (const r of rows) map[r.key] = r.value;
+      const phone = map.phone || CONTACT_INFO.phone;
+      const mobile = map.mobile || CONTACT_INFO.mobile;
+      const email = map.email || CONTACT_INFO.email;
+      const address = map.address || CONTACT_INFO.address;
       info = {
-        phone: map.phone || CONTACT_INFO.phone,
-        phoneHref: map.phone_href || CONTACT_INFO.phoneHref,
-        mobile: map.mobile || CONTACT_INFO.mobile,
-        mobileHref: map.mobile_href || CONTACT_INFO.mobileHref,
+        phone,
+        phoneHref: map.phone_href || `tel:${phone.replace(/[^+\d]/g, "")}`,
+        mobile,
+        mobileHref: map.mobile_href || `tel:${mobile.replace(/[^+\d]/g, "")}`,
         whatsapp: map.whatsapp || CONTACT_INFO.whatsapp,
         whatsappLabel: CONTACT_INFO.whatsappLabel,
-        email: map.email || CONTACT_INFO.email,
-        emailHref: map.email_href || CONTACT_INFO.emailHref,
-        address: map.address || CONTACT_INFO.address,
+        email,
+        emailHref: map.email_href || `mailto:${email}`,
+        address,
         addressShort: map.address_short || CONTACT_INFO.addressShort,
-        addressMapHref: map.address_map_href || CONTACT_INFO.addressMapHref,
+        addressMapHref: map.map_link || map.address_map_href || CONTACT_INFO.addressMapHref,
         hours: parseJson<HoursEntry[]>(map.hours, CONTACT_INFO.hours),
-        socials: parseJson<SocialEntry[]>(map.socials, CONTACT_INFO.socials),
+        socials: [
+          { label: "Instagram", href: map.social_instagram || CONTACT_INFO.socials[0]?.href || "#", handle: "@kpcskin", icon: "instagram" },
+          { label: "Facebook", href: map.social_facebook || CONTACT_INFO.socials[1]?.href || "#", handle: "KPC Skin Clinic", icon: "facebook" },
+          { label: "TikTok", href: map.social_tiktok || CONTACT_INFO.socials[2]?.href || "#", handle: "@kpcskin", icon: "tiktok" },
+          ...(map.social_youtube ? [{ label: "YouTube", href: map.social_youtube, handle: "KPC Skin", icon: "youtube" }] : []),
+        ],
       };
     }
   } catch {
