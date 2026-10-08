@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { join } from "path";
 
 const RATE: Record<string, { count: number; reset: number }> = {};
@@ -40,42 +40,58 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "no_file" }, { status: 400 });
     }
 
-    // File type validation (whitelist)
+    // File type validation
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json({ error: "invalid_file_type" }, { status: 400 });
     }
 
-    // File size validation (max 10MB)
-    const maxSize = 10 * 1024 * 1024;
+    // File size validation (max 5MB — smaller for base64 compatibility)
+    const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      return NextResponse.json({ error: "file_too_large" }, { status: 400 });
+      return NextResponse.json({ error: "file_too_large", max: "5MB" }, { status: 400 });
     }
 
-    // Filename sanitization (prevent path traversal)
+    // Filename sanitization
     const safeExt = (file.name.split(".").pop() || "jpg").replace(/[^a-z0-9]/gi, "").toLowerCase().slice(0, 5);
     if (!["jpg", "jpeg", "png", "webp", "gif", "svg"].includes(safeExt)) {
       return NextResponse.json({ error: "invalid_extension" }, { status: 400 });
     }
 
     const filename = `img-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${safeExt}`;
-
-    // Ensure upload directory exists
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    try {
-      mkdirSync(uploadDir, { recursive: true });
-    } catch {}
-
-    // Write file
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const filepath = join(uploadDir, filename);
-    writeFileSync(filepath, buffer);
 
-    const url = `/uploads/${filename}`;
+    // Try writing to public/uploads/ (works locally, fails on Vercel)
+    let url = "";
+    let storage = "";
 
-    // Security headers on response
-    const res = NextResponse.json({ ok: true, url, filename, size: file.size, type: file.type });
+    try {
+      const uploadDir = join(process.cwd(), "public", "uploads");
+      // Check if the directory is writable
+      if (!existsSync(uploadDir)) {
+        mkdirSync(uploadDir, { recursive: true });
+      }
+      const filepath = join(uploadDir, filename);
+      writeFileSync(filepath, buffer);
+      url = `/uploads/${filename}`;
+      storage = "file";
+    } catch (writeErr) {
+      // Vercel filesystem is read-only — fall back to base64 data URL
+      const mimeType = file.type || `image/${safeExt}`;
+      const base64 = buffer.toString("base64");
+      url = `data:${mimeType};base64,${base64}`;
+      storage = "base64";
+    }
+
+    const res = NextResponse.json({
+      ok: true,
+      url,
+      filename,
+      size: file.size,
+      type: file.type,
+      storage,
+    });
     res.headers.set("X-Content-Type-Options", "nosniff");
     return res;
   } catch (err) {
