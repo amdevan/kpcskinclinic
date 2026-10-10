@@ -8,6 +8,7 @@ import {
   Save,
   Trash2,
   ExternalLink,
+  X,
 } from "lucide-react";
 import {
   Accordion,
@@ -21,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { VideoEmbed } from "@/components/site/video-embed";
 import {
   savePageContent,
   createPageContent,
@@ -30,7 +32,7 @@ import {
 type FieldDef = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "image";
+  type?: "text" | "textarea" | "image" | "video";
   help?: string;
 };
 
@@ -48,6 +50,7 @@ type ContentRow = {
   title: string;
   body: string;
   image: string;
+  video: string;
   order: number;
 };
 
@@ -129,6 +132,7 @@ function GroupEditor({ page, group }: { page: string; group: GroupDef }) {
         title: row.title,
         body: row.body,
         image: row.image,
+        video: row.video,
         section: row.section,
         page: row.page,
         order: row.order,
@@ -147,6 +151,7 @@ function GroupEditor({ page, group }: { page: string; group: GroupDef }) {
         title: "",
         body: "",
         image: "",
+        video: "",
         order: rows.length,
       });
       setBusy(null);
@@ -235,9 +240,10 @@ function BlockEditor({
 }) {
   // Field key maps to column on PageContent
   function value(key: string): string {
-    if (key === "title") return row.title;
-    if (key === "body") return row.body;
-    if (key === "image") return row.image;
+    if (key === "title") return row.title ?? "";
+    if (key === "body") return row.body ?? "";
+    if (key === "image") return row.image ?? "";
+    if (key === "video") return row.video ?? "";
     // Aliases — for sections where the UI exposes eyebrow/highlight/description
     // we store them as JSON inside body. For admin ergonomics we still allow
     // raw editing of body.
@@ -251,7 +257,11 @@ function BlockEditor({
           <div
             key={f.key}
             className={
-              f.type === "textarea" || f.type === "image" ? "sm:col-span-2" : ""
+              f.type === "textarea" ||
+              f.type === "image" ||
+              f.type === "video"
+                ? "sm:col-span-2"
+                : ""
             }
           >
             <Label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
@@ -260,7 +270,7 @@ function BlockEditor({
             {f.type === "textarea" ? (
               <Textarea
                 rows={3}
-                value={f.key === "body" ? row.body : value(f.key)}
+                value={(f.key === "body" ? row.body : value(f.key)) || ""}
                 onChange={(e) =>
                   f.key === "body"
                     ? onChange({ body: e.target.value })
@@ -269,12 +279,17 @@ function BlockEditor({
               />
             ) : f.type === "image" ? (
               <ImageUpload
-                value={f.key === "image" ? row.image : value(f.key)}
+                value={f.key === "image" ? (row.image || "") : value(f.key)}
                 onChange={(url) => onChange({ image: url })}
+              />
+            ) : f.type === "video" ? (
+              <VideoField
+                value={f.key === "video" ? (row.video || "") : value(f.key)}
+                onChange={(url) => onChange({ video: url })}
               />
             ) : (
               <Input
-                value={f.key === "title" ? row.title : value(f.key)}
+                value={f.key === "title" ? (row.title || "") : value(f.key)}
                 onChange={(e) =>
                   f.key === "title"
                     ? onChange({ title: e.target.value })
@@ -314,6 +329,45 @@ function BlockEditor({
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Video field — URL input + Clear button + live embed preview.
+ */
+function VideoField({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (url: string) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <Input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Paste YouTube / Instagram / TikTok / Vimeo / .mp4 URL"
+          className="h-9 text-xs"
+        />
+        {value ? (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            aria-label="Clear video"
+            className="inline-flex size-9 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-accent hover:text-foreground"
+          >
+            <X className="size-3.5" />
+          </button>
+        ) : null}
+      </div>
+      {value ? (
+        <div className="max-w-md">
+          <VideoEmbed url={value} />
+        </div>
+      ) : null}
     </div>
   );
 }

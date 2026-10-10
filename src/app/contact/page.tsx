@@ -1,5 +1,6 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { ContactForm } from "@/components/site/contact-form";
+import { VideoEmbed } from "@/components/site/video-embed";
 import { CONTACT_INFO } from "@/lib/site-data";
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, Navigation } from "lucide-react";
 import { db } from "@/lib/db";
@@ -80,6 +81,22 @@ async function getContactInfo(): Promise<ContactInfo> {
 
 export default async function ContactPage() {
   const CONTACT = await getContactInfo();
+  let videoTour: { title: string; body: string; video: string } | null = null;
+  try {
+    const rows = await db.pageContent.findMany({
+      where: { page: "contact", section: "video-tour" },
+      orderBy: { order: "asc" },
+    });
+    if (rows && rows.length > 0) {
+      const r = rows[0];
+      const v = (r as any).video ?? "";
+      if (v) {
+        videoTour = { title: r.title, body: r.body, video: v };
+      }
+    }
+  } catch {
+    // ignore — no video tour
+  }
   return (
     <>
       <PageBanner
@@ -283,6 +300,34 @@ export default async function ContactPage() {
           </div>
         </div>
       </section>
+
+      {/* Clinic video tour */}
+      {videoTour && videoTour.video ? (
+        <section className="py-16 sm:py-20 bg-background">
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
+            <div className="grid lg:grid-cols-12 gap-10 items-center">
+              <div className="lg:col-span-5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
+                  Clinic walkthrough
+                </p>
+                {videoTour.title ? (
+                  <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink mb-3">
+                    {videoTour.title}
+                  </h2>
+                ) : null}
+                {videoTour.body ? (
+                  <p className="text-muted-foreground text-base leading-relaxed">
+                    {videoTour.body}
+                  </p>
+                ) : null}
+              </div>
+              <div className="lg:col-span-7">
+                <VideoEmbed url={videoTour.video} />
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
     </>
   );
 }

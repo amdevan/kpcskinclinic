@@ -22,6 +22,7 @@ export async function createPageContent(
         title: String(data?.title ?? ""),
         body: String(data?.body ?? ""),
         image: String(data?.image ?? ""),
+        video: String(data?.video ?? ""),
         order: Number(data?.order ?? 0),
       },
     });
@@ -52,6 +53,7 @@ export async function savePageContent(
         ...(data?.title !== undefined ? { title: String(data.title) } : {}),
         ...(data?.body !== undefined ? { body: String(data.body) } : {}),
         ...(data?.image !== undefined ? { image: String(data.image) } : {}),
+        ...(data?.video !== undefined ? { video: String(data.video) } : {}),
         ...(data?.order !== undefined ? { order: Number(data.order) } : {}),
       },
     });

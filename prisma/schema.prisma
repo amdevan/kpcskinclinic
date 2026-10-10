@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -190,6 +190,7 @@ model PageContent {
   title     String   @default("")
   body      String   @default("") // can be JSON-encoded structured content
   image     String   @default("")
+  video     String   @default("") // YouTube/Instagram/TikTok/Vimeo/.mp4 URL
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

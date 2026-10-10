@@ -1,5 +1,6 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
+import { VideoEmbed } from "@/components/site/video-embed";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,8 @@ async function getHairTransplantContent() {
   let banner = DEFAULT_BANNER;
   let subProcedures = DEFAULT_SUB_PROCEDURES;
   let steps = DEFAULT_STEPS;
+  let bannerVideo = "";
+  let stepsVideo = "";
   try {
     const rows = await db.pageContent.findMany({
       where: { page: "hair-transplant" },
@@ -72,29 +75,32 @@ async function getHairTransplantContent() {
     });
     if (rows && rows.length > 0) {
       for (const r of rows) {
+        const v = (r as any).video ?? "";
         if (r.section === "banner") {
           banner = {
             title: r.title,
             description: r.body,
             image: r.image || DEFAULT_BANNER.image,
           };
+          bannerVideo = v;
         } else if (r.section === "sub_procedures") {
           const parsed = parseJson<typeof DEFAULT_SUB_PROCEDURES>(r.body, DEFAULT_SUB_PROCEDURES);
           if (Array.isArray(parsed) && parsed.length > 0) subProcedures = parsed;
         } else if (r.section === "steps") {
           const parsed = parseJson<typeof DEFAULT_STEPS>(r.body, DEFAULT_STEPS);
           if (Array.isArray(parsed) && parsed.length > 0) steps = parsed;
+          stepsVideo = v;
         }
       }
     }
   } catch {
     // DB not available — fall back to defaults
   }
-  return { banner, subProcedures, steps };
+  return { banner, subProcedures, steps, bannerVideo, stepsVideo };
 }
 
 export default async function HairTransplantHubPage() {
-  const { banner, subProcedures, steps } = await getHairTransplantContent();
+  const { banner, subProcedures, steps, bannerVideo, stepsVideo } = await getHairTransplantContent();
   return (
     <>
       <PageBanner
@@ -105,6 +111,17 @@ export default async function HairTransplantHubPage() {
         image={banner.image}
         crumbs={[{ label: "Home", href: "/" }, { label: "Hair Transplant" }]}
       />
+
+      {/* Banner video — shown below the hero when set */}
+      {bannerVideo ? (
+        <section className="py-12 sm:py-16 bg-background">
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
+            <div className="max-w-4xl mx-auto">
+              <VideoEmbed url={bannerVideo} />
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* Sub-procedures */}
       <section className="py-20 sm:py-28 bg-background">
@@ -170,6 +187,11 @@ export default async function HairTransplantHubPage() {
               );
             })}
           </div>
+          {stepsVideo ? (
+            <div className="mt-12 max-w-4xl mx-auto">
+              <VideoEmbed url={stepsVideo} />
+            </div>
+          ) : null}
         </div>
       </section>
 

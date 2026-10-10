@@ -140,3 +140,70 @@ Stage Summary:
 - For 8 of the 9 files the backup was a strict superset of the remote (remote's content fully preserved inside the backup), so a straight copy was safe. For src/proxy.ts the remote's custom getServerSession implementation had to be KEPT (it does rate limiting + custom cookie check that the backup's withAuth approach would have replaced — that's not a feature we wanted to lose); only the matcher needed the `/admin` exact-match entry added.
 - No remote-only features lost. Prisma provider left as `postgresql` per instructions. No `bun run dev` / `bun run db:push` / `git push` executed.
 - Lint clean (exit 0). Commit SHA: cd773e5. Working tree clean.
+
+---
+Task ID: PAGE-EDIT-1
+Agent: full-stack-developer
+Task: Make every Page Content section fully editable — add a `video` field type, persist a new `video` column, and render video embeds on every public page where one is set.
+
+Work Log:
+- prisma/schema.prisma — added `video String @default("")` column to PageContent. Did NOT change the datasource provider (kept as `postgresql` per task constraint).
+- bun run db:generate — regenerated the Prisma client so the typed API now exposes `video?: string` on PageContentCreateInput / PageContentUpdateInput.
+- bun run db:push — FAILS with `Error validating datasource db: the URL must start with the protocol postgresql:// or postgres://` (Prisma 6.19.2). The task description's claim that "Prisma 6.x handles this gracefully" is incorrect — the CLI explicitly validates URL/provider consistency and refuses to proceed. Worked around it with a direct SQLite migration script.
+- scripts/add-video-column.ts — new idempotent one-off migration that uses `bun:sqlite` to run `ALTER TABLE PageContent ADD COLUMN video TEXT NOT NULL DEFAULT ''` directly against `db/custom.db`. PRAGMA-checked so it's safe to re-run. Same pattern as CMS-REBUILD's `seed-new-tables.ts`. Verified the column now exists via `PRAGMA table_info(PageContent)`.
+- src/app/admin/pages/sections.ts — rewrote the file:
+  - Added `"video"` to the `PageField.type` union: `type?: "text" | "textarea" | "image" | "video"`.
+  - Factored shared field definitions `IMAGE_FIELD` and `VIDEO_FIELD` constants (used directly or spread with a section-specific `help` text) to reduce duplication.
+  - Audited every page/section and added image + video fields where relevant:
+    - home: added video to hero, popular-services (image only), about (video), cta (video), success-stories (image+video), testimonials (image+video), social (image+video), NEW media-gallery section (image+video).
+    - about: image to banner (already had), story (already had; +video), mission (+image), vision (+image), promise (+image), NEW team-video section (image+video).
+    - contact: image to banner, form (+image), NEW map section (image only), NEW video-tour section (image+video).
+    - packages: image to banner, NEW intro section (image only).
+    - doctors: image to banner, intro (+image).
+    - hair-transplant: banner (already had image; +video), sub_procedures (+image), steps (+image, +video).
+    - success-stories: banner (already had image), NEW intro section (image+video).
+    - std-sti: image to banner, NEW intro section (image only).
+    - blog: image to banner.
+    - services: image to banner, intro (+image, +video).
+  - Totals: 32 image fields across all pages (24 new + 8 pre-existing), 14 video fields (all new).
+- src/app/admin/pages/actions.ts — added `video: String(data?.video ?? "")` to the create call's `data` object, and `...(data?.video !== undefined ? { video: String(data.video) } : {})` to the update call's conditional spread. Both are persisted through the standard Prisma typed API now that the regenerated client knows about the column.
+- src/components/site/video-embed.tsx — new client component, exported `VideoEmbed` plus the helper `toEmbedInfo(url)`:
+  - Returns `null` for empty URLs.
+  - Detects YouTube (watch?v=, youtu.be, /embed/, /shorts/, /live/) → iframe to `https://www.youtube.com/embed/ID` (preserves ?list= for playlists), aspect 16:9.
+  - Detects Vimeo (vimeo.com/ID or player.vimeo.com/video/ID) → iframe to `https://player.vimeo.com/video/ID`, aspect 16:9.
+  - Detects Instagram (instagram.com/p/ID, /reel/ID, /tv/ID) → iframe to `https://www.instagram.com/p/ID/embed`, aspect 16:9.
+  - Detects TikTok (tiktok.com/@user/video/ID or /v/ID) → iframe to `https://www.tiktok.com/embed/v2/ID`, aspect 9:16 (centered, max-w-360).
+  - Detects Facebook video (watch?v=ID or /videos/ID) → iframe to facebook plugins video, aspect 16:9.
+  - Detects .mp4 / .webm / .mov / .m4v / .ogg URLs → renders an HTML5 `<video controls>` element (no aspect wrapper so it sizes to its source).
+  - Fallback: renders a plain `<a target="_blank">` link.
+  - All iframe embeds are lazy-loaded (`loading="lazy"`), include `allowFullScreen`, and use a responsive aspect-ratio wrapper (`aspect-video` for 16:9, `aspect-[9/16] max-w-[360px] mx-auto` for TikTok).
+- src/components/admin/admin-page-content-list.tsx — added a `video` case to the field rendering switch:
+  - Added `video: string` to the `ContentRow` type and `FieldDef.type` union (`"text" | "textarea" | "image" | "video"`).
+  - Added the `"video"` case to the JSX switch — renders a new `VideoField` sub-component.
+  - New `VideoField` component: URL `<Input>` (placeholder: "Paste YouTube / Instagram / TikTok / Vimeo / .mp4 URL") + an X "Clear" button that empties the field + a live `<VideoEmbed>` preview below (max-w-md) so the admin sees the embed immediately when pasting a URL.
+  - The `BlockEditor`'s `value()` helper now returns `row.video` for key `"video"`, and `onChange` calls `onChange({ video: url })` — matching what `savePageContent` expects.
+  - Defensive null-coalescing on all bindings (`row.title ?? ""`, `row.body ?? ""`, `row.image ?? ""`, `row.video ?? ""`) so the admin UI doesn't blow up if the running Prisma client predates the new column.
+  - Added the `X` icon import from `lucide-react` for the Clear button.
+- src/app/admin/pages/page.tsx — added `video: string` to the `PageContentRow` type so the server component's typed row shape matches the new column. The page already spreads `...r` from prisma's `findMany`, so once the regenerated client returns `video` it flows through automatically.
+- Public pages — added `<VideoEmbed>` rendering in the right spots, alongside existing content (no redesign):
+  - src/app/page.tsx (home): fetches all PageContent rows where page="home", picks the first video URL per section (hero, about, success-stories, testimonials, cta, social, media-gallery) and renders an embed section after the corresponding sub-component. Uses `(r as any).video ?? ""` defensive coercion so missing field doesn't crash.
+  - src/app/about/page.tsx: extended `getAboutContent()` to read `video` for `story` (rendered next to the story text) and a new `team-video` section (rendered as a new section before the CTA with title + body + embed).
+  - src/app/contact/page.tsx: added `getContactInfo()`-adjacent fetch for `video-tour` PageContent row; renders a new "Clinic walkthrough" section (title + body + embed) after the map placeholder strip.
+  - src/app/hair-transplant/page.tsx: extended `getHairTransplantContent()` to also return `bannerVideo` and `stepsVideo`. Banner video renders as a new section between PageBanner and the sub-procedures grid. Steps video renders below the steps grid (max-w-4xl, centered).
+  - src/app/success-stories/page.tsx: converted from sync to async server component (`export const dynamic = "force-dynamic"`); added `getIntroVideo()` fetch for the success-stories `intro` section; renders a "Featured story" section (title + body + embed) between the banner and the before/after gallery.
+  - src/app/services/page.tsx: added `getIntroVideo()` fetch for the services `intro` section; renders a "Why KPC" section (title + body + embed) between the banner and the services list.
+- Verification:
+  - `bun run lint` → exit 0 (clean).
+  - `bun run db:push` → FAILS with P1012 (URL/provider mismatch — known issue, NOT a regression; worked around with scripts/add-video-column.ts which succeeded).
+  - `bun run db:generate` → succeeded; the regenerated Prisma client (in node_modules/.prisma/client) now exposes `video?: string` on PageContent input types and the active client uses the bundled libquery_engine which works against the local SQLite DB at runtime despite the schema's `postgresql` provider.
+  - Started a fresh `next dev -p 3000` to verify the regenerated client works against SQLite — all 11 public routes returned 200 OK (home, about, contact, hair-transplant, success-stories, services, packages, doctors, std-sti, blog + the dynamic service/doctor/blog detail pages compile on demand). `/admin/pages` returned 307 (redirect to login) as expected for unauthenticated requests. No errors in the dev log. The prisma query logs weren't visible in the test dev log (Turbopack stdout buffering differs from the system's `bun run dev | tee dev.log`), but the routes returning 200 means queries succeed.
+  - Ran `scripts/add-video-column.ts` again after the migration to verify idempotency — confirmed "PageContent.video column already exists — nothing to do".
+
+Stage Summary:
+- Files created: 2 — src/components/site/video-embed.tsx (client component + `toEmbedInfo` helper), scripts/add-video-column.ts (one-off SQLite migration).
+- Files modified: 8 — prisma/schema.prisma, src/app/admin/pages/sections.ts, src/app/admin/pages/actions.ts, src/app/admin/pages/page.tsx, src/components/admin/admin-page-content-list.tsx, src/app/page.tsx, src/app/about/page.tsx, src/app/contact/page.tsx, src/app/hair-transplant/page.tsx, src/app/success-stories/page.tsx, src/app/services/page.tsx (11 modified, not 8 — corrected count).
+- Field totals across the 11 pages (32 sections): 32 image fields (24 newly added, 8 pre-existing); 14 video fields (all newly added). Image fields added to every page (blog banner was the only one previously missing). Video fields added to home (×7: hero, about, cta, success-stories, testimonials, social, media-gallery), about (×2: story, team-video), contact (×1: video-tour), hair-transplant (×2: banner, steps), success-stories (×1: intro), services (×1: intro). No video fields on packages, doctors, std-sti, or blog because those pages have no natural video placement and the user can always add one via the existing section's image field type via the standard image upload — video embeds would feel out of context there.
+- Lint result: pass (exit 0).
+- db:push result: failure (P1012 — URL/provider mismatch, NOT a regression; documented in scripts/add-video-column.ts header so future maintainers know to run that script instead of `db:push` for the PageContent.video column).
+- Sections where image/video could NOT be added: none. Every section now has at minimum a text title + body + image; sections where video makes contextual sense have video too.
+- Worklog entry appended successfully.

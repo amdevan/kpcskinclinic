@@ -1,5 +1,6 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
+import { VideoEmbed } from "@/components/site/video-embed";
 import { SERVICE_CATEGORIES, slugify, type ServiceCategory } from "@/lib/site-data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -54,8 +55,28 @@ async function getCategories(): Promise<ServiceCategory[]> {
   return SERVICE_CATEGORIES;
 }
 
+async function getIntroVideo() {
+  try {
+    const rows = await db.pageContent.findMany({
+      where: { page: "services", section: "intro" },
+      orderBy: { order: "asc" },
+    });
+    if (rows && rows.length > 0) {
+      const r = rows[0];
+      const v = (r as any).video ?? "";
+      if (v) {
+        return { title: r.title, body: r.body, video: v };
+      }
+    }
+  } catch {
+    // DB not available — no intro video
+  }
+  return null;
+}
+
 export default async function ServicesPage() {
   const categories = await getCategories();
+  const intro = await getIntroVideo();
   return (
     <>
       <PageBanner
@@ -66,6 +87,34 @@ export default async function ServicesPage() {
         image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "Our Services" }]}
       />
+
+      {/* Featured intro video — shown when set */}
+      {intro && intro.video ? (
+        <section className="py-16 sm:py-20 bg-cream">
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
+            <div className="grid lg:grid-cols-12 gap-10 items-center">
+              <div className="lg:col-span-5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
+                  Why KPC
+                </p>
+                {intro.title ? (
+                  <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink mb-3">
+                    {intro.title}
+                  </h2>
+                ) : null}
+                {intro.body ? (
+                  <p className="text-muted-foreground text-base leading-relaxed">
+                    {intro.body}
+                  </p>
+                ) : null}
+              </div>
+              <div className="lg:col-span-7">
+                <VideoEmbed url={intro.video} />
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* Services list by category */}
       <section className="py-20 sm:py-28 bg-background">

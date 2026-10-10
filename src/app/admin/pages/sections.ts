@@ -1,7 +1,7 @@
 export type PageField = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "image";
+  type?: "text" | "textarea" | "image" | "video";
   help?: string;
 };
 
@@ -18,12 +18,27 @@ export type PageSection = {
   groups: PageGroup[];
 };
 
+// Shared field definitions for clarity.
+const IMAGE_FIELD: PageField = {
+  key: "image",
+  label: "Section image",
+  type: "image",
+  help: "Upload or paste an image URL — used as the section visual or background.",
+};
+
+const VIDEO_FIELD: PageField = {
+  key: "video",
+  label: "Video URL (YouTube/Instagram/TikTok/Vimeo/.mp4)",
+  type: "video",
+  help: "Paste a video link — it will be embedded on the public page.",
+};
+
 // 11 pages — each with grouped fields keyed by section name.
 // The 'page' value is the route slug, the group 'id' is the PageContent.section.
-// The field 'key' is the column on PageContent (title | body | image).
+// The field 'key' is the column on PageContent (title | body | image | video).
 // Sub-sections can store structured data in `body` as JSON — for the admin UI
-// we just expose title/body/image per section; richer editing happens in the
-// dedicated per-entity admin pages (doctors, services, packages, etc).
+// we just expose title/body/image/video per section; richer editing happens in
+// the dedicated per-entity admin pages (doctors, services, packages, etc).
 export const PAGE_SECTIONS: PageSection[] = [
   {
     page: "home",
@@ -39,6 +54,7 @@ export const PAGE_SECTIONS: PageSection[] = [
           { key: "highlight", label: "Highlight (accent text)", type: "text" },
           { key: "description", label: "Description", type: "textarea" },
           { key: "image", label: "Background image", type: "image" },
+          VIDEO_FIELD,
         ],
       },
       {
@@ -47,6 +63,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Section title", type: "text" },
           { key: "body", label: "Intro text", type: "textarea" },
+          IMAGE_FIELD,
         ],
       },
       {
@@ -56,6 +73,10 @@ export const PAGE_SECTIONS: PageSection[] = [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Body", type: "textarea" },
           { key: "image", label: "Image", type: "image" },
+          {
+            ...VIDEO_FIELD,
+            help: "Optional clinic tour or introduction video — embedded next to the about teaser.",
+          },
         ],
       },
       {
@@ -65,6 +86,10 @@ export const PAGE_SECTIONS: PageSection[] = [
           { key: "title", label: "Headline", type: "text" },
           { key: "body", label: "Body", type: "textarea" },
           { key: "image", label: "Background image", type: "image" },
+          {
+            ...VIDEO_FIELD,
+            help: "Optional background or explainer video — overlaid above the CTA when set.",
+          },
         ],
       },
       {
@@ -73,6 +98,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Intro", type: "textarea" },
+          IMAGE_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Featured patient story video — embedded at the top of the section.",
+          },
         ],
       },
       {
@@ -81,6 +111,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Intro", type: "textarea" },
+          IMAGE_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Video testimonial — embedded above the testimonials grid.",
+          },
         ],
       },
       {
@@ -89,6 +124,24 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Caption", type: "textarea" },
+          IMAGE_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Featured reel — embedded in the social strip.",
+          },
+        ],
+      },
+      {
+        id: "media-gallery",
+        label: "Media gallery (before/after showcase)",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "body", label: "Intro", type: "textarea" },
+          IMAGE_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Optional showcase video — embedded at the top of the gallery.",
+          },
         ],
       },
     ],
@@ -114,6 +167,10 @@ export const PAGE_SECTIONS: PageSection[] = [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Body", type: "textarea" },
           { key: "image", label: "Image", type: "image" },
+          {
+            ...VIDEO_FIELD,
+            help: "Founder's story or clinic walkthrough video — embedded alongside the story.",
+          },
         ],
       },
       {
@@ -122,6 +179,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Body", type: "textarea" },
+          IMAGE_FIELD,
         ],
       },
       {
@@ -130,6 +188,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Body", type: "textarea" },
+          IMAGE_FIELD,
         ],
       },
       {
@@ -138,6 +197,17 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Body (JSON array allowed)", type: "textarea" },
+          IMAGE_FIELD,
+        ],
+      },
+      {
+        id: "team-video",
+        label: "Team / clinic video",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "body", label: "Caption / description", type: "textarea" },
+          IMAGE_FIELD,
+          VIDEO_FIELD,
         ],
       },
     ],
@@ -153,6 +223,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Subtitle", type: "textarea" },
+          { key: "image", label: "Background image", type: "image" },
         ],
       },
       {
@@ -161,6 +232,26 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Intro", type: "textarea" },
+          IMAGE_FIELD,
+        ],
+      },
+      {
+        id: "map",
+        label: "Map / location",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "body", label: "Address or caption", type: "textarea" },
+          { key: "image", label: "Map screenshot fallback", type: "image" },
+        ],
+      },
+      {
+        id: "video-tour",
+        label: "Clinic video tour",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "body", label: "Caption / description", type: "textarea" },
+          IMAGE_FIELD,
+          VIDEO_FIELD,
         ],
       },
     ],
@@ -179,6 +270,15 @@ export const PAGE_SECTIONS: PageSection[] = [
           { key: "image", label: "Background image", type: "image" },
         ],
       },
+      {
+        id: "intro",
+        label: "Intro",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "body", label: "Body", type: "textarea" },
+          IMAGE_FIELD,
+        ],
+      },
     ],
   },
   {
@@ -192,6 +292,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Subtitle", type: "textarea" },
+          { key: "image", label: "Background image", type: "image" },
         ],
       },
       {
@@ -200,6 +301,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Body", type: "textarea" },
+          IMAGE_FIELD,
         ],
       },
     ],
@@ -216,6 +318,10 @@ export const PAGE_SECTIONS: PageSection[] = [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Subtitle", type: "textarea" },
           { key: "image", label: "Background image", type: "image" },
+          {
+            ...VIDEO_FIELD,
+            help: "Featured hair transplant procedure video — shown at the top of the page.",
+          },
         ],
       },
       {
@@ -223,6 +329,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Sub procedures (JSON)",
         fields: [
           { key: "body", label: "Sub procedures JSON", type: "textarea" },
+          IMAGE_FIELD,
         ],
       },
       {
@@ -230,6 +337,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Process steps (JSON)",
         fields: [
           { key: "body", label: "Steps JSON", type: "textarea" },
+          IMAGE_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Step-by-step procedure video — embedded alongside the process timeline.",
+          },
         ],
       },
     ],
@@ -248,6 +360,19 @@ export const PAGE_SECTIONS: PageSection[] = [
           { key: "image", label: "Background image", type: "image" },
         ],
       },
+      {
+        id: "intro",
+        label: "Intro",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "body", label: "Body", type: "textarea" },
+          IMAGE_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Featured success-story video — embedded above the gallery.",
+          },
+        ],
+      },
     ],
   },
   {
@@ -261,6 +386,16 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Subtitle", type: "textarea" },
+          { key: "image", label: "Background image", type: "image" },
+        ],
+      },
+      {
+        id: "intro",
+        label: "Intro",
+        fields: [
+          { key: "title", label: "Title", type: "text" },
+          { key: "body", label: "Body", type: "textarea" },
+          IMAGE_FIELD,
         ],
       },
     ],
@@ -276,6 +411,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Subtitle", type: "textarea" },
+          { key: "image", label: "Background image", type: "image" },
         ],
       },
     ],
@@ -291,6 +427,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Subtitle", type: "textarea" },
+          { key: "image", label: "Background image", type: "image" },
         ],
       },
       {
@@ -299,6 +436,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         fields: [
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Body", type: "textarea" },
+          IMAGE_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Featured service intro video — embedded above the services list.",
+          },
         ],
       },
     ],

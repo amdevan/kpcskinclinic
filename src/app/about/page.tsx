@@ -1,5 +1,6 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
+import { VideoEmbed } from "@/components/site/video-embed";
 import { TEAM, VALUES, STATS_FULL, CONTACT_INFO } from "@/lib/site-data";
 import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
 import { db } from "@/lib/db";
@@ -45,6 +46,8 @@ async function getAboutContent() {
   let mission = DEFAULTS.mission;
   let vision = DEFAULTS.vision;
   let promise = DEFAULTS.promise;
+  let storyVideo = "";
+  let teamVideo: { title: string; body: string; image: string; video: string } | null = null;
   try {
     const rows = await db.pageContent.findMany({
       where: { page: "about" },
@@ -53,27 +56,31 @@ async function getAboutContent() {
     if (rows && rows.length > 0) {
       for (const r of rows) {
         const section = r.section;
+        const video = (r as any).video ?? "";
         if (section === "banner") {
           banner = { title: r.title, description: r.body, image: r.image || DEFAULTS.banner.image };
         } else if (section === "story") {
           story = { title: r.title, body: r.body };
+          storyVideo = video;
         } else if (section === "mission") {
           mission = { title: r.title, body: r.body };
         } else if (section === "vision") {
           vision = { title: r.title, body: r.body };
         } else if (section === "promise") {
           promise = { title: r.title, body: r.body };
+        } else if (section === "team-video") {
+          teamVideo = { title: r.title, body: r.body, image: r.image, video };
         }
       }
     }
   } catch {
     // DB not available — fall back to defaults
   }
-  return { banner, story, mission, vision, promise };
+  return { banner, story, mission, vision, promise, storyVideo, teamVideo };
 }
 
 export default async function AboutPage() {
-  const { banner, story, mission, vision, promise } = await getAboutContent();
+  const { banner, story, mission, vision, promise, storyVideo, teamVideo } = await getAboutContent();
   return (
     <>
       <PageBanner
@@ -117,6 +124,11 @@ export default async function AboutPage() {
                   bots.
                 </p>
               </div>
+              {storyVideo ? (
+                <div className="mt-8 max-w-2xl">
+                  <VideoEmbed url={storyVideo} />
+                </div>
+              ) : null}
             </div>
             <div className="lg:col-span-5">
               <div className="grid grid-cols-2 gap-px bg-border rounded-2xl overflow-hidden">
@@ -250,6 +262,31 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Team / clinic video — only rendered if a video URL is set */}
+      {teamVideo && teamVideo.video ? (
+        <section className="py-16 sm:py-20 bg-cream">
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
+            <div className="grid lg:grid-cols-12 gap-10 items-center">
+              <div className="lg:col-span-5">
+                {teamVideo.title ? (
+                  <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink mb-3">
+                    {teamVideo.title}
+                  </h2>
+                ) : null}
+                {teamVideo.body ? (
+                  <p className="text-muted-foreground text-base leading-relaxed">
+                    {teamVideo.body}
+                  </p>
+                ) : null}
+              </div>
+              <div className="lg:col-span-7">
+                <VideoEmbed url={teamVideo.video} />
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <CtaSection
         titlePrefix="Want to meet the team?"

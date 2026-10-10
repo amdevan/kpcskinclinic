@@ -11,6 +11,7 @@ type PageContentRow = {
   title: string;
   body: string;
   image: string;
+  video: string;
   order: number;
 };
 
