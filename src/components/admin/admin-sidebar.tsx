@@ -22,6 +22,7 @@ import {
   LayoutGrid,
   Search,
   Users,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -44,6 +45,7 @@ const cmsNav = [
   { label: "Services", href: "/admin/services", icon: LayoutGrid },
   { label: "SEO", href: "/admin/seo", icon: Search },
   { label: "Users", href: "/admin/users", icon: Users },
+  { label: "Security", href: "/admin/security", icon: ShieldCheck },
 ];
 
 export function AdminSidebar() {

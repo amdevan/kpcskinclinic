@@ -234,3 +234,20 @@ model SeoMeta {
   updatedAt   DateTime @updatedAt
   createdAt   DateTime @default(now())
 }
+
+// Login security audit trail — every authorize() call (success or failure)
+// writes a row. Used by /admin/security to show recent attempts and compute
+// account lockout (5 failures within 15 minutes → locked).
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ip        String   @default("")
+  userAgent String   @default("")
+  success   Boolean  @default(false)
+  reason    String   @default("") // "ok" | "bad_password" | "locked" | "no_user" | "rate_limited"
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+  @@index([success])
+}

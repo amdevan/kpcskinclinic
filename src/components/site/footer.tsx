@@ -22,37 +22,65 @@ export function Footer({
   logoUrl,
   clinicName,
   clinicTagline,
+  settings,
 }: {
   logoUrl?: string;
   clinicName?: string;
   clinicTagline?: string;
+  settings?: Record<string, string>;
 } = {}) {
+  const s = settings || {};
+  const boolVal = (k: string, def = true) => {
+    const v = s[k];
+    if (v === undefined || v === "") return def;
+    return v.toLowerCase() === "true";
+  };
+
   const year = new Date().getFullYear();
+  const newsletterVisible = boolVal("footer_newsletter_visible", true);
+  const newsletterTitle = s.footer_newsletter_title || "Subscribe to our newsletter";
+  const newsletterDesc =
+    s.footer_newsletter_desc ||
+    "Subscribe to our newsletter for the latest tips, offers, and updates straight to your inbox.";
+  const brandBlurb =
+    s.footer_brand_blurb ||
+    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal's leading skin & hair clinic. 5 years of trusted care, advanced technology, and personalized treatment plans.";
+  const showSocials = boolVal("footer_show_socials", true);
+  const showDirectory = boolVal("footer_show_directory", true);
+  const copyrightText =
+    s.footer_copyright_text ||
+    "© {year} KPC Skin Hair & Aesthetic Clinic. All rights reserved.";
+  const renderedCopyright = copyrightText.replace(/\{year\}/g, String(year));
+  const devCreditName = (s.footer_developer_credit_name || "").trim();
+  const devCreditUrl = (s.footer_developer_credit_url || "").trim();
+  const showDevCredit = devCreditName !== "" && devCreditUrl !== "";
+
   return (
     <footer
       id="newsletter"
       className="mt-auto bg-gradient-to-b from-background to-brand/5"
     >
       {/* Newsletter strip — top of footer */}
-      <div className="border-b border-border">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-12 sm:py-14">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
-                Newsletter
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold leading-tight text-ink">
-                Subscribe to our newsletter
-              </h2>
-              <p className="mt-2 text-muted-foreground text-sm sm:text-base">
-                Subscribe to our newsletter for the latest tips, offers, and
-                updates straight to your inbox.
-              </p>
+      {newsletterVisible && (
+        <div className="border-b border-border">
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-12 sm:py-14">
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
+                  Newsletter
+                </p>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold leading-tight text-ink">
+                  {newsletterTitle}
+                </h2>
+                <p className="mt-2 text-muted-foreground text-sm sm:text-base">
+                  {newsletterDesc}
+                </p>
+              </div>
+              <NewsletterForm />
             </div>
-            <NewsletterForm />
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main footer — brand + links */}
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-12">
@@ -61,9 +89,7 @@ export function Footer({
           <div className="lg:col-span-5">
             <Logo logoUrl={logoUrl} clinicName={clinicName} clinicTagline={clinicTagline} />
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-sm">
-              KPC Skin Hair &amp; Aesthetic Clinic Pvt. Ltd — Nepal&apos;s
-              leading skin &amp; hair clinic. 5 years of trusted care,
-              advanced technology, and personalized treatment plans.
+              {brandBlurb}
             </p>
             <div className="mt-5 space-y-2.5 text-sm">
               <a
@@ -94,20 +120,22 @@ export function Footer({
                 {CONTACT_INFO.hours.map((h) => `${h.day}: ${h.time}`).join(" · ")}
               </span>
             </div>
-            <div className="mt-5 flex items-center gap-2">
-              <SocialLink href={CONTACT_INFO.socials[0].href} label="Instagram">
-                <Instagram className="h-4 w-4" />
-              </SocialLink>
-              <SocialLink href={CONTACT_INFO.socials[1].href} label="Facebook">
-                <Facebook className="h-4 w-4" />
-              </SocialLink>
-              <SocialLink href={CONTACT_INFO.socials[2].href} label="TikTok">
-                <span className="text-xs font-bold">TT</span>
-              </SocialLink>
-              <SocialLink href={CONTACT_INFO.whatsapp} label="WhatsApp">
-                <Phone className="h-4 w-4" />
-              </SocialLink>
-            </div>
+            {showSocials && (
+              <div className="mt-5 flex items-center gap-2">
+                <SocialLink href={CONTACT_INFO.socials[0].href} label="Instagram">
+                  <Instagram className="h-4 w-4" />
+                </SocialLink>
+                <SocialLink href={CONTACT_INFO.socials[1].href} label="Facebook">
+                  <Facebook className="h-4 w-4" />
+                </SocialLink>
+                <SocialLink href={CONTACT_INFO.socials[2].href} label="TikTok">
+                  <span className="text-xs font-bold">TT</span>
+                </SocialLink>
+                <SocialLink href={CONTACT_INFO.whatsapp} label="WhatsApp">
+                  <Phone className="h-4 w-4" />
+                </SocialLink>
+              </div>
+            )}
           </div>
 
           {/* Our Services column — links to /services (treatment hub) */}
@@ -138,36 +166,38 @@ export function Footer({
           </div>
 
           {/* Directory column — real routes (spec: fix footer routing) */}
-          <div className="lg:col-span-4">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand mb-4">
-              Directory
-            </h3>
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
-              {[
-                { label: "About", href: "/about" },
-                { label: "Doctors", href: "/doctors" },
-                { label: "Packages", href: "/packages" },
-                { label: "Hair Transplant", href: "/hair-transplant" },
-                { label: "Success Stories", href: "/success-stories" },
-                { label: "STD / STI", href: "/std-sti" },
-                { label: "Blog", href: "/blog" },
-                { label: "Contact", href: "/contact" },
-                { label: "Gallery", href: "/success-stories" },
-                { label: "Privacy", href: "/privacy" },
-                { label: "Terms", href: "/terms" },
-                { label: "Sitemap", href: "/services" },
-              ].map((l) => (
-                <li key={l.label}>
-                  <Link
-                    href={l.href}
-                    className="text-sm text-muted-foreground hover:text-brand transition-colors"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {showDirectory && (
+            <div className="lg:col-span-4">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-brand mb-4">
+                Directory
+              </h3>
+              <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
+                {[
+                  { label: "About", href: "/about" },
+                  { label: "Doctors", href: "/doctors" },
+                  { label: "Packages", href: "/packages" },
+                  { label: "Hair Transplant", href: "/hair-transplant" },
+                  { label: "Success Stories", href: "/success-stories" },
+                  { label: "STD / STI", href: "/std-sti" },
+                  { label: "Blog", href: "/blog" },
+                  { label: "Contact", href: "/contact" },
+                  { label: "Gallery", href: "/success-stories" },
+                  { label: "Privacy", href: "/privacy" },
+                  { label: "Terms", href: "/terms" },
+                  { label: "Sitemap", href: "/services" },
+                ].map((l) => (
+                  <li key={l.label}>
+                    <Link
+                      href={l.href}
+                      className="text-sm text-muted-foreground hover:text-brand transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
@@ -175,7 +205,7 @@ export function Footer({
       <div className="bg-brand text-cream">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <p className="text-cream/90">
-            © {year} KPC Skin Hair &amp; Aesthetic Clinic. All rights reserved.
+            {renderedCopyright}
           </p>
           <p className="flex items-center gap-2 text-cream/80">
             <Link href="/privacy" className="hover:text-gold transition-colors">
@@ -190,12 +220,19 @@ export function Footer({
               Sitemap
             </Link>
           </p>
-          <p className="text-cream/60">
-            Design &amp; Developed by{" "}
-            <a href="https://itrelevant.com" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-cream transition-colors font-medium">
-              IT Relevant
-            </a>
-          </p>
+          {showDevCredit && (
+            <p className="text-cream/60">
+              Design &amp; Developed by{" "}
+              <a
+                href={devCreditUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gold hover:text-cream transition-colors font-medium"
+              >
+                {devCreditName}
+              </a>
+            </p>
+          )}
         </div>
       </div>
     </footer>

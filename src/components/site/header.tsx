@@ -36,11 +36,30 @@ export function Header({
   logoUrl,
   clinicName,
   clinicTagline,
+  settings,
 }: {
   logoUrl?: string;
   clinicName?: string;
   clinicTagline?: string;
+  settings?: Record<string, string>;
 } = {}) {
+  const s = settings || {};
+  const boolVal = (k: string, def = true) => {
+    const v = s[k];
+    if (v === undefined || v === "") return def;
+    return v.toLowerCase() === "true";
+  };
+
+  const topbarVisible = boolVal("header_topbar_visible", true);
+  const topbarMessage = (s.header_topbar_message || "").trim();
+  const showPhone = boolVal("header_show_phone", true);
+  const showAddress = boolVal("header_show_address", true);
+  const showHours = boolVal("header_show_hours", true);
+  const hoursText = s.header_hours_text || "Sun–Fri · 8 AM – 6 PM";
+  const showSocials = boolVal("header_show_socials", true);
+  const bookBtnVisible = boolVal("header_book_button_visible", true);
+  const bookBtnLabel = s.header_book_button_label || "Book appointment";
+
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { setOpen: setBookOpen } = useBookAppointment();
@@ -55,45 +74,67 @@ export function Header({
   return (
     <>
       {/* Top utility bar — quiet, editorial */}
-      <div className="bg-ink text-cream/75 text-[11px]">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 flex h-8 items-center justify-between gap-4">
-          <div className="hidden sm:flex items-center gap-4">
-            <span className="inline-flex items-center gap-1.5">
-              <Phone className="h-3 w-3 text-gold/70" />
-              +977-9747223514
-            </span>
-            <span className="hidden md:inline text-cream/40">·</span>
-            <span className="hidden md:inline-flex items-center gap-1.5">
-              <MapPin className="h-3 w-3 text-gold/70" />
-              Thapathali, Kathmandu
-            </span>
-            <span className="hidden lg:inline text-cream/40">·</span>
-            <span className="hidden lg:inline-flex items-center gap-1.5">
-              <Clock className="h-3 w-3 text-gold/70" />
-              Sun–Fri · 8 AM – 6 PM
-            </span>
-          </div>
-          <div className="flex items-center gap-3 ml-auto">
-            <span className="hidden sm:inline text-cream/45">
-              Follow:
-            </span>
-            <a
-              href="#social"
-              aria-label="Instagram"
-              className="hover:text-gold transition-colors"
-            >
-              <Instagram className="h-3.5 w-3.5" />
-            </a>
-            <a
-              href="#social"
-              aria-label="TikTok"
-              className="hover:text-gold transition-colors text-[11px] font-medium"
-            >
-              TikTok
-            </a>
+      {topbarVisible && (
+        <div className="bg-ink text-cream/75 text-[11px]">
+          <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 flex h-8 items-center justify-between gap-4">
+            {topbarMessage ? (
+              <p className="mx-auto text-center text-cream/85 text-[11px] font-medium tracking-wide">
+                {topbarMessage}
+              </p>
+            ) : (
+              <>
+                <div className="hidden sm:flex items-center gap-4">
+                  {showPhone && (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Phone className="h-3 w-3 text-gold/70" />
+                      +977-9747223514
+                    </span>
+                  )}
+                  {showPhone && showAddress && (
+                    <span className="hidden md:inline text-cream/40">·</span>
+                  )}
+                  {showAddress && (
+                    <span className="hidden md:inline-flex items-center gap-1.5">
+                      <MapPin className="h-3 w-3 text-gold/70" />
+                      Thapathali, Kathmandu
+                    </span>
+                  )}
+                  {(showPhone || showAddress) && showHours && (
+                    <span className="hidden lg:inline text-cream/40">·</span>
+                  )}
+                  {showHours && (
+                    <span className="hidden lg:inline-flex items-center gap-1.5">
+                      <Clock className="h-3 w-3 text-gold/70" />
+                      {hoursText}
+                    </span>
+                  )}
+                </div>
+                {showSocials && (
+                  <div className="flex items-center gap-3 ml-auto">
+                    <span className="hidden sm:inline text-cream/45">
+                      Follow:
+                    </span>
+                    <a
+                      href="#social"
+                      aria-label="Instagram"
+                      className="hover:text-gold transition-colors"
+                    >
+                      <Instagram className="h-3.5 w-3.5" />
+                    </a>
+                    <a
+                      href="#social"
+                      aria-label="TikTok"
+                      className="hover:text-gold transition-colors text-[11px] font-medium"
+                    >
+                      TikTok
+                    </a>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main nav */}
       <header
@@ -157,13 +198,15 @@ export function Header({
           </NavigationMenu>
 
           <div className="flex items-center gap-2">
-            <Button
-              onClick={() => setBookOpen(true)}
-              variant="ghost"
-              className="hidden sm:inline-flex text-ink hover:bg-brand hover:text-brand-foreground font-medium"
-            >
-              Book appointment
-            </Button>
+            {bookBtnVisible && (
+              <Button
+                onClick={() => setBookOpen(true)}
+                variant="ghost"
+                className="hidden sm:inline-flex text-ink hover:bg-brand hover:text-brand-foreground font-medium"
+              >
+                {bookBtnLabel}
+              </Button>
+            )}
 
             {/* Mobile menu */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -211,14 +254,14 @@ export function Header({
                             <p className="px-3 text-xs font-semibold uppercase tracking-wider text-brand/80 pt-2">
                               {cat.title}
                             </p>
-                            {cat.services.slice(0, 5).map((s) => (
+                            {cat.services.slice(0, 5).map((ser) => (
                               <Link
-                                key={s.title}
+                                key={ser.title}
                                 href="/services"
                                 onClick={() => setMobileOpen(false)}
                                 className="block px-3 py-1.5 text-sm text-foreground/70 hover:text-brand"
                               >
-                                {s.title}
+                                {ser.title}
                               </Link>
                             ))}
                           </div>
@@ -235,10 +278,10 @@ export function Header({
                     }}
                     className="w-full bg-brand hover:bg-brand/90 text-brand-foreground"
                   >
-                    Book appointment
+                    {bookBtnLabel}
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">
-                    Open Sun–Fri · 8 AM – 6 PM
+                    Open {hoursText}
                   </p>
                 </div>
               </SheetContent>

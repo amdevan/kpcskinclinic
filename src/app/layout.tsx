@@ -59,11 +59,14 @@ type SiteSettings = {
   faviconUrl?: string;
   clinicName?: string;
   clinicTagline?: string;
+  settingsMap?: Record<string, string>;
 };
 
 async function getSiteSettings(): Promise<SiteSettings> {
   try {
-    const rows = await db.siteSetting.findMany();
+    const rows = await db.siteSetting.findMany({
+      where: { group: { in: ["general", "contact", "social", "header", "footer"] } },
+    });
     if (!rows || rows.length === 0) return {};
     const map: Record<string, string> = {};
     for (const r of rows) map[r.key] = r.value;
@@ -72,6 +75,7 @@ async function getSiteSettings(): Promise<SiteSettings> {
       faviconUrl: map.favicon_url,
       clinicName: map.clinic_name,
       clinicTagline: map.clinic_tagline,
+      settingsMap: map,
     };
   } catch {
     return {};
@@ -100,12 +104,14 @@ export default async function RootLayout({
               logoUrl={settings.logoUrl}
               clinicName={settings.clinicName}
               clinicTagline={settings.clinicTagline}
+              settings={settings.settingsMap}
             />
             <main className="flex-1">{children}</main>
             <Footer
               logoUrl={settings.logoUrl}
               clinicName={settings.clinicName}
               clinicTagline={settings.clinicTagline}
+              settings={settings.settingsMap}
             />
           </div>
           <FloatingButtons />

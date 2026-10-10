@@ -35,5 +35,9 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  // Protect /admin itself (exact match) AND every sub-path under /admin/.
+  // The bare "/admin" entry closes a security hole where /admin (without a
+  // trailing slash) was previously not matched by "/admin/:path*" and could
+  // bypass the auth check.
+  matcher: ["/admin", "/admin/:path*"],
 };

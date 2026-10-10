@@ -127,6 +127,136 @@ export const SITE_INFO_GROUPS: SiteInfoGroup[] = [
       },
     ],
   },
+  {
+    id: "header",
+    label: "Header",
+    description:
+      "Top utility bar and main navigation settings shown across every public page.",
+    fields: [
+      {
+        key: "header_topbar_visible",
+        label: "Top utility bar visible",
+        type: "text",
+        help: "Set to 'true' to show the top utility bar (phone, location, hours). Blank or 'false' hides it.",
+        placeholder: "true",
+      },
+      {
+        key: "header_topbar_message",
+        label: "Top bar custom message",
+        type: "text",
+        help: "Optional. If set, replaces the phone/location/hours strip with a single centered message.",
+        placeholder: "Free consultation this week — book now!",
+      },
+      {
+        key: "header_show_phone",
+        label: "Show phone in top bar",
+        type: "text",
+        placeholder: "true",
+      },
+      {
+        key: "header_show_address",
+        label: "Show address in top bar",
+        type: "text",
+        placeholder: "true",
+      },
+      {
+        key: "header_show_hours",
+        label: "Show opening hours in top bar",
+        type: "text",
+        placeholder: "true",
+      },
+      {
+        key: "header_hours_text",
+        label: "Opening hours text",
+        type: "text",
+        placeholder: "Sun–Fri · 8 AM – 6 PM",
+      },
+      {
+        key: "header_show_socials",
+        label: "Show social links in top bar",
+        type: "text",
+        placeholder: "true",
+      },
+      {
+        key: "header_book_button_label",
+        label: "Book appointment button label",
+        type: "text",
+        placeholder: "Book appointment",
+      },
+      {
+        key: "header_book_button_visible",
+        label: "Show book appointment button",
+        type: "text",
+        placeholder: "true",
+      },
+    ],
+  },
+  {
+    id: "footer",
+    label: "Footer",
+    description:
+      "Newsletter, brand blurb, directory links and copyright bar shown in the site footer.",
+    fields: [
+      {
+        key: "footer_newsletter_visible",
+        label: "Show newsletter strip",
+        type: "text",
+        placeholder: "true",
+      },
+      {
+        key: "footer_newsletter_title",
+        label: "Newsletter title",
+        type: "text",
+        placeholder: "Subscribe to our newsletter",
+      },
+      {
+        key: "footer_newsletter_desc",
+        label: "Newsletter description",
+        type: "textarea",
+        placeholder:
+          "Subscribe to our newsletter for the latest tips, offers, and updates straight to your inbox.",
+      },
+      {
+        key: "footer_brand_blurb",
+        label: "Brand blurb",
+        type: "textarea",
+        placeholder:
+          "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal's leading skin & hair clinic.",
+      },
+      {
+        key: "footer_show_socials",
+        label: "Show social icons",
+        type: "text",
+        placeholder: "true",
+      },
+      {
+        key: "footer_show_directory",
+        label: "Show directory column",
+        type: "text",
+        placeholder: "true",
+      },
+      {
+        key: "footer_copyright_text",
+        label: "Copyright text",
+        type: "text",
+        placeholder:
+          "© {year} KPC Skin Hair & Aesthetic Clinic. All rights reserved.",
+        help: "Use {year} to insert the current year dynamically.",
+      },
+      {
+        key: "footer_developer_credit_name",
+        label: "Developer credit name",
+        type: "text",
+        placeholder: "IT Relevant",
+      },
+      {
+        key: "footer_developer_credit_url",
+        label: "Developer credit URL",
+        type: "text",
+        placeholder: "https://itrelevant.com",
+      },
+    ],
+  },
 ];
 
 // SMTP-related keys are stored separately so they can be filtered / masked
@@ -202,6 +332,29 @@ export const DEFAULT_SITE_INFO: Record<string, string> = {
   smtp_pass: "",
   email_from: "KPC Skin <noreply@kpcskin.com>",
   email_to: "info@kpcskin.com",
+  // Header group
+  header_topbar_visible: "true",
+  header_topbar_message: "",
+  header_show_phone: "true",
+  header_show_address: "true",
+  header_show_hours: "true",
+  header_hours_text: "Sun–Fri · 8 AM – 6 PM",
+  header_show_socials: "true",
+  header_book_button_label: "Book appointment",
+  header_book_button_visible: "true",
+  // Footer group
+  footer_newsletter_visible: "true",
+  footer_newsletter_title: "Subscribe to our newsletter",
+  footer_newsletter_desc:
+    "Subscribe to our newsletter for the latest tips, offers, and updates straight to your inbox.",
+  footer_brand_blurb:
+    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal's leading skin & hair clinic. 5 years of trusted care, advanced technology, and personalized treatment plans.",
+  footer_show_socials: "true",
+  footer_show_directory: "true",
+  footer_copyright_text:
+    "© {year} KPC Skin Hair & Aesthetic Clinic. All rights reserved.",
+  footer_developer_credit_name: "IT Relevant",
+  footer_developer_credit_url: "https://itrelevant.com",
 };
 
 export const ALL_SITE_INFO_FIELDS: SiteInfoField[] = [
