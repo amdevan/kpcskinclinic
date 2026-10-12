@@ -50,5 +50,14 @@ test
 prompt
 
 server.log
+
 # Skills directory
-/skills/
+/skills
+
+# Tool output (bash/read tool captures — never commit)
+/tool-results/
+
+# Dev server PID file
+.zscripts/dev.pid
+
+*.log
