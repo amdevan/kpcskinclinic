@@ -6,7 +6,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Resolve a writable SQLite path and publish it as DATABASE_URL.
+// Resolve a writable database path and publish it as DATABASE_URL.
 //
 // Why this exists: on Vercel the app directory (/var/task) is read-only, and
 // the committed .env is NOT deployed (it's gitignored). So at runtime
@@ -15,12 +15,23 @@ const globalForPrisma = globalThis as unknown as {
 // "the URL must start with the protocol 'file:'" — which is what broke every
 // admin create/edit call.
 //
-// Behaviour:
-//   - If DATABASE_URL is set and points at a writable absolute path → keep it.
-//   - If it's set but the path is read-only (Vercel) → redirect to /tmp.
-//   - If it's missing / not a file: URL → default to /tmp/custom.db.
+// Behaviour (priority order):
+//   1. If DATABASE_URL is set and Prisma accepts it → keep it untouched.
+//      This covers SQLite (file:...), Prisma Postgres (postgres://...),
+//      and any other driver Prisma supports. Never override a working URL.
+//   2. If it's a file: URL whose path is read-only (Vercel app dir) → /tmp.
+//   3. If it's missing / empty / not a recognized protocol → /tmp/custom.db.
 function resolveDbUrl(): void {
   const raw = process.env.DATABASE_URL || "";
+
+  // 1. Non-SQLite drivers (Postgres, MySQL, MongoDB, ...) — Prisma accepts
+  //    these as-is; never rewrite them. A Postgres URL is also never a local
+  //    filesystem path, so there is nothing to test for writability.
+  if (raw.length && !raw.startsWith("file:")) {
+    return;
+  }
+
+  // 2/3. SQLite path: keep if writable, else redirect to /tmp.
   if (raw.startsWith("file:")) {
     const p = raw.replace(/^file:/, "").replace(/^\/\//, "/");
     if (p.startsWith("/")) {
@@ -38,6 +49,7 @@ function resolveDbUrl(): void {
       }
     }
   }
+
   // Empty, unset, or unwritable → /tmp is the only writable location on
   // Vercel serverless, and a sane default everywhere.
   const tmp = resolve("/tmp", "custom.db");
