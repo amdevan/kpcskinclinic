@@ -6,7 +6,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Resolve a writable database path and publish it as DATABASE_URL.
+// Resolve the datasource URL and publish it as DATABASE_URL.
 //
 // Why this exists: on Vercel the app directory (/var/task) is read-only, and
 // the committed .env is NOT deployed (it's gitignored). So at runtime
@@ -17,10 +17,13 @@ const globalForPrisma = globalThis as unknown as {
 //
 // Behaviour (priority order):
 //   1. If DATABASE_URL is set and Prisma accepts it → keep it untouched.
-//      This covers SQLite (file:...), Prisma Postgres (postgres://...),
-//      and any other driver Prisma supports. Never override a working URL.
+//      This covers Postgres (postgresql://...), Prisma Postgres
+//      (postgres://...), and any other driver Prisma supports. Never override
+//      a working URL.
 //   2. If it's a file: URL whose path is read-only (Vercel app dir) → /tmp.
-//   3. If it's missing / empty / not a recognized protocol → /tmp/custom.db.
+//   3. If it's missing / empty → fail loudly. With the schema on PostgreSQL a
+//      SQLite fallback would silently break the app; better to surface the
+//      misconfiguration than to ship a non-functional admin.
 function resolveDbUrl(): void {
   const raw = process.env.DATABASE_URL || "";
 

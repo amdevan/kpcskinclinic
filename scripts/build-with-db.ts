@@ -3,24 +3,29 @@
 // Why this exists instead of an inline `&&` chain in package.json:
 //   - Prisma's CLI validates the datasource URL at startup (prisma generate /
 //     db push), which runs BEFORE the runtime resolveDbUrl() in src/lib/db.ts.
-//     With DATABASE_URL unset on Vercel (the default — .env is gitignored and
-//     not deployed) the build crashes with
-//     "the URL must start with the protocol 'file:'".
-//   - Inline `DATABASE_URL="${DATABASE_URL:-file:/tmp/custom.db}" && ...` chains
-//     in package.json rely on the shell expanding the `${VAR:-default}` syntax
-//     exactly the way the build runner parses the script. That is fragile.
+//     With DATABASE_URL unset the build crashes with
+//     "the URL must start with the protocol 'file:'" (SQLite) or a connection
+//     error (Postgres).
+//   - Inline `DATABASE_URL="${DATABASE_URL:-...}" && ...` chains in package.json
+//     rely on the shell expanding `${VAR:-default}` exactly the way the build
+//     runner parses the script. That is fragile.
 //
-// This wrapper sets the env var in-process before spawning anything, so every
-// child (copy-db, prisma generate, prisma db push, seed, next build) inherits
-// it deterministically — no shell quoting to get wrong.
+// This wrapper logs the effective DATABASE_URL and fails fast if it is missing,
+// so the error is visible in the build log instead of a cryptic Prisma crash.
+// On Vercel the value must be set in the project Settings → Environment
+// Variables (it is NOT in vercel.json, which would hardcode a single value for
+// every environment).
 import { spawnSync } from "bun";
 
-if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = "file:/tmp/custom.db";
-  console.log("[build] DATABASE_URL was unset → defaulting to file:/tmp/custom.db");
-} else {
-  console.log(`[build] DATABASE_URL = ${process.env.DATABASE_URL}`);
+const url = process.env.DATABASE_URL || "";
+if (!url) {
+  console.error(
+    "[build] FATAL: DATABASE_URL is unset. Set it in the Vercel project " +
+      "environment variables (e.g. postgresql://user:pass@host:5432/db).",
+  );
+  process.exit(1);
 }
+console.log(`[build] DATABASE_URL = ${url}`);
 
 const steps = [
   "bun run scripts/copy-db-to-tmp.ts",
