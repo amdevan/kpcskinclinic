@@ -56,6 +56,16 @@ export function withAuth(handler: (req: NextRequest) => Promise<Response>) {
   };
 }
 
+// Server-action auth guard: true when an admin session exists.
+export async function requireSession(): Promise<boolean> {
+  try {
+    const session = await getServerSession(authOptions);
+    return !!session;
+  } catch {
+    return false;
+  }
+}
+
 // Input sanitization helper
 export function sanitizeInput(input: string, maxLength: number = 1000): string {
   if (!input) return "";

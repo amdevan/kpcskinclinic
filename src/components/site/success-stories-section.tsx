@@ -8,31 +8,43 @@ import { PlayCircle } from "lucide-react";
 const STORY_CARDS = [
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+      "/images/gen/hair-transplant.jpg",
     label: "Hair Transplant",
     patient: "Megha N.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+      "/images/gen/acne-care.jpg",
     label: "Acne & Scars",
     patient: "Sneha S.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+      "/images/gen/laser-care.jpg",
     label: "Laser Hair Removal",
     patient: "Manju D.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+      "/images/gen/hydrafacial.jpg",
     label: "Hydra Facial",
     patient: "Priya K.",
   },
 ];
 
-export function SuccessStoriesSection() {
+export function SuccessStoriesSection({
+  eyebrow = "Watch Stories | Success Stories",
+  title,
+  titleHighlight = "Satisfied Clients",
+  description = "Discover why so many people trust our clinic to boost their confidence and well-being.",
+}: {
+  eyebrow?: string;
+  /** Full heading; when set, `titleHighlight` is ignored. */
+  title?: string;
+  /** Accent text appended to the default heading when `title` is not set. */
+  titleHighlight?: string;
+  description?: string;
+}) {
   return (
     <section id="stories" className="py-20 sm:py-28 bg-background">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -72,19 +84,28 @@ export function SuccessStoriesSection() {
 
         {/* Centered intro text */}
         <div className="text-center max-w-2xl mx-auto">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
-            Watch Stories | Success Stories
-          </p>
+          {eyebrow ? (
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
+              {eyebrow}
+            </p>
+          ) : null}
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-ink">
-            Hear From Our{" "}
-            <span className="font-italic-accent text-brand font-medium">
-              Satisfied Clients
-            </span>
+            {title ? (
+              title
+            ) : (
+              <>
+                Hear From Our{" "}
+                <span className="font-italic-accent text-brand font-medium">
+                  {titleHighlight}
+                </span>
+              </>
+            )}
           </h2>
-          <p className="mt-4 text-muted-foreground text-base sm:text-lg leading-relaxed">
-            Discover why so many people trust our clinic to boost their
-            confidence and well-being.
-          </p>
+          {description ? (
+            <p className="mt-4 text-muted-foreground text-base sm:text-lg leading-relaxed">
+              {description}
+            </p>
+          ) : null}
           <div className="mt-7">
             <Button
               asChild

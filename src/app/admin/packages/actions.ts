@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function dbPackageAction(
   id: string,
   action: "create" | "update" | "delete" | "toggle-publish",
   data?: Record<string, any>,
 ) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     if (action === "create") {
       const name = String(data?.name || "").trim();

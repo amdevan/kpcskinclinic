@@ -3,10 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { hashPassword, passwordStrength } from "@/lib/password";
+import { requireSession } from "@/lib/security";
 
 export async function createUser(
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const name = String(data?.name || "").trim();
     const email = String(data?.email || "").trim().toLowerCase();
@@ -27,20 +29,18 @@ export async function createUser(
 
     const hashed = hashPassword(password);
 
-    await db.user.create({
-      data: { name, email, role },
-    });
-    // Persist a hashed-password shadow record keyed on email — use the
-    // SiteSetting table to avoid schema changes (key: `user_pass:{email}`)
-    try {
-      await db.siteSetting.upsert({
+    // Create the user and its shadow password record atomically — a partial
+    // write would leave the account unable to log in.
+    await db.$transaction([
+      db.user.create({
+        data: { name, email, role },
+      }),
+      db.siteSetting.upsert({
         where: { key: `user_pass:${email}` },
         create: { key: `user_pass:${email}`, value: hashed, group: "auth" },
         update: { value: hashed, group: "auth" },
-      });
-    } catch {
-      // SiteSetting may not be available — ignore
-    }
+      }),
+    ]);
 
     revalidatePath("/admin/users");
     return { ok: true };
@@ -53,6 +53,7 @@ export async function saveUser(
   id: string,
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const existing = await db.user.findUnique({ where: { id } });
     if (!existing) return { ok: false, error: "User not found" };
@@ -68,49 +69,47 @@ export async function saveUser(
       return { ok: false, error: "Invalid email format" };
     }
 
-    await db.user.update({
-      where: { id },
-      data: { name, email, role },
-    });
-
-    // If a new password is supplied, update the shadow record
+    // Validate a new password BEFORE touching the profile, so a weak
+    // password doesn't half-apply the save.
+    let hashed: string | null = null;
     if (password) {
       const strength = passwordStrength(password);
       if (!strength.ok) {
         return { ok: false, error: strength.error };
       }
-      const hashed = hashPassword(password);
-      try {
-        // Old shadow record (if any)
-        await db.siteSetting.upsert({
-          where: { key: `user_pass:${existing.email}` },
-          create: {
-            key: `user_pass:${existing.email}`,
-            value: hashed,
-            group: "auth",
-          },
-          update: { value: hashed, group: "auth" },
-        });
+      hashed = hashPassword(password);
+    }
+
+    // Update the profile and the shadow password record atomically.
+    await db.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id },
+        data: { name, email, role },
+      });
+
+      if (hashed) {
         if (email !== existing.email) {
-          await db.siteSetting.upsert({
+          // Email changed: write the shadow under the NEW key, then remove
+          // the old one so the previous login key no longer resolves.
+          await tx.siteSetting.upsert({
             where: { key: `user_pass:${email}` },
             create: { key: `user_pass:${email}`, value: hashed, group: "auth" },
             update: { value: hashed, group: "auth" },
           });
-          // Remove the old shadow record after the email change so the
-          // previous login key no longer resolves.
-          try {
-            await db.siteSetting.delete({
-              where: { key: `user_pass:${existing.email}` },
+          await tx.siteSetting
+            .delete({ where: { key: `user_pass:${existing.email}` } })
+            .catch(() => {
+              // ignore — may already be gone
             });
-          } catch {
-            // ignore — may already be gone
-          }
+        } else {
+          await tx.siteSetting.upsert({
+            where: { key: `user_pass:${email}` },
+            create: { key: `user_pass:${email}`, value: hashed, group: "auth" },
+            update: { value: hashed, group: "auth" },
+          });
         }
-      } catch {
-        // SiteSetting not available — password change ignored
       }
-    }
+    });
 
     revalidatePath("/admin/users");
     return { ok: true };
@@ -122,20 +121,20 @@ export async function saveUser(
 export async function deleteUser(
   id: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const existing = await db.user.findUnique({ where: { id } });
     if (!existing) return { ok: false, error: "User not found" };
 
-    await db.user.delete({ where: { id } });
-
-    // Also clear the shadow password record
-    try {
-      await db.siteSetting.delete({
-        where: { key: `user_pass:${existing.email}` },
-      });
-    } catch {
-      // ignore
-    }
+    // Remove the user and its shadow password record atomically.
+    await db.$transaction(async (tx) => {
+      await tx.user.delete({ where: { id } });
+      await tx.siteSetting
+        .delete({ where: { key: `user_pass:${existing.email}` } })
+        .catch(() => {
+          // ignore — may already be gone
+        });
+    });
 
     revalidatePath("/admin/users");
     return { ok: true };

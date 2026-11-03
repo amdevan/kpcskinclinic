@@ -1,11 +1,15 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CONTACT_INFO } from "@/lib/site-data";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Privacy Policy | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "How KPC Skin Hair & Aesthetic Clinic collects, uses, and protects your personal and health information. Thapathali, Kathmandu.",
-};
+export async function generateMetadata() {
+  return buildMetadata("/privacy", {
+    title: "Privacy Policy | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "How KPC Skin Hair & Aesthetic Clinic collects, uses, and protects your personal and health information. Thapathali, Kathmandu.",
+    canonical: "/privacy",
+  });
+}
 
 export default function PrivacyPage() {
   const updated = "27 September 2026";
@@ -16,7 +20,7 @@ export default function PrivacyPage() {
         title="Privacy"
         highlight="Policy."
         description="How we collect, use, and protect your personal and health information."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg"
+        image="/images/gen/clinic-room.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "Privacy" }]}
       />
 

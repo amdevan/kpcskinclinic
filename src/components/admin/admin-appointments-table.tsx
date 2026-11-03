@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState, useTransition } from "react";
+import { Fragment, useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
 import {
@@ -60,10 +60,10 @@ export function AdminAppointmentsTable({
   const [, startTransition] = useTransition();
   const [local, setLocal] = useState<Appointment[]>(appointments);
 
-  // Re-sync when parent re-renders
-  if (appointments !== local && appointments.length !== local.length) {
+  // Re-sync when parent re-renders with fresh data
+  useEffect(() => {
     setLocal(appointments);
-  }
+  }, [appointments]);
 
   function sync(next: Appointment[]) {
     setLocal(next);

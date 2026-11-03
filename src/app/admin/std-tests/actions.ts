@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function dbStdTestAction(
   id: string,
   action: "create" | "update" | "delete" | "toggle-publish",
   data?: Record<string, any>,
 ) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     if (action === "create") {
       const name = String(data?.name || "").trim();
@@ -21,6 +23,7 @@ export async function dbStdTestAction(
           tests: parseInt(String(data?.tests ?? "0"), 10) || 0,
           recommended: parseBool(data?.recommended, false),
           published: parseBool(data?.published, true),
+          order: parseIntSafe(data?.order),
         },
       });
       revalidatePath("/admin/std-tests");
@@ -39,6 +42,7 @@ export async function dbStdTestAction(
           ...(data?.tests !== undefined ? { tests: parseInt(String(data.tests), 10) || 0 } : {}),
           ...(data?.recommended !== undefined ? { recommended: parseBool(data.recommended, false) } : {}),
           ...(data?.published !== undefined ? { published: parseBool(data.published, true) } : {}),
+          ...(data?.order !== undefined ? { order: parseIntSafe(data.order) } : {}),
         },
       });
       revalidatePath("/admin/std-tests");
@@ -75,4 +79,9 @@ function parseBool(v: any, fallback: boolean): boolean {
   if (v === true || v === "true") return true;
   if (v === false || v === "false") return false;
   return fallback;
+}
+
+function parseIntSafe(v: any, fallback = 0): number {
+  const n = parseInt(String(v ?? ""), 10);
+  return Number.isFinite(n) ? n : fallback;
 }

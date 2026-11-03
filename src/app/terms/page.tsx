@@ -1,11 +1,15 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CONTACT_INFO } from "@/lib/site-data";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Terms of Service | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "Terms of service for the KPC Skin Hair & Aesthetic Clinic website and the treatments we provide. Thapathali, Kathmandu.",
-};
+export async function generateMetadata() {
+  return buildMetadata("/terms", {
+    title: "Terms of Service | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "Terms of service for the KPC Skin Hair & Aesthetic Clinic website and the treatments we provide. Thapathali, Kathmandu.",
+    canonical: "/terms",
+  });
+}
 
 export default function TermsPage() {
   const updated = "27 September 2026";
@@ -16,7 +20,7 @@ export default function TermsPage() {
         title="Terms of"
         highlight="Service."
         description="The terms under which we provide this website and our treatments."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/cb095eaff0da.jpg"
+        image="/images/gen/sterile-suite.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "Terms" }]}
       />
 

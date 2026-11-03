@@ -22,9 +22,14 @@ const fields: AdminField[] = [
 ];
 
 export default async function AdminPackagesPage() {
-  const packages = await db.package.findMany({
-    orderBy: [{ category: "asc" }, { name: "asc" }],
-  });
+  let packages: Awaited<ReturnType<typeof db.package.findMany>> = [];
+  try {
+    packages = await db.package.findMany({
+      orderBy: [{ category: "asc" }, { name: "asc" }],
+    });
+  } catch {
+    // DB not available — show empty list instead of crashing
+  }
 
   const items = packages.map((p) => ({
     id: p.id,

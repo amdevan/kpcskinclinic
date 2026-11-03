@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   ChevronUp,
   ChevronDown,
@@ -58,6 +59,12 @@ export function AdminHeroSlidesEditor({ slides }: { slides: Slide[] }) {
   const [form, setForm] = useState<Record<string, string>>(EMPTY_FORM);
   const [busy, setBusy] = useState<string | null>(null);
   const [, startTransition] = useTransition();
+  const router = useRouter();
+
+  // Re-sync when the server sends fresh data (e.g. after create + refresh)
+  useEffect(() => {
+    setLocal(slides);
+  }, [slides]);
 
   function startAdd() {
     setForm({ ...EMPTY_FORM, order: String(local.length) });
@@ -96,7 +103,30 @@ export function AdminHeroSlidesEditor({ slides }: { slides: Slide[] }) {
       setBusy(null);
       if (res?.ok) {
         closeForm();
-        window.location.reload();
+        if (id === null) {
+          // New row: let the server re-render provide the real record
+          router.refresh();
+        } else {
+          // Update the row in place — no full page reload
+          setLocal((arr) =>
+            arr.map((x) =>
+              x.id === id
+                ? {
+                    ...x,
+                    eyebrow: form.eyebrow,
+                    title: form.title,
+                    highlight: form.highlight,
+                    description: form.description,
+                    image: form.image,
+                    primaryCta: form.primaryCta,
+                    secondaryCta: form.secondaryCta,
+                    isActive: form.isActive === "true",
+                    order: Number(form.order) || 0,
+                  }
+                : x,
+            ),
+          );
+        }
       } else {
         alert(res?.error || "Save failed");
       }
@@ -143,11 +173,15 @@ export function AdminHeroSlidesEditor({ slides }: { slides: Slide[] }) {
     const j = idx + dir;
     if (j < 0 || j >= local.length) return;
 
-    // Swap locally and persist new order via save
-    const next = [...local];
-    [next[idx], next[j]] = [next[j], next[idx]];
-    // Re-number order indices
-    next.forEach((s, i) => (s.order = i));
+    // Swap locally and persist new order via save (immutably — never
+    // mutate the objects shared with React state)
+    const moved = { ...local[idx], order: j };
+    const swapped = { ...local[j], order: idx };
+    const next = local.map((sl, i) => {
+      if (i === idx) return moved;
+      if (i === j) return swapped;
+      return { ...sl, order: i };
+    });
     setLocal(next);
 
     if (s.id.startsWith("static-")) return;
@@ -155,11 +189,13 @@ export function AdminHeroSlidesEditor({ slides }: { slides: Slide[] }) {
     setBusy(s.id);
     startTransition(async () => {
       // Save both swapped slides with their new order
-      await Promise.all([
-        saveHeroSlide(next[idx].id, { order: next[idx].order }),
-        saveHeroSlide(next[j].id, { order: next[j].order }),
+      const results = await Promise.all([
+        saveHeroSlide(moved.id, { order: moved.order }),
+        saveHeroSlide(swapped.id, { order: swapped.order }),
       ]);
       setBusy(null);
+      const failed = results.find((r) => r && !r.ok);
+      if (failed) alert(failed.error || "Reorder failed to persist");
     });
   }
 

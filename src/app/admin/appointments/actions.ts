@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function dbAppointmentAction(
   id: string,
   action: "update" | "delete",
   data?: Record<string, any>,
 ) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     if (action === "update") {
       await db.appointment.update({

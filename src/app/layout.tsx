@@ -8,6 +8,7 @@ import { Footer } from "@/components/site/footer";
 import { FloatingButtons } from "@/components/site/floating-whatsapp";
 import { SitePopup } from "@/components/site/site-popup";
 import { db } from "@/lib/db";
+import { getSeoMeta } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -22,37 +23,50 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic",
-  description:
-    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal's leading skin and hair clinic. Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care.",
-  keywords: [
-    "KPC Skin Hair & Aesthetic Clinic",
-    "skin clinic Kathmandu",
-    "hair transplant Nepal",
-    "laser hair removal",
-    "dermatologist Nepal",
-    "acne treatment",
-    "cosmetic surgery Nepal",
-  ],
-  authors: [{ name: "KPC Skin Hair & Aesthetic Clinic" }],
-  icons: {
-    icon: "/favicon.svg",
-  },
-  openGraph: {
-    title: "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic",
-    description:
-      "Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care in Nepal.",
-    url: "https://www.kpcskinclinic.com",
-    siteName: "KPC Skin Hair & Aesthetic Clinic",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "KPC Skin Hair & Aesthetic Clinic",
-    description: "Nepal's leading skin & hair clinic.",
-  },
-};
+export const dynamic = "force-dynamic";
+
+const DEFAULT_TITLE = "KPC Skin Hair & Aesthetic Clinic | Nepal's Leading Skin & Hair Clinic";
+const DEFAULT_DESCRIPTION =
+  "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — Nepal's leading skin and hair clinic. Expert hair transplants, laser treatments, cosmetic surgery, acne & scar treatments, and personalized dermatology care.";
+const DEFAULT_KEYWORDS = [
+  "KPC Skin Hair & Aesthetic Clinic",
+  "skin clinic Kathmandu",
+  "hair transplant Nepal",
+  "laser hair removal",
+  "dermatologist Nepal",
+  "acne treatment",
+  "cosmetic surgery Nepal",
+];
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoMeta("/");
+  const title = seo?.title || DEFAULT_TITLE;
+  const description = seo?.description || DEFAULT_DESCRIPTION;
+  const keywords = seo?.keywords
+    ? seo.keywords.split(",").map((k) => k.trim()).filter(Boolean)
+    : DEFAULT_KEYWORDS;
+  return {
+    title,
+    description,
+    keywords,
+    authors: [{ name: "KPC Skin Hair & Aesthetic Clinic" }],
+    icons: { icon: "/favicon.svg" },
+    alternates: { canonical: seo?.canonical || "/" },
+    openGraph: {
+      title,
+      description,
+      url: "https://www.kpcskinclinic.com",
+      siteName: "KPC Skin Hair & Aesthetic Clinic",
+      type: "website",
+      ...(seo?.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 type SiteSettings = {
   logoUrl?: string;

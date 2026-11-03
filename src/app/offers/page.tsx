@@ -1,13 +1,17 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
 import { OFFERS } from "@/lib/site-data";
+import { buildMetadata } from "@/lib/seo";
 import { Tag, Check, Clock } from "lucide-react";
 
-export const metadata = {
-  title: "Offers & Packages | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "Seasonal packages and member-only offers across KPC's most popular treatments. Honest bundles — not manufactured discounts.",
-};
+export async function generateMetadata() {
+  return buildMetadata("/offers", {
+    title: "Offers & Packages | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "Seasonal packages and member-only offers across KPC's most popular treatments. Honest bundles — not manufactured discounts.",
+    canonical: "/offers",
+  });
+}
 
 const TERMS = [
   "Offers cannot be combined with any other promotion or EMI plan.",
@@ -26,7 +30,7 @@ export default function OffersPage() {
         title="A few offers worth"
         highlight="knowing about."
         description="We don't run sales. These are seasonal packages and new-patient bundles that genuinely save money if you were going to do the treatment anyway."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg"
+        image="/images/gen/hydrafacial.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "Offers" }]}
       />
 
@@ -188,7 +192,7 @@ function FeaturedOffer({ offer }: { offer: any }) {
         <div className="relative">
           { }
           <img
-            src="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg"
+            src="/images/gen/laser-care.jpg"
             alt={offer.title}
             className="rounded-2xl aspect-[4/3] object-cover w-full"
           />

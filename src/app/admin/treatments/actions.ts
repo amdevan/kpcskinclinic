@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function dbTreatmentAction(
   id: string,
   action: "create" | "update" | "delete" | "toggle-publish",
   data?: Record<string, any>,
 ) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     if (action === "create") {
       const slug = String(data?.slug || "").trim();
@@ -41,6 +43,8 @@ export async function dbTreatmentAction(
     }
 
     if (action === "update") {
+      const existing = await db.treatment.findUnique({ where: { id } });
+      if (!existing) return { ok: false, error: "Not found" };
       await db.treatment.update({
         where: { id },
         data: {
@@ -65,6 +69,9 @@ export async function dbTreatmentAction(
       });
       revalidatePath("/admin/treatments");
       revalidatePath("/services");
+      revalidatePath(`/services/${existing.slug}`);
+      const newSlug = String(data?.slug ?? existing.slug);
+      if (newSlug !== existing.slug) revalidatePath(`/services/${newSlug}`);
       return { ok: true };
     }
 
@@ -77,13 +84,17 @@ export async function dbTreatmentAction(
       });
       revalidatePath("/admin/treatments");
       revalidatePath("/services");
+      revalidatePath(`/services/${existing.slug}`);
       return { ok: true };
     }
 
     if (action === "delete") {
+      const existing = await db.treatment.findUnique({ where: { id } });
+      if (!existing) return { ok: false, error: "Not found" };
       await db.treatment.delete({ where: { id } });
       revalidatePath("/admin/treatments");
       revalidatePath("/services");
+      revalidatePath(`/services/${existing.slug}`);
       return { ok: true };
     }
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   Pencil,
   Trash2,
@@ -56,6 +57,12 @@ export function AdminSimpleList({
   const [form, setForm] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState<string | null>(null);
   const [, startTransition] = useTransition();
+  const router = useRouter();
+
+  // Re-sync when the server sends fresh data (e.g. after create + refresh)
+  useEffect(() => {
+    setLocal(items);
+  }, [items]);
 
   const titleField = fields.find((f) => f.key === "title") || fields.find((f) => f.key === "name") || fields[0];
   const categoryField = fields.find((f) => f.key === "category");
@@ -110,7 +117,17 @@ export function AdminSimpleList({
       setBusy(null);
       if (res?.ok) {
         closeForm();
-        window.location.reload();
+        if (id === null) {
+          // New row: let the server re-render provide the real record
+          router.refresh();
+        } else {
+          // Update the row in place — no full page reload
+          setLocal((arr) =>
+            arr.map((x) =>
+              x.id === id ? { ...x, ...form, id, published: x.published } : x,
+            ),
+          );
+        }
       } else {
         alert(res?.error || "Save failed");
       }

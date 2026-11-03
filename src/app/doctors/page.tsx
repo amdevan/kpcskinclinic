@@ -3,15 +3,19 @@ import { CtaSection } from "@/components/site/cta-section";
 import { DOCTORS } from "@/lib/site-data";
 import { DoctorCard } from "@/components/site/doctor-card";
 import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Our Doctors | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "Meet the five full-time doctors at KPC Skin Clinic Thapathali. Board-certified, experienced, honest. Hover any doctor to book or view details.",
-  alternates: { canonical: "/doctors" },
-};
+export async function generateMetadata() {
+  return buildMetadata("/doctors", {
+    title: "Our Doctors | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "Meet the five full-time doctors at KPC Skin Clinic Thapathali. Board-certified, experienced, honest. Hover any doctor to book or view details.",
+    canonical: "/doctors",
+  });
+}
 
 type Doctor = (typeof DOCTORS)[number];
 
@@ -55,10 +59,18 @@ export default async function DoctorsPage() {
   } catch {
     // DB not available — fall back to static DOCTORS
   }
+  const banner = await getPageSection("doctors", "banner");
 
   return (
     <>
-      <PageBanner eyebrow="Our Doctors" title="Trusted care." highlight="One philosophy." description="Every consultation and every procedure at KPC is performed by a qualified doctor — not a technician, not a salesperson. Hover over any doctor to book or view details." image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg" crumbs={[{ label: "Home", href: "/" }, { label: "Doctors" }]} />
+      <PageBanner
+        eyebrow={banner?.extra.eyebrow || "Our Doctors"}
+        title={banner?.title || "Trusted care."}
+        highlight={banner?.extra.highlight || "One philosophy."}
+        description={banner?.body || "Every consultation and every procedure at KPC is performed by a qualified doctor — not a technician, not a salesperson. Hover over any doctor to book or view details."}
+        image={banner?.image || "/images/gen/clinic-room.jpg"}
+        crumbs={[{ label: "Home", href: "/" }, { label: "Doctors" }]}
+      />
       <section className="py-20 sm:py-28 bg-background">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">

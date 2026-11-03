@@ -9,15 +9,19 @@ import {
 } from "@/components/ui/accordion";
 import { ShieldCheck, Lock, Clock, AlertCircle } from "lucide-react";
 import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "STD / STI Testing | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "Confidential, doctor-counselled STD and STI testing at KPC Skin Clinic Thapathali. Pre- and post-test counselling included. Results within 2–5 working days.",
-  alternates: { canonical: "/std-sti" },
-};
+export async function generateMetadata() {
+  return buildMetadata("/std-sti", {
+    title: "STD / STI Testing | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "Confidential, doctor-counselled STD and STI testing at KPC Skin Clinic Thapathali. Pre- and post-test counselling included. Results within 2–5 working days.",
+    canonical: "/std-sti",
+  });
+}
 
 type StdPackage = (typeof STD_STI_PACKAGES)[number];
 type StdTest = (typeof STD_STI_INDIVIDUAL_TESTS)[number];
@@ -63,6 +67,7 @@ async function getTests(): Promise<StdTest[]> {
 export default async function StdStiPage() {
   const packages = await getPackages();
   const tests = await getTests();
+  const banner = await getPageSection("std-sti", "banner");
   const priceRange =
     tests.length > 0
       ? (() => {
@@ -79,11 +84,11 @@ export default async function StdStiPage() {
   return (
     <>
       <PageBanner
-        eyebrow="Standalone Service"
-        title="STD / STI"
-        highlight="Testing."
-        description="Confidential, doctor-counselled STD and STI testing at KPC Skin Clinic Thapathali. Pre- and post-test counselling included. Results within 2–5 working days."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg"
+        eyebrow={banner?.extra.eyebrow || "Standalone Service"}
+        title={banner?.title || "STD / STI"}
+        highlight={banner?.extra.highlight || "Testing."}
+        description={banner?.body || "Confidential, doctor-counselled STD and STI testing at KPC Skin Clinic Thapathali. Pre- and post-test counselling included. Results within 2–5 working days."}
+        image={banner?.image || "/images/gen/lab-diagnostics.jpg"}
         crumbs={[{ label: "Home", href: "/" }, { label: "STD/STI" }]}
       />
 

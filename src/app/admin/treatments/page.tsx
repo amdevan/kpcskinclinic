@@ -51,9 +51,14 @@ const fields: AdminField[] = [
 ];
 
 export default async function AdminTreatmentsPage() {
-  const treatments = await db.treatment.findMany({
-    orderBy: [{ category: "asc" }, { title: "asc" }],
-  });
+  let treatments: Awaited<ReturnType<typeof db.treatment.findMany>> = [];
+  try {
+    treatments = await db.treatment.findMany({
+      orderBy: [{ category: "asc" }, { title: "asc" }],
+    });
+  } catch {
+    // DB not available — show empty list instead of crashing
+  }
 
   const items = treatments.map((t) => ({
     id: t.id,

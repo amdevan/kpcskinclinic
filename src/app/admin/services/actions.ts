@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 type ServiceItem = { title: string; href: string; description: string };
 
 export async function createServiceCategory(
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const slug = String(data?.slug || "").trim();
     const title = String(data?.title || "").trim();
@@ -39,6 +41,7 @@ export async function saveServiceCategory(
   id: string,
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const existing = await db.serviceCategory.findUnique({ where: { id } });
     if (!existing) return { ok: false, error: "Category not found" };
@@ -67,6 +70,7 @@ export async function saveServiceCategory(
 export async function deleteServiceCategory(
   id: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     await db.serviceCategory.delete({ where: { id } });
     revalidatePath("/admin/services");

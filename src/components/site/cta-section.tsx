@@ -10,7 +10,7 @@ export function CtaSection({
   primaryCta = "Request an Appointment",
   secondaryCta = "Request a Quote",
   secondaryHref = "/contact",
-  image = "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+  image = "/images/gen/lab-diagnostics.jpg",
 }: {
   titlePrefix?: string;
   highlight?: string;

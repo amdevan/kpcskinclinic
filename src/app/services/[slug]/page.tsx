@@ -294,7 +294,7 @@ function GeneratedTreatmentTemplate({
   title: string;
   category: string;
 }) {
-  const heroImage = "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg";
+  const heroImage = "/images/gen/hair-treatment.jpg";
   return (
     <>
       <PageBanner

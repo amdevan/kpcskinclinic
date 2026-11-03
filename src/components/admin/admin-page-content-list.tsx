@@ -63,6 +63,22 @@ type PageDef = {
 
 type Props = { pages: PageDef[] };
 
+/** Parse alias fields (eyebrow/highlight/…) stored as a JSON object in `body`. */
+function parseExtra(body: string): Record<string, string> {
+  if (!body) return {};
+  try {
+    const o = JSON.parse(body);
+    if (o && typeof o === "object" && !Array.isArray(o)) {
+      return Object.fromEntries(
+        Object.entries(o).map(([k, v]) => [k, String(v ?? "")]),
+      );
+    }
+  } catch {
+    // plain text body — no alias fields
+  }
+  return {};
+}
+
 export function AdminPageContentList({ pages }: Props) {
   return (
     <Accordion type="multiple" className="space-y-3">
@@ -238,16 +254,34 @@ function BlockEditor({
   onDelete: () => void;
   busy: boolean;
 }) {
-  // Field key maps to column on PageContent
+  // Field key maps to a column on PageContent. Alias keys (eyebrow,
+  // highlight, description…) are stored as a JSON object inside `body`
+  // so nothing the admin types is ever lost on save. When body holds JSON,
+  // the body textarea edits `extra.body` and preserves its siblings.
   function value(key: string): string {
     if (key === "title") return row.title ?? "";
-    if (key === "body") return row.body ?? "";
     if (key === "image") return row.image ?? "";
     if (key === "video") return row.video ?? "";
-    // Aliases — for sections where the UI exposes eyebrow/highlight/description
-    // we store them as JSON inside body. For admin ergonomics we still allow
-    // raw editing of body.
-    return "";
+    if (key === "body") {
+      const extra = parseExtra(row.body);
+      return Object.keys(extra).length > 0 ? (extra.body ?? "") : (row.body ?? "");
+    }
+    return parseExtra(row.body)[key] ?? "";
+  }
+
+  function setValue(key: string, v: string) {
+    if (key === "title") return onChange({ title: v });
+    if (key === "image") return onChange({ image: v });
+    if (key === "video") return onChange({ video: v });
+    if (key === "body") {
+      const extra = parseExtra(row.body);
+      if (Object.keys(extra).length === 0) return onChange({ body: v });
+      extra.body = v;
+      return onChange({ body: JSON.stringify(extra, null, 2) });
+    }
+    const extra = parseExtra(row.body);
+    extra[key] = v;
+    onChange({ body: JSON.stringify(extra, null, 2) });
   }
 
   return (
@@ -270,31 +304,23 @@ function BlockEditor({
             {f.type === "textarea" ? (
               <Textarea
                 rows={3}
-                value={(f.key === "body" ? row.body : value(f.key)) || ""}
-                onChange={(e) =>
-                  f.key === "body"
-                    ? onChange({ body: e.target.value })
-                    : onChange({ body: e.target.value })
-                }
+                value={value(f.key) || ""}
+                onChange={(e) => setValue(f.key, e.target.value)}
               />
             ) : f.type === "image" ? (
               <ImageUpload
-                value={f.key === "image" ? (row.image || "") : value(f.key)}
-                onChange={(url) => onChange({ image: url })}
+                value={value(f.key) || ""}
+                onChange={(url) => setValue(f.key, url)}
               />
             ) : f.type === "video" ? (
               <VideoField
-                value={f.key === "video" ? (row.video || "") : value(f.key)}
-                onChange={(url) => onChange({ video: url })}
+                value={value(f.key) || ""}
+                onChange={(url) => setValue(f.key, url)}
               />
             ) : (
               <Input
-                value={f.key === "title" ? (row.title || "") : value(f.key)}
-                onChange={(e) =>
-                  f.key === "title"
-                    ? onChange({ title: e.target.value })
-                    : onChange({ body: e.target.value })
-                }
+                value={value(f.key) || ""}
+                onChange={(e) => setValue(f.key, e.target.value)}
               />
             )}
             {f.help && (

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 import {
   ALL_SITE_INFO_FIELDS,
   SITE_INFO_KEY_TO_GROUP,
@@ -14,6 +15,7 @@ import {
  * admin UI can clear a field.
  */
 export async function saveSiteInfo(values: Record<string, string>) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const allowedKeys = new Set(ALL_SITE_INFO_FIELDS.map((f) => f.key));
     const upserts = Object.entries(values)

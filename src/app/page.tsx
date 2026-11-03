@@ -7,6 +7,7 @@ import { Testimonials } from "@/components/site/testimonials";
 import { SocialSection } from "@/components/site/social-section";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { db } from "@/lib/db";
+import { getPageSection, type PageSectionContent } from "@/lib/page-content";
 import { HERO_SLIDES, type HeroSlide } from "@/lib/site-data";
 
 export const dynamic = "force-dynamic";
@@ -33,43 +34,38 @@ export default async function Home() {
     // DB not available — fall back to static HERO_SLIDES
   }
 
-  // Fetch any PageContent videos for the home page sections
-  // (hero / about / success-stories / testimonials / cta / social / media-gallery).
-  // Each section that has a `video` set will render an embed at the right spot.
-  let heroVideo = "";
-  let aboutVideo = "";
-  let successStoriesVideo = "";
-  let testimonialsVideo = "";
-  let ctaVideo = "";
-  let socialVideo = "";
-  let mediaGalleryVideo = "";
-  try {
-    const rows = await db.pageContent.findMany({
-      where: { page: "home" },
-      orderBy: { order: "asc" },
-    });
-    if (rows && rows.length > 0) {
-      const bySection = (section: string) =>
-        rows.filter((r) => r.section === section);
-      const pickVideo = (section: string) => {
-        const matches = bySection(section);
-        for (const r of matches) {
-          const v = (r as any).video ?? "";
-          if (v) return v;
-        }
-        return "";
-      };
-      heroVideo = pickVideo("hero");
-      aboutVideo = pickVideo("about");
-      successStoriesVideo = pickVideo("success-stories");
-      testimonialsVideo = pickVideo("testimonials");
-      ctaVideo = pickVideo("cta");
-      socialVideo = pickVideo("social");
-      mediaGalleryVideo = pickVideo("media-gallery");
-    }
-  } catch {
-    // DB not available — no videos
+  // Fetch every editable home section in one query. Each section renders its
+  // DB title/body/image when present and falls back to the built-in copy.
+  const sections: Record<string, PageSectionContent | null> = {};
+  for (const s of [
+    "hero",
+    "popular-services",
+    "about",
+    "cta",
+    "success-stories",
+    "testimonials",
+    "social",
+    "media-gallery",
+  ]) {
+    sections[s] = await getPageSection("home", s);
   }
+  const sec = (s: string) => sections[s];
+  const videoOf = (s: string) => sec(s)?.video || "";
+
+  const about = sec("about");
+  const popular = sec("popular-services");
+  const cta = sec("cta");
+  const stories = sec("success-stories");
+  const reviews = sec("testimonials");
+  const social = sec("social");
+
+  const heroVideo = videoOf("hero");
+  const aboutVideo = videoOf("about");
+  const successStoriesVideo = videoOf("success-stories");
+  const testimonialsVideo = videoOf("testimonials");
+  const ctaVideo = videoOf("cta");
+  const socialVideo = videoOf("social");
+  const mediaGalleryVideo = videoOf("media-gallery");
 
   return (
     <>
@@ -83,8 +79,26 @@ export default async function Home() {
           </div>
         </section>
       ) : null}
-      <PopularServices />
-      <AboutSection />
+      <PopularServices
+        eyebrow={popular?.extra.eyebrow}
+        title={popular?.title || undefined}
+        titleHighlight={popular?.extra.highlight}
+        description={popular?.body || undefined}
+      />
+      <AboutSection
+        eyebrow={about?.extra.eyebrow}
+        title={about?.title || undefined}
+        titleHighlight={about?.extra.highlight}
+        paragraphs={
+          about?.body
+            ? about.body
+                .split(/\n\s*\n/)
+                .map((p) => p.trim())
+                .filter(Boolean)
+            : undefined
+        }
+        image={about?.image || undefined}
+      />
       {aboutVideo ? (
         <section className="py-12 sm:py-16 bg-cream">
           <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -94,7 +108,12 @@ export default async function Home() {
           </div>
         </section>
       ) : null}
-      <CtaSection />
+      <CtaSection
+        titlePrefix={cta?.title || undefined}
+        highlight={cta?.extra.highlight}
+        description={cta?.body || undefined}
+        image={cta?.image || undefined}
+      />
       {ctaVideo ? (
         <section className="py-12 sm:py-16 bg-cream">
           <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -104,7 +123,12 @@ export default async function Home() {
           </div>
         </section>
       ) : null}
-      <SuccessStoriesSection />
+      <SuccessStoriesSection
+        eyebrow={stories?.extra.eyebrow}
+        title={stories?.title || undefined}
+        titleHighlight={stories?.extra.highlight}
+        description={stories?.body || undefined}
+      />
       {successStoriesVideo ? (
         <section className="py-12 sm:py-16 bg-background">
           <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -114,7 +138,11 @@ export default async function Home() {
           </div>
         </section>
       ) : null}
-      <Testimonials />
+      <Testimonials
+        eyebrow={reviews?.extra.eyebrow}
+        title={reviews?.title || undefined}
+        description={reviews?.body || undefined}
+      />
       {testimonialsVideo ? (
         <section className="py-12 sm:py-16 bg-cream">
           <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -124,7 +152,12 @@ export default async function Home() {
           </div>
         </section>
       ) : null}
-      <SocialSection />
+      <SocialSection
+        eyebrow={social?.extra.eyebrow}
+        title={social?.title || undefined}
+        titleHighlight={social?.extra.highlight}
+        description={social?.body || undefined}
+      />
       {socialVideo ? (
         <section className="py-12 sm:py-16 bg-background">
           <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">

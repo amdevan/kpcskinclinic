@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function dbDoctorAction(
   id: string,
   action: "create" | "update" | "delete" | "toggle-publish",
   data?: Record<string, any>,
 ) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     if (action === "create") {
       const slug = (data?.slug || data?.name || "").trim();
@@ -27,7 +29,7 @@ export async function dbDoctorAction(
           image: String(data?.image ?? ""),
           experience: String(data?.experience ?? ""),
           published: data?.published !== "false" && data?.published !== false,
-          order: Number(data?.order ?? 0),
+          order: parseIntSafe(data?.order),
         },
       });
       revalidatePath("/admin/doctors");
@@ -36,6 +38,8 @@ export async function dbDoctorAction(
     }
 
     if (action === "update") {
+      const existing = await db.doctor.findUnique({ where: { id } });
+      if (!existing) return { ok: false, error: "Not found" };
       await db.doctor.update({
         where: { id },
         data: {
@@ -63,11 +67,14 @@ export async function dbDoctorAction(
                   data.published === "true" || data.published === true,
               }
             : {}),
-          ...(data?.order !== undefined ? { order: Number(data.order) } : {}),
+          ...(data?.order !== undefined ? { order: parseIntSafe(data.order) } : {}),
         },
       });
       revalidatePath("/admin/doctors");
       revalidatePath("/doctors");
+      revalidatePath(`/doctors/${existing.slug}`);
+      const newSlug = String(data?.slug ?? existing.slug);
+      if (newSlug !== existing.slug) revalidatePath(`/doctors/${newSlug}`);
       return { ok: true };
     }
 
@@ -80,13 +87,17 @@ export async function dbDoctorAction(
       });
       revalidatePath("/admin/doctors");
       revalidatePath("/doctors");
+      revalidatePath(`/doctors/${existing.slug}`);
       return { ok: true };
     }
 
     if (action === "delete") {
+      const existing = await db.doctor.findUnique({ where: { id } });
+      if (!existing) return { ok: false, error: "Not found" };
       await db.doctor.delete({ where: { id } });
       revalidatePath("/admin/doctors");
       revalidatePath("/doctors");
+      revalidatePath(`/doctors/${existing.slug}`);
       return { ok: true };
     }
 
@@ -94,4 +105,9 @@ export async function dbDoctorAction(
   } catch (e: any) {
     return { ok: false, error: e?.message || "Action failed" };
   }
+}
+
+function parseIntSafe(v: any, fallback = 0): number {
+  const n = parseInt(String(v ?? ""), 10);
+  return Number.isFinite(n) ? n : fallback;
 }

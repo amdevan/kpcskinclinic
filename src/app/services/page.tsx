@@ -5,14 +5,19 @@ import { SERVICE_CATEGORIES, slugify, type ServiceCategory } from "@/lib/site-da
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Our Services | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "All 28 treatments across 6 categories — hair transplant, hair clinic, surgery, cosmetic face concerns, aesthetic services, and laser treatments. Performed by doctors, in-house.",
-};
+export async function generateMetadata() {
+  return buildMetadata("/services", {
+    title: "Our Services | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "All 28 treatments across 6 categories — hair transplant, hair clinic, surgery, cosmetic face concerns, aesthetic services, and laser treatments. Performed by doctors, in-house.",
+    canonical: "/services",
+  });
+}
 
 function parseJsonArray<T>(value: string | null | undefined, fallback: T[] = []): T[] {
   if (!value) return fallback;
@@ -55,62 +60,51 @@ async function getCategories(): Promise<ServiceCategory[]> {
   return SERVICE_CATEGORIES;
 }
 
-async function getIntroVideo() {
-  try {
-    const rows = await db.pageContent.findMany({
-      where: { page: "services", section: "intro" },
-      orderBy: { order: "asc" },
-    });
-    if (rows && rows.length > 0) {
-      const r = rows[0];
-      const v = (r as any).video ?? "";
-      if (v) {
-        return { title: r.title, body: r.body, video: v };
-      }
-    }
-  } catch {
-    // DB not available — no intro video
-  }
-  return null;
+async function getIntro() {
+  return getPageSection("services", "intro");
 }
 
 export default async function ServicesPage() {
   const categories = await getCategories();
-  const intro = await getIntroVideo();
+  const intro = await getIntro();
+  const banner = await getPageSection("services", "banner");
+  const hasIntro = !!(intro && (intro.video || intro.title || intro.body));
   return (
     <>
       <PageBanner
-        eyebrow="Our Services"
-        title="Twenty-eight treatments."
-        highlight="Six doctors who do them."
-        description="Pick a category to see what's on the menu. Every procedure is performed in-house at our Thapathali clinic — no outsourcing, no contractor doctors."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg"
+        eyebrow={banner?.extra.eyebrow || "Our Services"}
+        title={banner?.title || "Twenty-eight treatments."}
+        highlight={banner?.extra.highlight || "Six doctors who do them."}
+        description={banner?.body || "Pick a category to see what's on the menu. Every procedure is performed in-house at our Thapathali clinic — no outsourcing, no contractor doctors."}
+        image={banner?.image || "/images/gen/hair-treatment.jpg"}
         crumbs={[{ label: "Home", href: "/" }, { label: "Our Services" }]}
       />
 
-      {/* Featured intro video — shown when set */}
-      {intro && intro.video ? (
+      {/* Featured intro — shown when title/body/video is set */}
+      {hasIntro ? (
         <section className="py-16 sm:py-20 bg-cream">
           <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
             <div className="grid lg:grid-cols-12 gap-10 items-center">
               <div className="lg:col-span-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
-                  Why KPC
+                  {intro?.extra.eyebrow || "Why KPC"}
                 </p>
-                {intro.title ? (
+                {intro?.title ? (
                   <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink mb-3">
                     {intro.title}
                   </h2>
                 ) : null}
-                {intro.body ? (
+                {intro?.body ? (
                   <p className="text-muted-foreground text-base leading-relaxed">
                     {intro.body}
                   </p>
                 ) : null}
               </div>
-              <div className="lg:col-span-7">
-                <VideoEmbed url={intro.video} />
-              </div>
+              {intro?.video ? (
+                <div className="lg:col-span-7">
+                  <VideoEmbed url={intro.video} />
+                </div>
+              ) : null}
             </div>
           </div>
         </section>

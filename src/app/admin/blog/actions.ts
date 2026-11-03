@@ -2,12 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function dbBlogArticleAction(
   id: string,
   action: "create" | "update" | "delete" | "toggle-publish",
   data?: Record<string, any>,
 ) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     if (action === "create") {
       const slug = String(data?.slug || "").trim();
@@ -34,6 +36,8 @@ export async function dbBlogArticleAction(
     }
 
     if (action === "update") {
+      const existing = await db.blogArticle.findUnique({ where: { id } });
+      if (!existing) return { ok: false, error: "Not found" };
       await db.blogArticle.update({
         where: { id },
         data: {
@@ -51,6 +55,9 @@ export async function dbBlogArticleAction(
       });
       revalidatePath("/admin/blog");
       revalidatePath("/blog");
+      revalidatePath(`/blog/${existing.slug}`);
+      const newSlug = String(data?.slug ?? existing.slug);
+      if (newSlug !== existing.slug) revalidatePath(`/blog/${newSlug}`);
       return { ok: true };
     }
 
@@ -63,13 +70,17 @@ export async function dbBlogArticleAction(
       });
       revalidatePath("/admin/blog");
       revalidatePath("/blog");
+      revalidatePath(`/blog/${existing.slug}`);
       return { ok: true };
     }
 
     if (action === "delete") {
+      const existing = await db.blogArticle.findUnique({ where: { id } });
+      if (!existing) return { ok: false, error: "Not found" };
       await db.blogArticle.delete({ where: { id } });
       revalidatePath("/admin/blog");
       revalidatePath("/blog");
+      revalidatePath(`/blog/${existing.slug}`);
       return { ok: true };
     }
 

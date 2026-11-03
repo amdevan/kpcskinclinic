@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 /**
  * Create a new PageContent row. `data` must include `page` + `section`.
@@ -9,6 +10,7 @@ import { db } from "@/lib/db";
 export async function createPageContent(
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const page = String(data?.page || "").trim();
     const section = String(data?.section || "").trim();
@@ -41,6 +43,7 @@ export async function savePageContent(
   id: string,
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const existing = await db.pageContent.findUnique({ where: { id } });
     if (!existing) return { ok: false, error: "Not found" };
@@ -58,8 +61,10 @@ export async function savePageContent(
       },
     });
     revalidatePath("/admin/pages");
-    const slug = existing.page === "home" ? "" : existing.page;
-    revalidatePath(`/${slug}`);
+    // Revalidate both the old and new page in case the row was moved.
+    for (const p of new Set([existing.page, String(data?.page || existing.page)])) {
+      revalidatePath(`/${p === "home" ? "" : p}`);
+    }
     return { ok: true };
   } catch (e: any) {
     return { ok: false, error: e?.message || "Save failed" };
@@ -72,6 +77,7 @@ export async function savePageContent(
 export async function deletePageContent(
   id: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const existing = await db.pageContent.findUnique({ where: { id } });
     if (!existing) return { ok: false, error: "Not found" };

@@ -4,7 +4,13 @@ import { randomBytes } from "crypto";
 import { verifyPassword } from "@/lib/password";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@kpcskin.com";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "kpc-admin-2026";
+// The env super-admin is enabled by an explicit ADMIN_PASSWORD. In dev we
+// fall back to a known default for convenience; in production a missing
+// ADMIN_PASSWORD disables the env super-admin entirely instead of leaving a
+// publicly-known password behind.
+const ADMIN_PASSWORD =
+  process.env.ADMIN_PASSWORD ||
+  (process.env.NODE_ENV === "production" ? "" : "kpc-admin-2026");
 
 // Account lockout thresholds — overridable via env so the admin security
 // page can adjust them without a redeploy.
@@ -153,7 +159,11 @@ export const authOptions: NextAuthOptions = {
         }
 
         // 1) Env-var super-admin — password compared in plaintext (do NOT hash)
-        if (email === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASSWORD) {
+        if (
+          ADMIN_PASSWORD &&
+          email === ADMIN_EMAIL.toLowerCase() &&
+          password === ADMIN_PASSWORD
+        ) {
           await logAttempt({
             email,
             ip,

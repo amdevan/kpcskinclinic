@@ -16,13 +16,22 @@ const fields: AdminField[] = [
   { key: "body", label: "Body (Markdown)", type: "textarea", full: true },
 ];
 
+// `date` is a display string (e.g. "20 Sep 2026") — sort by it when it
+// parses as a date, falling back to the row's createdAt.
+function sortByDisplayDate<T extends { date: string; createdAt: Date }>(rows: T[]) {
+  const ts = (a: T) => {
+    const d = a.date ? new Date(a.date).getTime() : NaN;
+    return Number.isNaN(d) ? new Date(a.createdAt).getTime() || 0 : d;
+  };
+  rows.sort((x, y) => ts(y) - ts(x));
+}
+
 export default async function AdminBlogPage() {
   let items: any[] = [];
   try {
     const { db } = await import("@/lib/db");
-    const articles = await db.blogArticle.findMany({
-      orderBy: [{ date: "desc" }, { title: "asc" }],
-    });
+    const articles = await db.blogArticle.findMany({ orderBy: { createdAt: "desc" } });
+    sortByDisplayDate(articles);
     items = articles.map((a) => ({
       id: a.id, title: a.title, slug: a.slug, excerpt: a.excerpt, body: a.body,
       date: a.date, author: a.author, category: a.category, image: a.image,
@@ -38,7 +47,8 @@ export default async function AdminBlogPage() {
           update: {},
         }).catch(() => {});
       }
-      const seeded = await db.blogArticle.findMany({ orderBy: [{ date: "desc" }, { title: "asc" }] });
+      const seeded = await db.blogArticle.findMany({ orderBy: { createdAt: "desc" } });
+      sortByDisplayDate(seeded);
       items = seeded.map((a) => ({
         id: a.id, title: a.title, slug: a.slug, excerpt: a.excerpt, body: a.body,
         date: a.date, author: a.author, category: a.category, image: a.image,

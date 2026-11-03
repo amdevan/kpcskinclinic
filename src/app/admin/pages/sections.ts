@@ -49,12 +49,10 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "hero",
         label: "Hero",
         fields: [
-          { key: "eyebrow", label: "Eyebrow", type: "text" },
-          { key: "title", label: "Title", type: "text" },
-          { key: "highlight", label: "Highlight (accent text)", type: "text" },
-          { key: "description", label: "Description", type: "textarea" },
-          { key: "image", label: "Background image", type: "image" },
-          VIDEO_FIELD,
+          {
+            ...VIDEO_FIELD,
+            help: "Optional video embedded below the hero carousel. Hero text and images are managed under Admin → Hero slides.",
+          },
         ],
       },
       {

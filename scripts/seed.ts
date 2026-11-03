@@ -341,7 +341,7 @@ async function main() {
       section: "banner",
       title: "A small clinic that takes a long time with each patient.",
       body: "Founded 2021 in Thapathali. Trusted care, one promise: honest treatment plans, written down, performed by doctors — not salespeople.",
-      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg",
+      image: "/images/gen/clinic-room.jpg",
       order: 0,
     },
     {
@@ -381,7 +381,7 @@ async function main() {
       section: "banner",
       title: "Hair Transplant at KPC.",
       body: "Natural, permanent hair restoration performed by experienced surgeons at our Thapathali clinic. Written graft count and price before surgery — no surprises.",
-      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+      image: "/images/gen/hair-transplant.jpg",
       order: 0,
     },
     {
@@ -389,9 +389,9 @@ async function main() {
       section: "sub_procedures",
       title: "Three transplant procedures",
       body: JSON.stringify([
-        { slug: "hair-transplant", title: "FUE Hair Transplant", desc: "Follicular Unit Extraction — natural density, no linear scar, permanent results.", image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg", price: "NPR 60,000+" },
-        { slug: "beard-transplant", title: "Beard Transplant", desc: "Fill patchy beards, moustache and sideburns with your own follicles.", image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/9b2eebe27adf.jpg", price: "NPR 45,000+" },
-        { slug: "eyebrow-transplant", title: "Eyebrow Transplant", desc: "Restore over-plucked, thin or scarred eyebrows — natural angle and density.", image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg", price: "NPR 35,000+" },
+        { slug: "hair-transplant", title: "FUE Hair Transplant", desc: "Follicular Unit Extraction — natural density, no linear scar, permanent results.", image: "/images/gen/hair-transplant.jpg", price: "NPR 60,000+" },
+        { slug: "beard-transplant", title: "Beard Transplant", desc: "Fill patchy beards, moustache and sideburns with your own follicles.", image: "/images/gen/beard-care.jpg", price: "NPR 45,000+" },
+        { slug: "eyebrow-transplant", title: "Eyebrow Transplant", desc: "Restore over-plucked, thin or scarred eyebrows — natural angle and density.", image: "/images/gen/hair-treatment.jpg", price: "NPR 35,000+" },
       ]),
       image: "",
       order: 1,
@@ -450,7 +450,7 @@ async function seedPopups() {
     {
       title: "Welcome to KPC Skin Clinic",
       description: "Book a consultation this month and get a free skin analysis worth NPR 2,000. Our expert dermatologists are ready to help you achieve healthy, glowing skin.",
-      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+      image: "/images/gen/hydrafacial.jpg",
       buttonText: "Book Now",
       buttonLink: "/contact",
       isActive: true,
@@ -462,7 +462,7 @@ async function seedPopups() {
     {
       title: "Monsoon Offer — 20% Off Laser Hair Removal",
       description: "Book a full-body laser hair removal package before the end of the month and save 20% plus a free HydraFacial add-on.",
-      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+      image: "/images/gen/laser-care.jpg",
       buttonText: "Claim Offer",
       buttonLink: "/packages",
       isActive: false,
@@ -474,7 +474,7 @@ async function seedPopups() {
     {
       title: "Free Skin Consultation for First-Time Visitors",
       description: "New to KPC? Get a complimentary 15-minute skin consultation with our dermatologists and 15% off your first treatment.",
-      image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg",
+      image: "/images/gen/clinic-room.jpg",
       buttonText: "Book Consultation",
       buttonLink: "/contact",
       isActive: false,

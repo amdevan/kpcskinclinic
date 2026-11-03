@@ -2,10 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function createHeroSlide(
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     await db.heroSlide.create({
       data: {
@@ -17,7 +19,7 @@ export async function createHeroSlide(
         primaryCta: String(data?.primaryCta ?? ""),
         secondaryCta: String(data?.secondaryCta ?? ""),
         isActive: parseBool(data?.isActive, true),
-        order: Number(data?.order ?? 0),
+        order: parseIntSafe(data?.order),
       },
     });
     revalidatePath("/admin/hero");
@@ -32,6 +34,7 @@ export async function saveHeroSlide(
   id: string,
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const patch: Record<string, any> = {};
     if (data?.eyebrow !== undefined) patch.eyebrow = String(data.eyebrow);
@@ -42,7 +45,7 @@ export async function saveHeroSlide(
     if (data?.primaryCta !== undefined) patch.primaryCta = String(data.primaryCta);
     if (data?.secondaryCta !== undefined) patch.secondaryCta = String(data.secondaryCta);
     if (data?.isActive !== undefined) patch.isActive = parseBool(data.isActive, true);
-    if (data?.order !== undefined) patch.order = Number(data.order);
+    if (data?.order !== undefined) patch.order = parseIntSafe(data.order);
 
     await db.heroSlide.update({ where: { id }, data: patch });
     revalidatePath("/admin/hero");
@@ -56,6 +59,7 @@ export async function saveHeroSlide(
 export async function deleteHeroSlide(
   id: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     await db.heroSlide.delete({ where: { id } });
     revalidatePath("/admin/hero");
@@ -70,4 +74,9 @@ function parseBool(v: any, fallback: boolean): boolean {
   if (v === true || v === "true") return true;
   if (v === false || v === "false") return false;
   return fallback;
+}
+
+function parseIntSafe(v: any, fallback = 0): number {
+  const n = parseInt(String(v ?? ""), 10);
+  return Number.isFinite(n) ? n : fallback;
 }

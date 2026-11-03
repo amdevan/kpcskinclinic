@@ -3,23 +3,48 @@
 import { Instagram, Music2 } from "lucide-react";
 import { SOCIAL_POSTS } from "@/lib/site-data";
 
-export function SocialSection() {
+export function SocialSection({
+  eyebrow = "Follow us @",
+  title,
+  titleHighlight = "TikTok",
+  description,
+}: {
+  eyebrow?: string;
+  /** Full heading; when set, `titleHighlight` is ignored. */
+  title?: string;
+  /** Accent text appended after "Instagram ·" when `title` is not set. */
+  titleHighlight?: string;
+  description?: string;
+}) {
   return (
     <section id="social" className="py-20 sm:py-28 bg-background">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         {/* Header — Follow us @ Instagram Tiktok */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
-              Follow us @
-            </p>
+            {eyebrow ? (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-2">
+                {eyebrow}
+              </p>
+            ) : null}
             <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink">
-              Instagram{" "}
-              <span className="text-muted-foreground/40">·</span>{" "}
-              <span className="font-italic-accent text-brand font-medium">
-                TikTok
-              </span>
+              {title ? (
+                title
+              ) : (
+                <>
+                  Instagram{" "}
+                  <span className="text-muted-foreground/40">·</span>{" "}
+                  <span className="font-italic-accent text-brand font-medium">
+                    {titleHighlight}
+                  </span>
+                </>
+              )}
             </h2>
+            {description ? (
+              <p className="mt-3 text-muted-foreground text-base leading-relaxed">
+                {description}
+              </p>
+            ) : null}
           </div>
           <div className="flex items-center gap-3">
             <a

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
+import { authOptions } from "@/lib/auth";
 
 // In-memory rate limit (per-process) to prevent simple abuse
 const RATE: Record<string, { count: number; reset: number }> = {};
@@ -96,8 +98,11 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  // Simple list endpoint — for admin/diagnostic only.
-  // In a real deployment you'd guard this with auth.
+  // Admin/diagnostic list endpoint — requires an authenticated session.
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
   const ip = getIp(req);
   if (rateLimited(ip)) {
     return NextResponse.json({ error: "too_many_requests" }, { status: 429 });

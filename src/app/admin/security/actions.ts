@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 /**
  * Unlock an account by deleting all failed LoginAttempt rows for the given
@@ -11,6 +12,7 @@ import { db } from "@/lib/db";
 export async function unlockAccount(
   email: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const normalizedEmail = email.trim().toLowerCase();
     if (!normalizedEmail) {
@@ -42,6 +44,7 @@ export async function unlockAccount(
 export async function clearLoginHistory(
   email?: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     if (email && email.trim()) {
       const normalizedEmail = email.trim().toLowerCase();
@@ -69,6 +72,7 @@ export async function clearLoginHistory(
 export async function saveSecuritySettings(
   values: Record<string, string>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const maxAttempts = String(values?.login_max_attempts || "").trim();
     const lockoutMinutes = String(values?.login_lockout_minutes || "").trim();

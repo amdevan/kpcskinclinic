@@ -6,15 +6,19 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Info } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Packages & Pricing | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "All KPC treatment packages — hair transplant, PRP, laser, surgery, HydraFacial, Botox, fillers, STD/STI testing. Transparent pricing, EMI available. Thapathali, Kathmandu.",
-  alternates: { canonical: "/packages" },
-};
+export async function generateMetadata() {
+  return buildMetadata("/packages", {
+    title: "Packages & Pricing | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "All KPC treatment packages — hair transplant, PRP, laser, surgery, HydraFacial, Botox, fillers, STD/STI testing. Transparent pricing, EMI available. Thapathali, Kathmandu.",
+    canonical: "/packages",
+  });
+}
 
 type PackageCardType = (typeof ALL_PACKAGES)[number];
 
@@ -64,7 +68,7 @@ function transformStdToPackageCard(t: any): PackageCardType {
       features.length > 0
         ? [...features, "Pre & post-test counselling"]
         : ["Pre & post-test counselling"],
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    image: "/images/gen/lab-diagnostics.jpg",
     category: "STD / STI",
     color: colorMap[t.name] || "brand",
     popular: !!t.recommended,
@@ -99,15 +103,24 @@ async function getPackages(): Promise<{ packages: PackageCardType[]; stdPackages
 export default async function PackagesPage() {
   const { packages, stdPackages } = await getPackages();
   const categories = Array.from(new Set(packages.map((p) => p.category)));
+  const banner = await getPageSection("packages", "banner");
+  const intro = await getPageSection("packages", "intro");
   return (
     <>
-      <PageBanner eyebrow="Packages & Pricing" title="Honest starting prices." highlight="No hidden charges." description="What you see is what you pay. Every package has a transparent starting price — click any package to book instantly." image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/cb095eaff0da.jpg" crumbs={[{ label: "Home", href: "/" }, { label: "Packages" }]} />
+      <PageBanner
+        eyebrow={banner?.extra.eyebrow || "Packages & Pricing"}
+        title={banner?.title || "Honest starting prices."}
+        highlight={banner?.extra.highlight || "No hidden charges."}
+        description={banner?.body || "What you see is what you pay. Every package has a transparent starting price — click any package to book instantly."}
+        image={banner?.image || "/images/gen/sterile-suite.jpg"}
+        crumbs={[{ label: "Home", href: "/" }, { label: "Packages" }]}
+      />
       <section className="py-20 sm:py-28 bg-background">
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
           <div className="max-w-2xl mb-10">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">Our most-booked treatments</p>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink leading-tight">All packages, by category</h2>
-            <p className="mt-4 text-muted-foreground">Browse every treatment package. Each card shows the starting price, what&apos;s included, and a booking button.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">{intro?.extra.eyebrow || "Our most-booked treatments"}</p>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink leading-tight">{intro?.title || "All packages, by category"}</h2>
+            <p className="mt-4 text-muted-foreground">{intro?.body || "Browse every treatment package. Each card shows the starting price, what&apos;s included, and a booking button."}</p>
           </div>
           {categories.map((cat) => {
             const catPackages = packages.filter((p) => p.category === cat);

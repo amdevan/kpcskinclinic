@@ -1,49 +1,52 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
+import { buildMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export const metadata = {
-  title: "Procedures | Surgical Treatments | KPC Skin Clinic Thapathali",
-  description:
-    "Surgical procedures at KPC Skin Clinic — rhinoplasty, blepharoplasty, scar revision, anti-ageing surgery, plastic surgery. Performed by a board-certified plastic surgeon in our in-house theatre.",
-  alternates: { canonical: "/procedures" },
-};
+export async function generateMetadata() {
+  return buildMetadata("/procedures", {
+    title: "Procedures | Surgical Treatments | KPC Skin Clinic Thapathali",
+    description:
+      "Surgical procedures at KPC Skin Clinic — rhinoplasty, blepharoplasty, scar revision, anti-ageing surgery, plastic surgery. Performed by a board-certified plastic surgeon in our in-house theatre.",
+    canonical: "/procedures",
+  });
+}
 
 const SURGICAL_PROCEDURES = [
   {
     slug: "rhinoplasty",
     title: "Rhinoplasty",
     desc: "Nose reshaping for harmony and function — performed by a board-certified plastic surgeon.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+    image: "/images/gen/surgery.jpg",
     price: "NPR 1,50,000+",
   },
   {
     slug: "blepharoplasty",
     title: "Blepharoplasty (Eyelid)",
     desc: "Upper and lower eyelid surgery for a refreshed, rested appearance.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2daf75b22fb4.jpg",
+    image: "/images/gen/plastic-surgery.jpg",
     price: "NPR 80,000+",
   },
   {
     slug: "scar-revision",
     title: "Scar Revision",
     desc: "Minimise and refine visible scars from injury, surgery, or acne.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/846084de6b09.jpg",
+    image: "/images/gen/consultation.jpg",
     price: "NPR 25,000+",
   },
   {
     slug: "anti-ageing-surgery",
     title: "Anti-Ageing Surgery",
     desc: "Surgical facial rejuvenation — facelift, brow lift, neck lift.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+    image: "/images/gen/surgery.jpg",
     price: "NPR 1,20,000+",
   },
   {
     slug: "plastic-surgery",
     title: "Plastic Surgery",
     desc: "Comprehensive cosmetic and reconstructive plastic surgery options.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2daf75b22fb4.jpg",
+    image: "/images/gen/plastic-surgery.jpg",
     price: "On consultation",
   },
 ];
@@ -55,7 +58,7 @@ export default function ProceduresPage() {
         eyebrow="Surgical"
         title="Procedures"
         description="Surgical cosmetic and reconstructive procedures performed by Dr. Rajesh Maharjan, our board-certified plastic surgeon, in our in-house sterile theatre at Thapathali."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg"
+        image="/images/gen/surgery.jpg"
         crumbs={[{ label: "Home", href: "/" }, { label: "Procedures" }]}
       />
 

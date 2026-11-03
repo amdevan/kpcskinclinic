@@ -5,36 +5,40 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Hair Transplant | KPC Skin Clinic Thapathali",
-  description:
-    "FUE hair transplant, beard transplant and eyebrow transplant at KPC Skin Clinic Thapathali. Performed by experienced surgeons. Written graft count and price before surgery. EMI available.",
-  alternates: { canonical: "/hair-transplant" },
-};
+export async function generateMetadata() {
+  return buildMetadata("/hair-transplant", {
+    title: "Hair Transplant | KPC Skin Clinic Thapathali",
+    description:
+      "FUE hair transplant, beard transplant and eyebrow transplant at KPC Skin Clinic Thapathali. Performed by experienced surgeons. Written graft count and price before surgery. EMI available.",
+    canonical: "/hair-transplant",
+  });
+}
 
 const DEFAULT_SUB_PROCEDURES = [
   {
     slug: "hair-transplant",
     title: "FUE Hair Transplant",
     desc: "Follicular Unit Extraction — natural density, no linear scar, permanent results.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+    image: "/images/gen/hair-transplant.jpg",
     price: "NPR 60,000+",
   },
   {
     slug: "beard-transplant",
     title: "Beard Transplant",
     desc: "Fill patchy beards, moustache and sideburns with your own follicles.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/9b2eebe27adf.jpg",
+    image: "/images/gen/beard-care.jpg",
     price: "NPR 45,000+",
   },
   {
     slug: "eyebrow-transplant",
     title: "Eyebrow Transplant",
     desc: "Restore over-plucked, thin or scarred eyebrows — natural angle and density.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+    image: "/images/gen/hair-treatment.jpg",
     price: "NPR 35,000+",
   },
 ];
@@ -50,7 +54,7 @@ const DEFAULT_BANNER = {
   title: "Hair Transplant at KPC.",
   description:
     "Natural, permanent hair restoration performed by experienced surgeons at our Thapathali clinic. Written graft count and price before surgery — no surprises.",
-  image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+  image: "/images/gen/hair-transplant.jpg",
 };
 
 function parseJson<T>(value: string | null | undefined, fallback: T): T {
@@ -63,40 +67,37 @@ function parseJson<T>(value: string | null | undefined, fallback: T): T {
 }
 
 async function getHairTransplantContent() {
-  let banner = DEFAULT_BANNER;
+  const bannerRow = await getPageSection("hair-transplant", "banner");
+  const banner = {
+    title: bannerRow?.title || DEFAULT_BANNER.title,
+    description: bannerRow?.body || DEFAULT_BANNER.description,
+    image: bannerRow?.image || DEFAULT_BANNER.image,
+    eyebrow: bannerRow?.extra.eyebrow || "Flagship Treatment",
+    highlight: bannerRow?.extra.highlight || "",
+  };
   let subProcedures = DEFAULT_SUB_PROCEDURES;
   let steps = DEFAULT_STEPS;
-  let bannerVideo = "";
   let stepsVideo = "";
   try {
     const rows = await db.pageContent.findMany({
       where: { page: "hair-transplant" },
       orderBy: { order: "asc" },
     });
-    if (rows && rows.length > 0) {
-      for (const r of rows) {
-        const v = (r as any).video ?? "";
-        if (r.section === "banner") {
-          banner = {
-            title: r.title,
-            description: r.body,
-            image: r.image || DEFAULT_BANNER.image,
-          };
-          bannerVideo = v;
-        } else if (r.section === "sub_procedures") {
-          const parsed = parseJson<typeof DEFAULT_SUB_PROCEDURES>(r.body, DEFAULT_SUB_PROCEDURES);
-          if (Array.isArray(parsed) && parsed.length > 0) subProcedures = parsed;
-        } else if (r.section === "steps") {
-          const parsed = parseJson<typeof DEFAULT_STEPS>(r.body, DEFAULT_STEPS);
-          if (Array.isArray(parsed) && parsed.length > 0) steps = parsed;
-          stepsVideo = v;
-        }
+    for (const r of rows || []) {
+      const v = (r as any).video ?? "";
+      if (r.section === "sub_procedures") {
+        const parsed = parseJson<typeof DEFAULT_SUB_PROCEDURES>(r.body, DEFAULT_SUB_PROCEDURES);
+        if (Array.isArray(parsed) && parsed.length > 0) subProcedures = parsed;
+      } else if (r.section === "steps") {
+        const parsed = parseJson<typeof DEFAULT_STEPS>(r.body, DEFAULT_STEPS);
+        if (Array.isArray(parsed) && parsed.length > 0) steps = parsed;
+        stepsVideo = v;
       }
     }
   } catch {
     // DB not available — fall back to defaults
   }
-  return { banner, subProcedures, steps, bannerVideo, stepsVideo };
+  return { banner, subProcedures, steps, bannerVideo: bannerRow?.video || "", stepsVideo };
 }
 
 export default async function HairTransplantHubPage() {
@@ -104,9 +105,9 @@ export default async function HairTransplantHubPage() {
   return (
     <>
       <PageBanner
-        eyebrow="Flagship Treatment"
-        title={banner.title.split(" at KPC")[0]}
-        highlight="at KPC."
+        eyebrow={banner.eyebrow}
+        title={banner.title}
+        highlight={banner.highlight}
         description={banner.description}
         image={banner.image}
         crumbs={[{ label: "Home", href: "/" }, { label: "Hair Transplant" }]}

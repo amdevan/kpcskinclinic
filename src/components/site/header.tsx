@@ -27,7 +27,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Menu, Phone, Instagram, Clock, MapPin } from "lucide-react";
+import {
+  Menu,
+  Phone,
+  Instagram,
+  Clock,
+  MapPin,
+  Scissors,
+  Droplets,
+  Stethoscope,
+  SmilePlus,
+  Sparkles,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import { SERVICE_CATEGORIES, NAV_LINKS } from "@/lib/site-data";
 import { Logo } from "./logo";
 import { useBookAppointment } from "./book-appointment-context";
@@ -293,24 +306,31 @@ export function Header({
   );
 }
 
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  "hair-transplant": Scissors,
+  "hair-clinic": Droplets,
+  surgery: Stethoscope,
+  "face-concerns": SmilePlus,
+  "aesthetic-services": Sparkles,
+  "laser-treatments": Zap,
+};
+
 function ServicesMegaMenu() {
   return (
     <>
       <NavigationMenuTrigger>Our Services</NavigationMenuTrigger>
       <NavigationMenuContent>
         <div className="grid w-[640px] lg:w-[760px] grid-cols-2 gap-2 p-4">
-          {SERVICE_CATEGORIES.map((cat) => (
+          {SERVICE_CATEGORIES.map((cat) => {
+            const Icon = CATEGORY_ICONS[cat.id] ?? Sparkles;
+            return (
             <div
               key={cat.id}
               className="group relative rounded-lg p-3 hover:bg-secondary/60 transition-colors"
             >
               <div className="flex items-start gap-3">
-                <div className="h-12 w-12 shrink-0 overflow-hidden rounded-md bg-secondary">
-                  <img
-                    src={cat.image}
-                    alt={cat.title}
-                    className="h-full w-full object-cover"
-                  />
+                <div className="h-12 w-12 shrink-0 rounded-md bg-brand/10 flex items-center justify-center">
+                  <Icon className="h-6 w-6 text-brand" strokeWidth={1.75} />
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-brand">{cat.title}</p>
@@ -337,7 +357,8 @@ function ServicesMegaMenu() {
                 )}
               </ul>
             </div>
-          ))}
+            );
+          })}
         </div>
       </NavigationMenuContent>
     </>

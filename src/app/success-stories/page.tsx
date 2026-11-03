@@ -4,46 +4,38 @@ import { Testimonials } from "@/components/site/testimonials";
 import { BeforeAfterGallery } from "@/components/site/before-after-gallery";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { TESTIMONIALS } from "@/lib/site-data";
-import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 import { PlayCircle, ArrowUpRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Success Stories | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "Real patient transformations — before & after gallery, video stories, and Google reviews from patients treated at KPC Skin Clinic, Kathmandu.",
-};
-
-async function getIntroVideo() {
-  try {
-    const rows = await db.pageContent.findMany({
-      where: { page: "success-stories", section: "intro" },
-      orderBy: { order: "asc" },
-    });
-    if (rows && rows.length > 0) {
-      const r = rows[0];
-      const v = (r as any).video ?? "";
-      if (v) {
-        return { title: r.title, body: r.body, video: v };
-      }
-    }
-  } catch {
-    // DB not available — no intro video
-  }
-  return null;
+export async function generateMetadata() {
+  return buildMetadata("/success-stories", {
+    title: "Success Stories | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "Real patient transformations — before & after gallery, video stories, and Google reviews from patients treated at KPC Skin Clinic, Kathmandu.",
+    canonical: "/success-stories",
+  });
 }
 
 export default async function SuccessStoriesPage() {
-  const intro = await getIntroVideo();
+  const [banner, introRow] = await Promise.all([
+    getPageSection("success-stories", "banner"),
+    getPageSection("success-stories", "intro"),
+  ]);
+  const intro =
+    introRow && (introRow.video || introRow.title || introRow.body)
+      ? { title: introRow.title, body: introRow.body, video: introRow.video }
+      : null;
   return (
     <>
       <PageBanner
-        eyebrow="Success Stories"
-        title="Hear From Our"
-        highlight="Satisfied Clients."
-        description="Discover why so many people trust our clinic to boost their confidence and well-being — real patients, real results, no filters."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg"
+        eyebrow={banner?.extra.eyebrow || "Success Stories"}
+        title={banner?.title || "Hear From Our"}
+        highlight={banner?.extra.highlight || "Satisfied Clients."}
+        description={banner?.body || "Discover why so many people trust our clinic to boost their confidence and well-being — real patients, real results, no filters."}
+        image={banner?.image || "/images/gen/surgery.jpg"}
         crumbs={[{ label: "Home", href: "/" }, { label: "Success Stories" }]}
       />
 

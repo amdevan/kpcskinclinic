@@ -4,14 +4,19 @@ import { VideoEmbed } from "@/components/site/video-embed";
 import { CONTACT_INFO } from "@/lib/site-data";
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook, Navigation } from "lucide-react";
 import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Contact Us | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "Get in touch with KPC Skin Clinic in Thapathali, Kathmandu. Call, email, or send us a message — we reply within one working day.",
-};
+export async function generateMetadata() {
+  return buildMetadata("/contact", {
+    title: "Contact Us | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "Get in touch with KPC Skin Clinic in Thapathali, Kathmandu. Call, email, or send us a message — we reply within one working day.",
+    canonical: "/contact",
+  });
+}
 
 type HoursEntry = { day: string; time: string };
 type SocialEntry = { label: string; href: string; handle: string; icon: string };
@@ -81,30 +86,24 @@ async function getContactInfo(): Promise<ContactInfo> {
 
 export default async function ContactPage() {
   const CONTACT = await getContactInfo();
-  let videoTour: { title: string; body: string; video: string } | null = null;
-  try {
-    const rows = await db.pageContent.findMany({
-      where: { page: "contact", section: "video-tour" },
-      orderBy: { order: "asc" },
-    });
-    if (rows && rows.length > 0) {
-      const r = rows[0];
-      const v = (r as any).video ?? "";
-      if (v) {
-        videoTour = { title: r.title, body: r.body, video: v };
-      }
-    }
-  } catch {
-    // ignore — no video tour
-  }
+  const [banner, formIntro, mapSec, videoTourRow] = await Promise.all([
+    getPageSection("contact", "banner"),
+    getPageSection("contact", "form"),
+    getPageSection("contact", "map"),
+    getPageSection("contact", "video-tour"),
+  ]);
+  const videoTour =
+    videoTourRow && videoTourRow.video
+      ? { title: videoTourRow.title, body: videoTourRow.body, video: videoTourRow.video }
+      : null;
   return (
     <>
       <PageBanner
-        eyebrow="Get in touch"
-        title="Talk to a"
-        highlight="human."
-        description="Call us, email us, or send a message below. Sunita on the front desk will get you booked with the right doctor."
-        image="https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg"
+        eyebrow={banner?.extra.eyebrow || "Get in touch"}
+        title={banner?.title || "Talk to a"}
+        highlight={banner?.extra.highlight || "human."}
+        description={banner?.body || "Call us, email us, or send a message below. Sunita on the front desk will get you booked with the right doctor."}
+        image={banner?.image || "/images/gen/clinic-room.jpg"}
         crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
       />
 
@@ -114,15 +113,31 @@ export default async function ContactPage() {
             {/* Left — contact info */}
             <div className="lg:col-span-5">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
-                Contact details
+                {formIntro?.extra.eyebrow || "Contact details"}
               </p>
               <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink mb-8">
-                We answer{" "}
-                <span className="font-italic-accent text-brand font-medium">
-                  every message
-                </span>{" "}
-                ourselves.
+                {formIntro?.title ? (
+                  <>
+                    {formIntro.title}{" "}
+                    {formIntro.extra.highlight ? (
+                      <span className="font-italic-accent text-brand font-medium">
+                        {formIntro.extra.highlight}
+                      </span>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    We answer{" "}
+                    <span className="font-italic-accent text-brand font-medium">
+                      every message
+                    </span>{" "}
+                    ourselves.
+                  </>
+                )}
               </h2>
+              {formIntro?.body ? (
+                <p className="text-muted-foreground mb-8 max-w-md">{formIntro.body}</p>
+              ) : null}
 
               <div className="space-y-5">
                 <a
@@ -262,29 +277,37 @@ export default async function ContactPage() {
         <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 py-10">
           <div className="rounded-2xl overflow-hidden border border-border bg-card">
             <div className="relative aspect-[21/9] bg-secondary flex items-center justify-center">
-              {/* Stylised map placeholder */}
-              <div className="absolute inset-0 opacity-30">
-                <svg className="h-full w-full" viewBox="0 0 800 340" preserveAspectRatio="xMidYMid slice">
-                  <defs>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="oklch(0.36 0.05 160 / 0.2)" strokeWidth="1" />
-                    </pattern>
-                  </defs>
-                  <rect width="800" height="340" fill="url(#grid)" />
-                  <path d="M0,180 Q200,140 400,200 T800,160" stroke="oklch(0.58 0.09 70 / 0.4)" strokeWidth="3" fill="none" />
-                  <path d="M100,0 L120,340" stroke="oklch(0.36 0.05 160 / 0.3)" strokeWidth="2" fill="none" />
-                  <path d="M500,0 L520,340" stroke="oklch(0.36 0.05 160 / 0.3)" strokeWidth="2" fill="none" />
-                </svg>
-              </div>
+              {/* Map screenshot when provided, else stylised map placeholder */}
+              {mapSec?.image ? (
+                <img
+                  src={mapSec.image}
+                  alt={mapSec.title || "KPC Skin Hair & Aesthetic Clinic location map"}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 opacity-30">
+                  <svg className="h-full w-full" viewBox="0 0 800 340" preserveAspectRatio="xMidYMid slice">
+                    <defs>
+                      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="oklch(0.36 0.05 160 / 0.2)" strokeWidth="1" />
+                      </pattern>
+                    </defs>
+                    <rect width="800" height="340" fill="url(#grid)" />
+                    <path d="M0,180 Q200,140 400,200 T800,160" stroke="oklch(0.58 0.09 70 / 0.4)" strokeWidth="3" fill="none" />
+                    <path d="M100,0 L120,340" stroke="oklch(0.36 0.05 160 / 0.3)" strokeWidth="2" fill="none" />
+                    <path d="M500,0 L520,340" stroke="oklch(0.36 0.05 160 / 0.3)" strokeWidth="2" fill="none" />
+                  </svg>
+                </div>
+              )}
               <div className="relative text-center">
                 <div className="h-14 w-14 rounded-full bg-brand flex items-center justify-center mx-auto mb-3 shadow-lg">
                   <MapPin className="h-7 w-7 text-cream" />
                 </div>
                 <p className="font-display text-xl font-semibold text-ink">
-                  KPC Skin Hair &amp; Aesthetic Clinic
+                  {mapSec?.title || "KPC Skin Hair & Aesthetic Clinic"}
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {CONTACT.addressShort}
+                  {mapSec?.body || CONTACT.addressShort}
                 </p>
                 <a
                   href={CONTACT.addressMapHref}

@@ -3,15 +3,19 @@ import { CtaSection } from "@/components/site/cta-section";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { TEAM, VALUES, STATS_FULL, CONTACT_INFO } from "@/lib/site-data";
 import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
-import { db } from "@/lib/db";
+import { getPageSection } from "@/lib/page-content";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "About Us | KPC Skin Hair & Aesthetic Clinic",
-  description:
-    "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — founded 2021 in Thapathali, Kathmandu. Meet our doctors, our values, and the story behind Nepal's leading skin & hair clinic.",
-};
+export async function generateMetadata() {
+  return buildMetadata("/about", {
+    title: "About Us | KPC Skin Hair & Aesthetic Clinic",
+    description:
+      "KPC Skin Hair & Aesthetic Clinic Pvt. Ltd — founded 2021 in Thapathali, Kathmandu. Meet our doctors, our values, and the story behind Nepal's leading skin & hair clinic.",
+    canonical: "/about",
+  });
+}
 
 // Default content fallbacks (used when DB is unavailable or rows missing)
 const DEFAULTS = {
@@ -19,12 +23,12 @@ const DEFAULTS = {
     title: "A small clinic that takes a long time with each patient.",
     description:
       "Founded 2021 in Thapathali. Trusted care, one promise: honest treatment plans, written down, performed by doctors — not salespeople.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg",
+    image: "/images/gen/clinic-room.jpg",
   },
   story: {
     title:
       "We started KPC because we were tired of clinics that treated patients like transactions.",
-    body: "KPC Skin Hair & Aesthetic Clinic started in 2021 with two rooms in Thapathali and one dermatologist who refused to recommend treatments he wouldn't do on his own family. Five years on, we've grown — but that rule hasn't changed.",
+    body: "KPC Skin Hair & Aesthetic Clinic started in 2021 with two rooms in Thapathali and one dermatologist who refused to recommend treatments he wouldn't do on his own family. Five years on, we've grown — but that rule hasn't changed.\n\nWe are not the biggest clinic in Kathmandu, and we don't want to be. What we are is deliberate: every consultation runs 30–45 minutes, every treatment plan is written down and handed to you, and every procedure is performed by a doctor — not a technician, not a salesperson.\n\nToday, KPC is a team of five full-time doctors, a patient care team of three, and an in-house surgical theatre. We've performed over 8,000 procedures — from hair transplants to rhinoplasty to laser hair removal — and we still answer every appointment request ourselves. No call center, no bots.",
   },
   mission: {
     title: "Mission",
@@ -41,52 +45,56 @@ const DEFAULTS = {
 };
 
 async function getAboutContent() {
-  let banner = DEFAULTS.banner;
-  let story = DEFAULTS.story;
-  let mission = DEFAULTS.mission;
-  let vision = DEFAULTS.vision;
-  let promise = DEFAULTS.promise;
-  let storyVideo = "";
-  let teamVideo: { title: string; body: string; image: string; video: string } | null = null;
-  try {
-    const rows = await db.pageContent.findMany({
-      where: { page: "about" },
-      orderBy: { order: "asc" },
-    });
-    if (rows && rows.length > 0) {
-      for (const r of rows) {
-        const section = r.section;
-        const video = (r as any).video ?? "";
-        if (section === "banner") {
-          banner = { title: r.title, description: r.body, image: r.image || DEFAULTS.banner.image };
-        } else if (section === "story") {
-          story = { title: r.title, body: r.body };
-          storyVideo = video;
-        } else if (section === "mission") {
-          mission = { title: r.title, body: r.body };
-        } else if (section === "vision") {
-          vision = { title: r.title, body: r.body };
-        } else if (section === "promise") {
-          promise = { title: r.title, body: r.body };
-        } else if (section === "team-video") {
-          teamVideo = { title: r.title, body: r.body, image: r.image, video };
-        }
-      }
-    }
-  } catch {
-    // DB not available — fall back to defaults
-  }
-  return { banner, story, mission, vision, promise, storyVideo, teamVideo };
+  const [banner, story, mission, vision, promise, teamVideoRow] = await Promise.all([
+    getPageSection("about", "banner"),
+    getPageSection("about", "story"),
+    getPageSection("about", "mission"),
+    getPageSection("about", "vision"),
+    getPageSection("about", "promise"),
+    getPageSection("about", "team-video"),
+  ]);
+  const bannerContent = {
+    title: banner?.title || DEFAULTS.banner.title,
+    description: banner?.body || DEFAULTS.banner.description,
+    image: banner?.image || DEFAULTS.banner.image,
+    eyebrow: banner?.extra.eyebrow || "About Us",
+    highlight: banner?.extra.highlight || "",
+  };
+  const storyContent = {
+    title: story?.title || DEFAULTS.story.title,
+    body: story?.body || DEFAULTS.story.body,
+    video: story?.video || "",
+  };
+  const teamVideo =
+    teamVideoRow && teamVideoRow.video
+      ? { title: teamVideoRow.title, body: teamVideoRow.body, image: teamVideoRow.image, video: teamVideoRow.video }
+      : null;
+  return {
+    banner: bannerContent,
+    story: storyContent,
+    mission: { title: mission?.title || DEFAULTS.mission.title, body: mission?.body || DEFAULTS.mission.body },
+    vision: { title: vision?.title || DEFAULTS.vision.title, body: vision?.body || DEFAULTS.vision.body },
+    promise: { title: promise?.title || DEFAULTS.promise.title, body: promise?.body || DEFAULTS.promise.body },
+    teamVideo,
+  };
 }
 
 export default async function AboutPage() {
-  const { banner, story, mission, vision, promise, storyVideo, teamVideo } = await getAboutContent();
+  const { banner, story, mission, vision, promise, teamVideo } = await getAboutContent();
+  const storyParas = story.body
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  const bannerTitleMain = banner.highlight
+    ? banner.title
+    : banner.title.split(" ").slice(0, -2).join(" ");
+  const bannerHighlight = banner.highlight || banner.title.split(" ").slice(-2).join(" ");
   return (
     <>
       <PageBanner
-        eyebrow="About Us"
-        title={banner.title.split(" ").slice(0, -2).join(" ")}
-        highlight={banner.title.split(" ").slice(-2).join(" ")}
+        eyebrow={banner.eyebrow}
+        title={bannerTitleMain}
+        highlight={bannerHighlight}
         description={banner.description}
         image={banner.image}
         crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
@@ -107,26 +115,13 @@ export default async function AboutPage() {
                 </span>
               </h2>
               <div className="space-y-4 text-base sm:text-lg leading-relaxed text-muted-foreground">
-                <p className="">{story.body}</p>
-                <p>
-                  We are not the biggest clinic in Kathmandu, and we don&apos;t
-                  want to be. What we are is deliberate: every consultation
-                  runs 30–45 minutes, every treatment plan is written down and
-                  handed to you, and every procedure is performed by a
-                  doctor — not a technician, not a salesperson.
-                </p>
-                <p>
-                  Today, KPC is a team of five full-time doctors, a patient
-                  care team of three, and an in-house surgical theatre. We&apos;ve
-                  performed over 8,000 procedures — from hair transplants to
-                  rhinoplasty to laser hair removal — and we still answer
-                  every appointment request ourselves. No call center, no
-                  bots.
-                </p>
+                {storyParas.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
               </div>
-              {storyVideo ? (
+              {story.video ? (
                 <div className="mt-8 max-w-2xl">
-                  <VideoEmbed url={storyVideo} />
+                  <VideoEmbed url={story.video} />
                 </div>
               ) : null}
             </div>

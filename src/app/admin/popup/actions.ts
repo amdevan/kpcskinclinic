@@ -2,10 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireSession } from "@/lib/security";
 
 export async function createPopup(
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const title = String(data?.title || "").trim();
     if (!title) return { ok: false, error: "Title is required" };
@@ -38,6 +40,7 @@ export async function savePopup(
   id: string,
   data: Record<string, any>,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     const patch: Record<string, any> = {};
     if (data?.title !== undefined) patch.title = String(data.title);
@@ -65,6 +68,7 @@ export async function savePopup(
 export async function deletePopup(
   id: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
   try {
     await db.popup.delete({ where: { id } });
     revalidatePath("/admin/popup");

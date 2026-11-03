@@ -8,7 +8,19 @@ import { ArrowUpRight } from "lucide-react";
 import { POPULAR_SERVICES } from "@/lib/site-data";
 import { useBookAppointment } from "./book-appointment-context";
 
-export function PopularServices() {
+export function PopularServices({
+  eyebrow = "Popular Services",
+  title,
+  titleHighlight = "Healthy, Glowing Skin & Hair",
+  description,
+}: {
+  eyebrow?: string;
+  /** Full heading; when set, `titleHighlight` is ignored. */
+  title?: string;
+  /** Accent text appended to the default heading when `title` is not set. */
+  titleHighlight?: string;
+  description?: string;
+}) {
   const { setPrefillService, setOpen } = useBookAppointment();
   return (
     <section
@@ -25,15 +37,28 @@ export function PopularServices() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-12">
           <div className="max-w-2xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold mb-3">
-              Popular Services
-            </p>
+            {eyebrow ? (
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold mb-3">
+                {eyebrow}
+              </p>
+            ) : null}
             <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.1] tracking-[-0.02em]">
-              Advanced Solutions for{" "}
-              <span className="font-italic-accent text-gold font-medium">
-                Healthy, Glowing Skin &amp; Hair
-              </span>
+              {title ? (
+                title
+              ) : (
+                <>
+                  Advanced Solutions for{" "}
+                  <span className="font-italic-accent text-gold font-medium">
+                    {titleHighlight}
+                  </span>
+                </>
+              )}
             </h2>
+            {description ? (
+              <p className="mt-4 text-cream/70 text-base leading-relaxed">
+                {description}
+              </p>
+            ) : null}
           </div>
           <Button
             asChild

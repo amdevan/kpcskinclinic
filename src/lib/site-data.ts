@@ -46,7 +46,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     description:
       "Advanced FUE hair transplant techniques delivered by experienced surgeons for natural, permanent results.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+      "/images/gen/hair-transplant.jpg",
     services: [
       { title: "Hair Transplant", href: "#services", description: "FUE hair restoration for natural density." },
       { title: "Beard Transplant", href: "#services", description: "Fill in patchy beards with your own follicles." },
@@ -60,7 +60,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     description:
       "Diagnosis-driven treatment plans for dandruff, scalp concerns, hair loss and thinning — backed by clinically proven protocols.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+      "/images/gen/hair-treatment.jpg",
     services: [
       { title: "Dandruff & Scalp Treatments", href: "#services", description: "Targeted care for itchy, flaky scalps." },
       { title: "GFC Treatment", href: "#services", description: "Growth Factor Concentrate for thicker hair." },
@@ -76,7 +76,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     description:
       "Cosmetic and reconstructive surgical procedures performed by board-certified plastic surgeons in a fully equipped, sterile theatre.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+      "/images/gen/surgery.jpg",
     services: [
       { title: "Anti Aging", href: "#services", description: "Surgical anti-aging procedures." },
       { title: "Plastic Surgery", href: "#services", description: "Comprehensive cosmetic surgery options." },
@@ -92,7 +92,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     description:
       "Targeted, evidence-based protocols for acne, pigmentation, vitiligo, dark circles and more — tailored to your skin type.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/50233b5c58e8.jpg",
+      "/images/gen/skincare-facial.jpg",
     services: [
       { title: "Acne & Acne Scars", href: "#services", description: "Clear active acne and smooth scars." },
       { title: "Open Pores & Oily Skin", href: "#services", description: "Refine texture and control oil." },
@@ -108,7 +108,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     description:
       "A full spectrum of aesthetic and facial rejuvenation treatments — from HydraFacial and chemical peels to HIFU, fillers and PRP.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+      "/images/gen/hydrafacial.jpg",
     services: [
       { title: "Hydra Facial", href: "#services", description: "Deep-cleansing, hydrating glow facial." },
       { title: "Chemical Peeling", href: "#services", description: "Resurface for brighter, smoother skin." },
@@ -132,7 +132,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     description:
       "Medical-grade laser hair removal using the latest diode technology for safe, comfortable and lasting results on all skin types.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+      "/images/gen/laser-care.jpg",
     services: [
       { title: "Laser Hair Removal", href: "#services", description: "Permanent reduction, all skin types." },
     ],
@@ -153,7 +153,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     description:
       "Natural, permanent hair restoration with advanced FUE techniques and experienced surgeons.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+      "/images/gen/hair-transplant.jpg",
     href: "#services",
     accent: "from-brand/80 to-cyan",
   },
@@ -162,7 +162,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     description:
       "Refined cosmetic and reconstructive procedures performed by board-certified plastic surgeons.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2daf75b22fb4.jpg",
+      "/images/gen/plastic-surgery.jpg",
     href: "#services",
     accent: "from-gold/80 to-rust",
   },
@@ -171,7 +171,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     description:
       "Clear active acne and smooth acne scars with clinically proven, personalized protocols.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+      "/images/gen/acne-care.jpg",
     href: "#services",
     accent: "from-green/80 to-brand",
   },
@@ -180,7 +180,7 @@ export const POPULAR_SERVICES: PopularService[] = [
     description:
       "Diagnosis-driven plans combining medical therapy, PRP, GFC and lifestyle guidance.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+      "/images/gen/hair-treatment.jpg",
     href: "#services",
     accent: "from-rust/80 to-gold",
   },
@@ -203,7 +203,7 @@ export const TESTIMONIALS: Testimonial[] = [
     text:
       "I am the most happiest guy now after visiting KPC Skin Clinic for my skin consultation with Dr Rupak, I can see the visible changes and glow on my skin that I never had before. Highly recommended, best skin clinic in Kathmandu.",
     avatar:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
+      "/images/gen/avatar-m1.svg",
     service: "Skin Consultation",
   },
   {
@@ -212,7 +212,7 @@ export const TESTIMONIALS: Testimonial[] = [
     rating: 5,
     text: "Best place to transplant!",
     avatar:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
+      "/images/gen/avatar-m2.svg",
     service: "Hair Transplant",
   },
   {
@@ -222,7 +222,7 @@ export const TESTIMONIALS: Testimonial[] = [
     text:
       "Completed my laser hair removal sessions here and very satisfied with the result. Highly recommended KPC for laser hair removal.",
     avatar:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
+      "/images/gen/avatar-f3.svg",
     service: "Laser Hair Removal",
   },
 ];
@@ -245,7 +245,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     description:
       "FUE hair transplants, beard and eyebrow restoration performed by experienced surgeons — natural density, permanent results.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/dfd046dc97ad.jpg",
+      "/images/gen/hero-hair.jpg",
     primaryCta: "Request an Appointment",
     secondaryCta: "Explore our Services",
   },
@@ -256,7 +256,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     description:
       "Diagnosis-driven hair loss programs — medical therapy, PRP, GFC and transplant options tailored to your goals and biology.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8f1cadc923c0.jpg",
+      "/images/gen/hero-glow.jpg",
     primaryCta: "Request an Appointment",
     secondaryCta: "Explore our Services",
   },
@@ -267,7 +267,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     description:
       "5 years of trusted care. State-of-the-art medical equipment. Clinically proven procedures. Confidence in every step.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/13a4cb2c9ca7.jpg",
+      "/images/gen/hero-clinic.jpg",
     primaryCta: "Request an Appointment",
     secondaryCta: "Explore our Services",
   },
@@ -276,37 +276,37 @@ export const HERO_SLIDES: HeroSlide[] = [
 export const SOCIAL_POSTS = [
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1bc026548584.webp",
+      "/images/gen/social-glow.jpg",
     handle: "@kpcskin",
     caption: "Glowing skin week — HydraFacial results.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a6cc93c84fc4.jpg",
+      "/images/gen/social-scalp.jpg",
     handle: "@kpcskin",
     caption: "Day 7 post FUE hair transplant.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/da3261b93bf0.jpg",
+      "/images/gen/social-carbon.jpg",
     handle: "@kpcskin",
     caption: "Carbon laser peel — red carpet ready.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7a2469b0d523.jpg",
+      "/images/gen/clinic-room.jpg",
     handle: "@kpcskin",
     caption: "Inside our Kathmandu clinic.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/cb095eaff0da.jpg",
+      "/images/gen/sterile-suite.jpg",
     handle: "@kpcskin",
     caption: "Sterile, equipped, ready for you.",
   },
   {
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+      "/images/gen/lab-diagnostics.jpg",
     handle: "@kpcskin",
     caption: "Where science meets care.",
   },
@@ -394,7 +394,7 @@ export const TEAM = [
     credentials: "MBBS, MD (Dermatology)",
     bio: "Founded KPC in 2021 after 5 years in dermatology. Specialises in hair disorders and cosmetic dermatology. Believes every consultation should end with a written plan.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
+      "/images/gen/avatar-m1.svg",
   },
   {
     name: "Dr. Sneha Shrestha",
@@ -402,7 +402,7 @@ export const TEAM = [
     credentials: "MBBS, MD (Dermatology, Venereology & Leprosy)",
     bio: "Leads our acne, pigmentation and laser aesthetic practice. Trained at TUTH with fellowships in aesthetic medicine in Mumbai and Bangkok.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
+      "/images/gen/avatar-f1.svg",
   },
   {
     name: "Dr. Rajesh Maharjan",
@@ -410,7 +410,7 @@ export const TEAM = [
     credentials: "MBBS, MS, MCh (Plastic Surgery)",
     bio: "Board-certified plastic surgeon with 12 years of experience in rhinoplasty, blepharoplasty and scar revision. Performs all surgical procedures in our in-house theatre.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
+      "/images/gen/avatar-m3.svg",
   },
   {
     name: "Sunita Gurung",
@@ -418,7 +418,7 @@ export const TEAM = [
     credentials: "BSc Nursing, Aesthetic Nurse Certified",
     bio: "Runs the front desk and our patient care team. The first voice you'll hear on the phone and the last face you'll see before leaving — your go-to person for anything.",
     image:
-      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/91cc97c0d4e3.jpg",
+      "/images/gen/avatar-f2.svg",
   },
 ];
 
@@ -518,7 +518,7 @@ export const PRICING_FULL = [
 
 // Flat list of all packages (used by admin seed + /packages page)
 // Built from PRICING_FULL plus enriched with image/color/popular flags.
-export const ALL_PACKAGES: {
+export type PackageCard = {
   name: string;
   price: string;
   unit: string;
@@ -528,7 +528,9 @@ export const ALL_PACKAGES: {
   category: string;
   color: string;
   popular: boolean;
-}[] = PRICING_FULL.flatMap((group) =>
+};
+
+export const ALL_PACKAGES: PackageCard[] = PRICING_FULL.flatMap((group) =>
   group.items.map((item, idx) => ({
     name: item.name,
     price: item.price,
@@ -537,8 +539,8 @@ export const ALL_PACKAGES: {
     features: [],
     image:
       idx === 0
-        ? "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg"
-        : "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+        ? "/images/gen/hair-transplant.jpg"
+        : "/images/gen/acne-care.jpg",
     category: group.category,
     color: group.category.toLowerCase().includes("hair")
       ? "brand"
@@ -606,49 +608,49 @@ export const CONTACT_INFO = {
 
 export const BEFORE_AFTER_GALLERY = [
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+    image: "/images/gen/hair-transplant.jpg",
     treatment: "Hair Transplant",
     patient: "Male, 34",
     sessions: "1 session, 8 months ago",
   },
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+    image: "/images/gen/acne-care.jpg",
     treatment: "Acne & Scars",
     patient: "Female, 26",
     sessions: "6 sessions over 4 months",
   },
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+    image: "/images/gen/laser-care.jpg",
     treatment: "Laser Hair Removal",
     patient: "Female, 31",
     sessions: "7 sessions over 10 months",
   },
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+    image: "/images/gen/hydrafacial.jpg",
     treatment: "Hydra Facial",
     patient: "Female, 29",
     sessions: "Monthly for 6 months",
   },
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+    image: "/images/gen/hair-treatment.jpg",
     treatment: "PRP Hair Treatment",
     patient: "Male, 41",
     sessions: "4 sessions over 3 months",
   },
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a6cc93c84fc4.jpg",
+    image: "/images/gen/social-scalp.jpg",
     treatment: "Skin Rejuvenation",
     patient: "Female, 38",
     sessions: "3 sessions over 2 months",
   },
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+    image: "/images/gen/surgery.jpg",
     treatment: "Rhinoplasty",
     patient: "Female, 27",
     sessions: "1 procedure, 6 months ago",
   },
   {
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2daf75b22fb4.jpg",
+    image: "/images/gen/plastic-surgery.jpg",
     treatment: "Plastic Surgery",
     patient: "Male, 45",
     sessions: "1 procedure, 1 year ago",
@@ -672,7 +674,7 @@ export const DOCTORS = [
     ],
     treatments: ["Hair Transplant", "PRP Hair Treatment", "GFC Treatment", "Acne & Acne Scars", "Melasma Treatment"],
     approach: "Every consultation runs 30–45 minutes. You leave with a written plan: what you have, what we recommend, what it costs, what to expect. No verbal estimates.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b3d45d368c6e.jpg",
+    image: "/images/gen/avatar-m1.svg",
     experience: "5+ years",
   },
   {
@@ -691,7 +693,7 @@ export const DOCTORS = [
     ],
     treatments: ["Acne & Acne Scars", "Melasma Treatment", "Open Pores & Oily Skin", "Laser Hair Removal", "Chemical Peeling", "HydraFacial"],
     approach: "Acne scars are not one condition — they are at least six. I diagnose what you actually have before recommending any treatment. A single laser won't fix all of them.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8901a17a3177.jpg",
+    image: "/images/gen/avatar-f1.svg",
     experience: "5+ years",
   },
   {
@@ -709,7 +711,7 @@ export const DOCTORS = [
     ],
     treatments: ["Rhinoplasty", "Blepharoplasty", "Scar Revision", "Anti-Ageing Surgery", "Plastic Surgery"],
     approach: "I show patients photographs of real results — not the best, but the typical. If you want a nose that looks like a celebrity's, I'll tell you whether your anatomy allows it. Natural is the goal.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d069a3da3145.jpg",
+    image: "/images/gen/avatar-m3.svg",
     experience: "5+ years",
   },
   {
@@ -728,7 +730,7 @@ export const DOCTORS = [
     ],
     treatments: ["Botox Treatment", "Dermal Fillers", "HIFU", "HydraFacial", "Carbon Laser Peel", "Microneedling", "PRP Face Treatment"],
     approach: "A good aesthetic treatment should make you look rested, not 'done'. I start with less and add more if needed — you can always inject more, you can't un-inject.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/91cc97c0d4e3.jpg",
+    image: "/images/gen/avatar-f2.svg",
     experience: "5+ years",
   },
   {
@@ -747,7 +749,7 @@ export const DOCTORS = [
     ],
     treatments: ["FUE Hair Transplant", "Beard Transplant", "Eyebrow Transplant", "PRP Hair Treatment", "GFC Treatment"],
     approach: "I personally perform both the harvest and the implantation. The angle, direction, and density of implantation is what makes a transplant look natural — and that's the surgeon's job, not a technician's.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/80b0eb48c72d.jpg",
+    image: "/images/gen/avatar-m2.svg",
     experience: "5+ years",
   },
   {
@@ -765,7 +767,7 @@ export const DOCTORS = [
     ],
     treatments: ["Treatment Coordination", "Patient Follow-up", "Aftercare Guidance"],
     approach: "No question is too small. If something worries you after a treatment — call. I'd rather answer 100 calls about nothing than miss one call about something.",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/edf0e5648f32.jpg",
+    image: "/images/gen/avatar-f3.svg",
     experience: "5+ years",
   },
 ];
@@ -868,7 +870,7 @@ export const TREATMENTS: Treatment[] = [
     category: "Cosmetic Concerns",
     metaDescription:
       "Acne and acne scar treatment at KPC Skin Clinic Thapathali. FUE, fractional CO2 laser, subcision, chemical peels and TCA cross for boxcar, ice pick and rolling scars. Real results, written plans.",
-    heroImage: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+    heroImage: "/images/gen/acne-care.jpg",
     tagline: "Clear active acne and smooth scars with a plan written for your skin.",
     intro:
       "Acne scars are not one condition — they are at least six. Boxcar, ice pick, rolling, hypertrophic, post-inflammatory hyperpigmentation and erythema each respond to different treatments. A single approach (one laser, one peel) will not work for all of them. We diagnose what you actually have, write it down, and treat accordingly.",
@@ -888,7 +890,7 @@ export const TREATMENTS: Treatment[] = [
       {
         heading: "Fractional CO2 Laser",
         body: "The workhorse for boxcar and atrophic scars. Creates controlled micro-injuries that trigger collagen remodelling. We use a fractional (not fully ablative) approach to minimise downtime — expect 5–7 days of redness and peeling per session.",
-        image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+        image: "/images/gen/acne-care.jpg",
       },
       {
         heading: "Subcision",
@@ -951,7 +953,7 @@ export const TREATMENTS: Treatment[] = [
     category: "Hair Transplant",
     metaDescription:
       "FUE hair transplant at KPC Skin Clinic Thapathali. Natural density, permanent results, experienced surgeons. Beard and eyebrow transplant available. Written graft count and price before surgery.",
-    heroImage: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+    heroImage: "/images/gen/hair-transplant.jpg",
     tagline: "Natural, permanent hair restoration — performed by doctors, not technicians.",
     intro:
       "Follicular Unit Extraction (FUE) is the modern gold standard for hair restoration. Individual follicular units are harvested from the donor area (back of the scalp) and implanted one by one into the recipient area. No linear scar, fast recovery, and natural-looking density when done by an experienced surgeon.",
@@ -1003,7 +1005,7 @@ export const TREATMENTS: Treatment[] = [
     category: "Hair Transplant",
     metaDescription:
       "Beard transplant at KPC Skin Clinic Thapathali. FUE technique to fill patchy beards, moustache and sideburns. Natural angle and density. Written graft count before surgery.",
-    heroImage: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/9b2eebe27adf.jpg",
+    heroImage: "/images/gen/beard-care.jpg",
     tagline: "Fill patchy beards with your own hair — natural angle, permanent result.",
     intro:
       "Beard transplant uses the same FUE technique as hair transplant, but the artistry is in the angle and direction of implantation. Facial hair grows at a flatter, more acute angle than scalp hair, and the surgeon places each graft to match your natural beard pattern.",
@@ -1107,7 +1109,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     date: "20 Sep 2026",
     author: "Dr. Rupak Maharjan",
     category: "Hair Transplant",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/08c48029878f.jpg",
+    image: "/images/gen/hair-transplant.jpg",
     readTime: "6 min read",
     body: `Hair transplant is surgery, not magic. It's also the most effective permanent solution for hair loss — when it's done on the right person, at the right time, by the right surgeon.
 
@@ -1154,7 +1156,7 @@ If you answered yes to all 8, book a consultation. If you answered no to any, co
     date: "15 Sep 2026",
     author: "Dr. Sneha Shrestha",
     category: "Acne & Scars",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f2f4132eed2f.jpg",
+    image: "/images/gen/acne-care.jpg",
     readTime: "8 min read",
     body: `Most patients who come to me for "acne scar treatment" expect a single procedure — usually a laser — to fix everything. The truth is that acne scars are at least six different conditions, and each responds to a different treatment. A fractional CO2 laser that works beautifully on boxcar scars will do nothing for an ice pick scar.
 
@@ -1202,7 +1204,7 @@ Book a consultation if you're ready. If you're not, come for a 15-minute orienta
     date: "8 Sep 2026",
     author: "Dr. Sneha Shrestha",
     category: "Laser",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e150530fd2cf.jpg",
+    image: "/images/gen/laser-care.jpg",
     readTime: "5 min read",
     body: `Laser hair removal is one of our most popular treatments — and one of the most misunderstood. Here are the five myths we hear every week, and the truth behind each.
 
@@ -1240,7 +1242,7 @@ Book a free patch test to see how your skin responds.`,
     date: "1 Sep 2026",
     author: "Dr. Anil Shakya",
     category: "Hair Treatment",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8bbcc4c8c06c.jpg",
+    image: "/images/gen/hair-treatment.jpg",
     readTime: "6 min read",
     body: `PRP (Platelet-Rich Plasma) and GFC (Growth Factor Concentrate) are two hair loss treatments that both use your own blood. Patients ask me every week which is better. The honest answer: they're similar in effectiveness, but differ in process, cost, and convenience.
 
@@ -1290,7 +1292,7 @@ Book a consultation and we'll tell you honestly which (if either) is right for y
     date: "25 Aug 2026",
     author: "Dr. Rajesh Maharjan",
     category: "Surgery",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/05f6a1478943.jpg",
+    image: "/images/gen/surgery.jpg",
     readTime: "7 min read",
     body: `Rhinoplasty (nose surgery) is one of the most common cosmetic procedures we perform — and the one patients ask most about recovery. Here's an honest, week-by-week timeline of what to expect.
 
@@ -1347,7 +1349,7 @@ Book a consultation and I'll show you real before-and-after timelines from our p
     date: "18 Aug 2026",
     author: "Dr. Priya Karki",
     category: "Aesthetic",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/f594f0615e20.jpg",
+    image: "/images/gen/hydrafacial.jpg",
     readTime: "5 min read",
     body: `HydraFacial and chemical peels are two of our most popular treatments. Both exfoliate, both give you a glow, and patients often ask which they should choose. The answer depends on your skin, your goals, and your timeline.
 
@@ -1395,7 +1397,7 @@ Don't choose based on price alone. A NPR 3,000 peel that's right for your skin i
 ];
 
 // STD/STI packages as PackageCard-compatible cards
-export const STD_STI_PACKAGE_CARDS = [
+export const STD_STI_PACKAGE_CARDS: PackageCard[] = [
   {
     name: "Basic STI",
     price: "NPR 3,500",
@@ -1404,7 +1406,7 @@ export const STD_STI_PACKAGE_CARDS = [
     features: ["HIV ab + ag", "HBsAg (Hep B)", "Anti-HCV (Hep C)", "Urine RE/ME", "Pre & post-test counselling"],
     popular: false,
     color: "green",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    image: "/images/gen/lab-diagnostics.jpg",
     category: "STD / STI",
   },
   {
@@ -1415,7 +1417,7 @@ export const STD_STI_PACKAGE_CARDS = [
     features: ["HIV I&II", "HSV-1/2 IgG + IgM", "VDRL (Syphilis)", "TPHA confirmatory", "HBsAg + Anti-HCV + Urine"],
     popular: true,
     color: "brand",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    image: "/images/gen/lab-diagnostics.jpg",
     category: "STD / STI",
   },
   {
@@ -1426,7 +1428,7 @@ export const STD_STI_PACKAGE_CARDS = [
     features: ["Trichomonas PCR", "HSV PCR", "Standard STI panel", "PCR-based accuracy", "Doctor counselling"],
     popular: false,
     color: "cyan",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    image: "/images/gen/lab-diagnostics.jpg",
     category: "STD / STI",
   },
   {
@@ -1437,7 +1439,7 @@ export const STD_STI_PACKAGE_CARDS = [
     features: ["Broad-spectrum PCR", "TPHA", "HPV DNA PCR", "Comprehensive panel", "Doctor counselling"],
     popular: false,
     color: "gold",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    image: "/images/gen/lab-diagnostics.jpg",
     category: "STD / STI",
   },
   {
@@ -1448,7 +1450,7 @@ export const STD_STI_PACKAGE_CARDS = [
     features: ["All Panel 1 + 2 tests", "Broadest coverage", "Doctor counselling", "Treatment plan if positive", "Confidential"],
     popular: false,
     color: "rust",
-    image: "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d7e1b6422719.jpg",
+    image: "/images/gen/lab-diagnostics.jpg",
     category: "STD / STI",
   },
 ];

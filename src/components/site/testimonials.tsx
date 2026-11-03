@@ -27,22 +27,33 @@ function GoogleG({ className }: { className?: string }) {
   );
 }
 
-export function Testimonials() {
+export function Testimonials({
+  eyebrow = "Welcome to KPC",
+  title = "What Our Patients Say?",
+  description = "Reflects trust, quality service, and the positive impact we've made on their confidence and well-being.",
+}: {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}) {
   return (
     <section id="reviews" className="py-20 sm:py-28 bg-sky-50">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
-            Welcome to KPC
-          </p>
+          {eyebrow ? (
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
+              {eyebrow}
+            </p>
+          ) : null}
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-ink">
-            What Our Patients Say?
+            {title}
           </h2>
-          <p className="mt-4 text-muted-foreground text-base leading-relaxed">
-            Reflects trust, quality service, and the positive impact we&apos;ve
-            made on their confidence and well-being.
-          </p>
+          {description ? (
+            <p className="mt-4 text-muted-foreground text-base leading-relaxed">
+              {description}
+            </p>
+          ) : null}
         </div>
 
         {/* Google review cards — masonry-style staggered grid */}
