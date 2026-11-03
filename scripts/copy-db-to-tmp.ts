@@ -7,6 +7,13 @@
 import { existsSync, copyFileSync, mkdirSync } from "fs";
 import { resolve } from "path";
 
+// Publish DATABASE_URL before any Prisma CLI runs in this process. Prisma
+// validates the datasource URL at startup; without this the build fails with
+// "the URL must start with the protocol 'file:'" when the env var is unset.
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = `file:${resolve("/tmp", "custom.db")}`;
+}
+
 const SRC = resolve(process.cwd(), "db/custom.db");
 const DST_DIR = "/tmp";
 const DST = resolve(DST_DIR, "custom.db");
