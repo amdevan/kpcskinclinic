@@ -18,6 +18,9 @@ export function Logo({
   const src = logoUrl || "/kpc-logo.png";
   const name = clinicName || "KPC";
   const tagline = clinicTagline || "Skin · Hair · Aesthetic";
+  // next/image cannot render data URLs (admin-uploaded images are stored as
+  // base64 data URLs in SiteSetting). Fall back to a plain <img> for those.
+  const isDataUrl = src.startsWith("data:");
   return (
     <Link
       href="/"
@@ -25,14 +28,18 @@ export function Logo({
       aria-label={`${name} home`}
     >
       <span className="relative inline-flex h-10 w-10 lg:h-11 lg:w-11 items-center justify-center rounded-xl bg-cream shadow-sm overflow-hidden ring-1 ring-brand/15">
-        <Image
-          src={src}
-          alt={`${name} logo`}
-          fill
-          className="object-cover"
-          sizes="44px"
-          priority
-        />
+        {isDataUrl ? (
+          <img src={src} alt={`${name} logo`} className="h-full w-full object-cover" />
+        ) : (
+          <Image
+            src={src}
+            alt={`${name} logo`}
+            fill
+            className="object-cover"
+            sizes="44px"
+            priority
+          />
+        )}
       </span>
       <span className="flex flex-col leading-tight">
         <span

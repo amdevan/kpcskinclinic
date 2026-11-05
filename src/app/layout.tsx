@@ -104,9 +104,12 @@ export default async function RootLayout({
   const settings = await getSiteSettings();
   const faviconUrl = settings.faviconUrl || "/favicon.svg";
   // Cache-bust the favicon so admin uploads take effect immediately.
-  const cacheBustedFavicon = faviconUrl.includes("?")
+  // Data URLs (uploaded via admin) are already unique, so don't append ?v=.
+  const cacheBustedFavicon = faviconUrl.startsWith("data:")
     ? faviconUrl
-    : `${faviconUrl}?v=${Date.now()}`;
+    : faviconUrl.includes("?")
+      ? faviconUrl
+      : `${faviconUrl}?v=${Date.now()}`;
 
   // CMS admin pages are nested under /admin/* and have their own layout —
   // they must NOT render the public website Header/Footer/FloatingButtons/Popup.
