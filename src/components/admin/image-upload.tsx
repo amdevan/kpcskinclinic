@@ -40,6 +40,10 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
     }
 
     setIsUploading(true);
+    // Guard against accidentally overwriting an existing image.
+    if (value && !confirm("Replace the current image? The previous one will be lost.")) {
+      return;
+    }
     try {
       const fd = new FormData();
       fd.append("file", file);

@@ -15,6 +15,10 @@ export function ImageUpload({ value, onChange, label = "Image" }: ImageUploadPro
   const [preview, setPreview] = useState<string | null>(value || null);
 
   async function handleUpload(file: File) {
+    // Guard against accidentally overwriting an existing image.
+    if (value && !confirm("Replace the current image? The previous one will be lost.")) {
+      return;
+    }
     setUploading(true);
     try {
       const fd = new FormData();
