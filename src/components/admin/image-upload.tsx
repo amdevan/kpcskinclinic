@@ -59,7 +59,7 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
         throw new Error("Server returned an invalid response. Please try again.");
       }
       console.log("[upload] response", res.status, data);
-      if (!res.ok || !data.ok) {
+      if (!res.ok || !data.url) {
         throw new Error(data?.error || `Upload failed (HTTP ${res.status})`);
       }
       onChange(data.url);
