@@ -39,11 +39,12 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
       return;
     }
 
-    setIsUploading(true);
     // Guard against accidentally overwriting an existing image.
     if (value && !confirm("Replace the current image? The previous one will be lost.")) {
       return;
     }
+
+    setIsUploading(true);
     try {
       const fd = new FormData();
       fd.append("file", file);
@@ -52,14 +53,18 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
       let data: any = {};
       try {
         data = text ? JSON.parse(text) : {};
-      } catch {
+      } catch (parseErr) {
+        // Surface the raw body so the real server error is visible
+        console.error("[upload] non-JSON response:", text.slice(0, 500));
         throw new Error("Server returned an invalid response. Please try again.");
       }
+      console.log("[upload] response", res.status, data);
       if (!res.ok || !data.ok) {
-        throw new Error(data?.error || "Upload failed");
+        throw new Error(data?.error || `Upload failed (HTTP ${res.status})`);
       }
       onChange(data.url);
     } catch (e: any) {
+      console.error("[upload] error", e);
       setError(e?.message || "Upload failed");
     } finally {
       setIsUploading(false);

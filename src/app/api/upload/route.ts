@@ -68,6 +68,7 @@ export async function POST(req: Request) {
     // Never let an unhandled exception produce an empty response body —
     // the client expects JSON and crashes with "Unexpected end of JSON input"
     // when the body is empty.
+    console.error("[upload] route error:", e);
     return NextResponse.json(
       { error: e?.message || "Upload failed" },
       { status: 500 },

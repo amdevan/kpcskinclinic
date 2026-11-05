@@ -24,15 +24,23 @@ export function ImageUpload({ value, onChange, label = "Image" }: ImageUploadPro
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/upload", { method: "POST", body: fd });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Upload failed");
+      const text = await res.text();
+      let data: any = {};
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (parseErr) {
+        console.error("[upload] non-JSON response:", text.slice(0, 500));
+        throw new Error("Server returned an invalid response. Please try again.");
       }
-      const data = await res.json();
+      console.log("[upload] response", res.status, data);
+      if (!res.ok || !data.ok) {
+        throw new Error(data?.error || `Upload failed (HTTP ${res.status})`);
+      }
       setPreview(data.url);
       onChange(data.url);
       toast.success("Image uploaded");
     } catch (e: any) {
+      console.error("[upload] error", e);
       toast.error(e.message || "Upload failed");
     } finally {
       setUploading(false);
