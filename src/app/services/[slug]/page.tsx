@@ -102,16 +102,28 @@ function FullTreatmentTemplate({ treatment: t }: { treatment: Treatment }) {
 
       {/* Intro */}
       <section className="py-16 sm:py-24 bg-background">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 max-w-4xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
-            Overview
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink mb-6 leading-tight">
-            What this treatment does
-          </h2>
-          <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
-            {t.intro}
-          </p>
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
+                Overview
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink mb-6 leading-tight">
+                What this treatment does
+              </h2>
+              <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+                {t.intro}
+              </p>
+            </div>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-elevated">
+              <img
+                src={t.heroImage}
+                alt={t.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -320,36 +332,48 @@ function GeneratedTreatmentTemplate({
 
       {/* Overview */}
       <section className="py-16 sm:py-24 bg-background">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24 max-w-4xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
-            Overview
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink mb-6 leading-tight">
-            About {title.toLowerCase()}
-          </h2>
-          <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
-            {title} is part of our {category} practice at KPC Skin Hair &amp;
-            Aesthetic Clinic, Thapathali. Every treatment begins with a 30–45
-            minute consultation where we assess your specific case, explain the
-            options, and give you a written plan with clear pricing — no
-            verbal estimates, no surprise charges.
-          </p>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Our doctors have collectively performed over 8,000 procedures
-            across hair, skin, and aesthetic medicine. We use clinically proven
-            techniques and FDA-cleared equipment — the same devices top clinics
-            in Delhi, Bangkok and Seoul use.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button asChild className="bg-brand hover:bg-brand/90 text-brand-foreground">
-              <Link href="/contact">
-                Book a consultation
-                <ArrowRight className="ml-1.5 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground">
-              <Link href="/packages">See pricing</Link>
-            </Button>
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
+                Overview
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-ink mb-6 leading-tight">
+                About {title.toLowerCase()}
+              </h2>
+              <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+                {title} is part of our {category} practice at KPC Skin Hair &amp;
+                Aesthetic Clinic, Thapathali. Every treatment begins with a 30–45
+                minute consultation where we assess your specific case, explain the
+                options, and give you a written plan with clear pricing — no
+                verbal estimates, no surprise charges.
+              </p>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                Our doctors have collectively performed over 8,000 procedures
+                across hair, skin, and aesthetic medicine. We use clinically proven
+                techniques and FDA-cleared equipment — the same devices top clinics
+                in Delhi, Bangkok and Seoul use.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button asChild className="bg-brand hover:bg-brand/90 text-brand-foreground">
+                  <Link href="/contact">
+                    Book a consultation
+                    <ArrowRight className="ml-1.5 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground">
+                  <Link href="/packages">See pricing</Link>
+                </Button>
+              </div>
+            </div>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-elevated">
+              <img
+                src={heroImage}
+                alt={title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </section>

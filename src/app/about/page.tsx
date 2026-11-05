@@ -1,7 +1,7 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
 import { VideoEmbed } from "@/components/site/video-embed";
-import { TEAM, VALUES, STATS_FULL, CONTACT_INFO } from "@/lib/site-data";
+import { VALUES, STATS_FULL, CONTACT_INFO } from "@/lib/site-data";
 import { CheckCircle2, Target, Eye, Heart } from "lucide-react";
 import { getPageSection } from "@/lib/page-content";
 import { buildMetadata } from "@/lib/seo";
@@ -204,56 +204,6 @@ export default async function AboutPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-20 sm:py-28 bg-background">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-          <div className="max-w-2xl mb-10">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand mb-3">
-              The team
-            </p>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-ink">
-              Trusted care.{" "}
-              <span className="font-italic-accent text-brand font-medium">
-                One philosophy.
-              </span>
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TEAM.map((m, i) => {
-              const styles = [
-                { bar: "bg-brand", role: "text-brand" },
-                { bar: "bg-cyan", role: "text-cyan" },
-                { bar: "bg-green", role: "text-green" },
-                { bar: "bg-rust", role: "text-rust" },
-              ];
-              const s = styles[i % styles.length];
-              return (
-                <article key={m.name} className="group">
-                  <div className="relative overflow-hidden rounded-2xl aspect-[4/5] bg-secondary mb-4">
-                    <img
-                      src={m.image}
-                      alt={m.name}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className={`absolute top-0 left-0 right-0 h-1.5 ${s.bar}`} />
-                  </div>
-                  <p className="font-display text-lg font-semibold text-ink">
-                    {m.name}
-                  </p>
-                  <p className={`text-sm font-medium ${s.role}`}>{m.role}</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    {m.credentials}
-                  </p>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                    {m.bio}
-                  </p>
-                </article>
-              );
-            })}
           </div>
         </div>
       </section>

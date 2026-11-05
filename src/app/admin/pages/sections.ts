@@ -326,16 +326,24 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "sub_procedures",
         label: "Sub procedures (JSON)",
         fields: [
-          { key: "body", label: "Sub procedures JSON", type: "textarea" },
-          IMAGE_FIELD,
+          {
+            key: "body",
+            label: "Sub procedures JSON",
+            type: "textarea",
+            help: "JSON array of {slug, title, desc, image, price}. Each card's image is edited here — there is no separate section image for this group.",
+          },
         ],
       },
       {
         id: "steps",
         label: "Process steps (JSON)",
         fields: [
-          { key: "body", label: "Steps JSON", type: "textarea" },
-          IMAGE_FIELD,
+          {
+            key: "body",
+            label: "Steps JSON",
+            type: "textarea",
+            help: "JSON array of {step, title, body}.",
+          },
           {
             ...VIDEO_FIELD,
             help: "Step-by-step procedure video — embedded alongside the process timeline.",
