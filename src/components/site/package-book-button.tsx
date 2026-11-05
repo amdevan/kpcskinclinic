@@ -5,7 +5,7 @@ import { Calendar } from "lucide-react";
 import * as React from "react";
 import { PackageBookingDialog } from "./package-booking-dialog";
 
-export function PackageBookButton({ packageName, className, label = "Book this package" }: { packageName: string; className?: string; label?: string; }) {
+export function PackageBookButton({ packageName, className, label = "Book this package" }: { packageName?: string; className?: string; label?: string; }) {
   const [open, setOpen] = React.useState(false);
   return (
     <>

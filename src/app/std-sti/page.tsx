@@ -1,5 +1,6 @@
 import { PageBanner } from "@/components/site/page-banner";
 import { CtaSection } from "@/components/site/cta-section";
+import { PackageBookButton } from "@/components/site/package-book-button";
 import { STD_STI_PACKAGES, STD_STI_INDIVIDUAL_TESTS } from "@/lib/site-data";
 import {
   Accordion,
@@ -154,6 +155,13 @@ export default async function StdStiPage() {
                   <h3 className="font-display text-xl font-bold text-ink">{p.name}</h3>
                   <p className={`font-display text-2xl font-bold mt-2 ${s.text}`}>{p.price}</p>
                   <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{p.composition}</p>
+                  <div className="mt-4">
+                    <PackageBookButton
+                      packageName={p.name}
+                      label="Book this package"
+                      className={`w-full justify-center ${s.bar} text-cream hover:opacity-90`}
+                    />
+                  </div>
                 </article>
               );
             })}
@@ -167,6 +175,12 @@ export default async function StdStiPage() {
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                 Priced per test. See full list below.
               </p>
+              <div className="mt-4">
+                <PackageBookButton
+                  label="Book a consultation"
+                  className="w-full justify-center bg-brand text-cream hover:opacity-90"
+                />
+              </div>
             </article>
           </div>
 
