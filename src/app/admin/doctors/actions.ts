@@ -4,6 +4,27 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { requireSession } from "@/lib/security";
 
+/**
+ * Normalize a JSON-list field. Accepts either an array (from the card
+ * editor) or a JSON-array string (from the standalone form). Returns a
+ * clean array of strings, or `[]` when the input is empty/invalid.
+ */
+function normalizeList(v: any): string[] {
+  if (Array.isArray(v)) return v.map(String).filter(Boolean);
+  if (typeof v === "string") {
+    const t = v.trim();
+    if (!t) return [];
+    try {
+      const parsed = JSON.parse(t);
+      if (Array.isArray(parsed)) return parsed.map(String).filter(Boolean);
+    } catch {
+      /* not JSON — treat as a single newline-separated list */
+      return t.split("\n").map((s) => s.trim()).filter(Boolean);
+    }
+  }
+  return [];
+}
+
 export async function dbDoctorAction(
   id: string,
   action: "create" | "update" | "delete" | "toggle-publish",
@@ -20,11 +41,11 @@ export async function dbDoctorAction(
           name: String(data?.name ?? ""),
           role: String(data?.role ?? ""),
           credentials: String(data?.credentials ?? ""),
-          specialties: JSON.stringify(data?.specialties || []),
+          specialties: JSON.stringify(normalizeList(data?.specialties)),
           bio: String(data?.bio ?? ""),
           fullBio: String(data?.fullBio ?? ""),
-          education: JSON.stringify(data?.education || []),
-          treatments: JSON.stringify(data?.treatments || []),
+          education: JSON.stringify(normalizeList(data?.education)),
+          treatments: JSON.stringify(normalizeList(data?.treatments)),
           approach: String(data?.approach ?? ""),
           image: String(data?.image ?? ""),
           experience: String(data?.experience ?? ""),
@@ -48,15 +69,15 @@ export async function dbDoctorAction(
           ...(data?.role !== undefined ? { role: String(data.role) } : {}),
           ...(data?.credentials !== undefined ? { credentials: String(data.credentials) } : {}),
           ...(data?.specialties !== undefined
-            ? { specialties: JSON.stringify(data.specialties || []) }
+            ? { specialties: JSON.stringify(normalizeList(data.specialties)) }
             : {}),
           ...(data?.bio !== undefined ? { bio: String(data.bio) } : {}),
           ...(data?.fullBio !== undefined ? { fullBio: String(data.fullBio) } : {}),
           ...(data?.education !== undefined
-            ? { education: JSON.stringify(data.education || []) }
+            ? { education: JSON.stringify(normalizeList(data.education)) }
             : {}),
           ...(data?.treatments !== undefined
-            ? { treatments: JSON.stringify(data.treatments || []) }
+            ? { treatments: JSON.stringify(normalizeList(data.treatments)) }
             : {}),
           ...(data?.approach !== undefined ? { approach: String(data.approach) } : {}),
           ...(data?.image !== undefined ? { image: String(data.image) } : {}),
@@ -104,6 +125,23 @@ export async function dbDoctorAction(
     return { ok: false, error: "Unknown action" };
   } catch (e: any) {
     return { ok: false, error: e?.message || "Action failed" };
+  }
+}
+
+// Standalone wrappers used by the new list components.
+export async function deleteDoctor(id: string) {
+  return dbDoctorAction(id, "delete");
+}
+
+export async function bulkDeleteDoctors(ids: string[]) {
+  if (!(await requireSession())) return { ok: false, error: "unauthorized" };
+  try {
+    const result = await db.doctor.deleteMany({ where: { id: { in: ids } } });
+    revalidatePath("/admin/doctors");
+    revalidatePath("/doctors");
+    return { ok: true, count: result.count };
+  } catch (e: any) {
+    return { ok: false, error: e?.message || "Bulk delete failed" };
   }
 }
 

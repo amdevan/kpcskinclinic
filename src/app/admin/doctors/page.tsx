@@ -1,66 +1,31 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 import { AdminDoctorList } from "@/components/admin/admin-doctor-list";
-import { DOCTORS } from "@/lib/site-data";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export const dynamic = "force-dynamic";
+export default async function DoctorsPage() {
+  const session = await getServerSession();
+  if (!session) redirect("/admin/login");
 
-export default async function AdminDoctorsPage() {
-  let doctors: any[] = [];
-  try {
-    doctors = await db.doctor.findMany({ orderBy: { order: "asc" } });
-    
-    // Auto-seed from static data if DB is empty
-    if (doctors.length === 0) {
-      for (const d of DOCTORS) {
-        await db.doctor.upsert({
-          where: { slug: d.slug },
-          create: {
-            slug: d.slug,
-            name: d.name,
-            role: d.role,
-            credentials: d.credentials,
-            specialties: JSON.stringify(d.specialties),
-            bio: d.bio,
-            fullBio: d.fullBio || "",
-            education: JSON.stringify(d.education || []),
-            treatments: JSON.stringify(d.treatments || []),
-            approach: d.approach || "",
-            image: d.image,
-            experience: d.experience,
-            order: 0,
-            published: true,
-          },
-          update: {},
-        }).catch(() => {});
-      }
-      doctors = await db.doctor.findMany({ orderBy: { order: "asc" } });
-    }
-  } catch {
-    // DB not available — use static data
-    doctors = DOCTORS.map(d => ({ ...d, specialties: d.specialties, education: d.education || [], treatments: d.treatments || [] }));
-  }
-
-  // Deserialize JSON fields for client
-  const data = doctors.map((d: any) => ({
-    ...d,
-    specialties: safeParse(d.specialties, Array.isArray(d.specialties) ? d.specialties : []),
-    education: safeParse(d.education, Array.isArray(d.education) ? d.education : []),
-    treatments: safeParse(d.treatments, Array.isArray(d.treatments) ? d.treatments : []),
-  }));
+  const doctors = await db.doctor.findMany({
+    select: { id: true, slug: true, name: true, role: true, published: true, image: true },
+    orderBy: { order: "asc" },
+  });
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold text-foreground">Doctors</h1>
-        <p className="text-sm text-muted-foreground">Manage doctors shown on the website</p>
+    <div className="p-6">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Doctors</h1>
+          <p className="text-sm text-gray-500">{doctors.length} total</p>
+        </div>
+        <Link href="/admin/doctors/new">
+          <Button>+ New Doctor</Button>
+        </Link>
       </div>
-      <AdminDoctorList doctors={data as any} />
+      <AdminDoctorList doctors={doctors} />
     </div>
   );
-}
-
-function safeParse<T>(s: string | null | undefined, fallback: T): T {
-  if (!s) return fallback;
-  if (Array.isArray(s)) return s as unknown as T;
-  try { return JSON.parse(s) as T; } catch { return fallback; }
 }
