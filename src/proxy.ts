@@ -1,15 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Next.js 16 uses proxy.ts (middleware.ts is deprecated)
-// Resilient auth check — protects /admin/* routes
-
 export function proxy(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
+  // Stash the request pathname on a custom REQUEST header so the root
+  // layout can detect CMS admin routes and suppress the public
+  // Header/Footer/FloatingButtons/Popup.
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-pathname", req.nextUrl.pathname);
+
   // Only intercept /admin routes (except login)
   if (!path.startsWith("/admin") || path === "/admin/login") {
-    return NextResponse.next();
+    return NextResponse.next({
+      request: { headers: requestHeaders },
+    });
   }
 
   // Check for NextAuth session cookie
@@ -24,7 +29,9 @@ export function proxy(req: NextRequest) {
   }
 
   // Security headers for admin responses
-  const res = NextResponse.next();
+  const res = NextResponse.next({
+    request: { headers: requestHeaders },
+  });
   res.headers.set("X-Content-Type-Options", "nosniff");
   res.headers.set("X-Frame-Options", "DENY");
   res.headers.set("X-XSS-Protection", "1; mode=block");

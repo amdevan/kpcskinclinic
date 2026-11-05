@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -50,7 +51,6 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     keywords,
     authors: [{ name: "KPC Skin Hair & Aesthetic Clinic" }],
-    icons: { icon: "/favicon.svg" },
     alternates: { canonical: seo?.canonical || "/" },
     openGraph: {
       title,
@@ -103,34 +103,48 @@ export default async function RootLayout({
 }>) {
   const settings = await getSiteSettings();
   const faviconUrl = settings.faviconUrl || "/favicon.svg";
+  // Cache-bust the favicon so admin uploads take effect immediately.
+  const cacheBustedFavicon = faviconUrl.includes("?")
+    ? faviconUrl
+    : `${faviconUrl}?v=${Date.now()}`;
+
+  // CMS admin pages are nested under /admin/* and have their own layout —
+  // they must NOT render the public website Header/Footer/FloatingButtons/Popup.
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || "";
+  const isAdminRoute = pathname.startsWith("/admin");
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href={faviconUrl} />
+        <link rel="icon" href={cacheBustedFavicon} />
       </head>
       <body
         className={`${inter.variable} ${poppins.variable} antialiased bg-background text-foreground font-sans`}
       >
-        <BookAppointmentProvider>
-          <div className="flex min-h-screen flex-col bg-background">
-            <Header
-              logoUrl={settings.logoUrl}
-              clinicName={settings.clinicName}
-              clinicTagline={settings.clinicTagline}
-              settings={settings.settingsMap}
-            />
-            <main className="flex-1">{children}</main>
-            <Footer
-              logoUrl={settings.logoUrl}
-              clinicName={settings.clinicName}
-              clinicTagline={settings.clinicTagline}
-              settings={settings.settingsMap}
-            />
-          </div>
-          <FloatingButtons />
-          <SitePopup />
-        </BookAppointmentProvider>
+        {isAdminRoute ? (
+          <>{children}</>
+        ) : (
+          <BookAppointmentProvider>
+            <div className="flex min-h-screen flex-col bg-background">
+              <Header
+                logoUrl={settings.logoUrl}
+                clinicName={settings.clinicName}
+                clinicTagline={settings.clinicTagline}
+                settings={settings.settingsMap}
+              />
+              <main className="flex-1">{children}</main>
+              <Footer
+                logoUrl={settings.logoUrl}
+                clinicName={settings.clinicName}
+                clinicTagline={settings.clinicTagline}
+                settings={settings.settingsMap}
+              />
+            </div>
+            <FloatingButtons />
+            <SitePopup />
+          </BookAppointmentProvider>
+        )}
         <Toaster />
       </body>
     </html>
