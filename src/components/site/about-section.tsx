@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowRight } from "lucide-react";
-import { useBookAppointment } from "./book-appointment-context";
 
 export function AboutSection({
   eyebrow = "Welcome to KPC",
@@ -21,7 +21,6 @@ export function AboutSection({
   paragraphs?: string[];
   image?: string;
 }) {
-  const { setOpen } = useBookAppointment();
   const paras = paragraphs && paragraphs.length > 0
     ? paragraphs
     : [
@@ -81,15 +80,14 @@ export function AboutSection({
             </ul>
 
             <div className="mt-7 flex flex-wrap items-center gap-4">
-              <Button
-                onClick={() => setOpen(true)}
-                className="bg-brand hover:bg-brand/90 text-brand-foreground"
-              >
-                Learn More
-                <ArrowRight className="ml-1.5 h-4 w-4" />
+              <Button asChild className="bg-brand hover:bg-brand/90 text-brand-foreground">
+                <Link href="/about">
+                  Learn More
+                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Link>
               </Button>
               <Button asChild variant="outline" className="border-brand/30 text-brand hover:bg-brand hover:text-brand-foreground">
-                <a href="#services">Explore our Services</a>
+                <Link href="/services">Explore our Services</Link>
               </Button>
             </div>
           </motion.div>
@@ -105,7 +103,7 @@ export function AboutSection({
             <div className="relative overflow-hidden rounded-3xl bg-cream aspect-[4/3] shadow-lg">
               { }
               <img
-                src="/images/gen/clinic-room.jpg"
+                src={image}
                 alt="KPC Skin Hair & Aesthetic Clinic team and interior"
                 className="h-full w-full object-cover"
               />

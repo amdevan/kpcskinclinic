@@ -41,7 +41,7 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import { SERVICE_CATEGORIES, NAV_LINKS } from "@/lib/site-data";
+import { SERVICE_CATEGORIES, NAV_LINKS, CONTACT_INFO } from "@/lib/site-data";
 import { Logo } from "./logo";
 import { useBookAppointment } from "./book-appointment-context";
 
@@ -128,14 +128,18 @@ export function Header({
                       Follow:
                     </span>
                     <a
-                      href="#social"
+                      href={CONTACT_INFO.socials.find((s) => s.icon === "instagram")?.href || "https://instagram.com/kpcskin"}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       aria-label="Instagram"
                       className="hover:text-gold transition-colors"
                     >
                       <Instagram className="h-3.5 w-3.5" />
                     </a>
                     <a
-                      href="#social"
+                      href={CONTACT_INFO.socials.find((s) => s.icon === "tiktok")?.href || "https://tiktok.com/@kpcskin"}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       aria-label="TikTok"
                       className="hover:text-gold transition-colors text-[11px] font-medium"
                     >

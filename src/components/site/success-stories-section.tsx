@@ -111,7 +111,7 @@ export function SuccessStoriesSection({
               asChild
               className="bg-brand hover:bg-brand/90 text-brand-foreground"
             >
-              <Link href="#reviews">Read Success Stories</Link>
+              <Link href="/success-stories">Read Success Stories</Link>
             </Button>
           </div>
         </div>

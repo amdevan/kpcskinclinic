@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { BookAppointmentProvider } from "@/components/site/book-appointment-context";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";

@@ -1,7 +1,7 @@
 "use client";
 
 import { Instagram, Music2 } from "lucide-react";
-import { SOCIAL_POSTS } from "@/lib/site-data";
+import { SOCIAL_POSTS, CONTACT_INFO } from "@/lib/site-data";
 
 export function SocialSection({
   eyebrow = "Follow us @",
@@ -48,14 +48,18 @@ export function SocialSection({
           </div>
           <div className="flex items-center gap-3">
             <a
-              href="#social"
+              href={CONTACT_INFO.socials.find((s) => s.icon === "instagram")?.href || "https://instagram.com/kpcskin"}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-tr from-pink-500 via-fuchsia-500 to-amber-400 px-4 py-2 text-white text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <Instagram className="h-4 w-4" />
               @kpcskin
             </a>
             <a
-              href="#social"
+              href={CONTACT_INFO.socials.find((s) => s.icon === "tiktok")?.href || "https://tiktok.com/@kpcskin"}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-cream text-sm font-semibold hover:bg-ink/85 transition-colors"
             >
               <Music2 className="h-4 w-4" />
@@ -69,7 +73,9 @@ export function SocialSection({
           {SOCIAL_POSTS.map((p, i) => (
             <a
               key={i}
-              href="#social"
+              href={CONTACT_INFO.socials.find((s) => s.icon === "instagram")?.href || "https://instagram.com/kpcskin"}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative aspect-square overflow-hidden rounded-xl bg-secondary"
             >
               { }

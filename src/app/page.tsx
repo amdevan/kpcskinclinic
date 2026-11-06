@@ -5,6 +5,7 @@ import { CtaSection } from "@/components/site/cta-section";
 import { SuccessStoriesSection } from "@/components/site/success-stories-section";
 import { Testimonials } from "@/components/site/testimonials";
 import { SocialSection } from "@/components/site/social-section";
+import { MediaGallery } from "@/components/site/media-gallery";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { db } from "@/lib/db";
 import { getPageSection, type PageSectionContent } from "@/lib/page-content";
@@ -58,6 +59,7 @@ export default async function Home() {
   const stories = sec("success-stories");
   const reviews = sec("testimonials");
   const social = sec("social");
+  const gallery = sec("media-gallery");
 
   const heroVideo = videoOf("hero");
   const aboutVideo = videoOf("about");
@@ -113,6 +115,8 @@ export default async function Home() {
         highlight={cta?.extra.highlight}
         description={cta?.body || undefined}
         image={cta?.image || undefined}
+        primaryCta={cta?.extra.primaryCta || undefined}
+        secondaryCta={cta?.extra.secondaryCta || undefined}
       />
       {ctaVideo ? (
         <section className="py-12 sm:py-16 bg-cream">
@@ -157,6 +161,12 @@ export default async function Home() {
         title={social?.title || undefined}
         titleHighlight={social?.extra.highlight}
         description={social?.body || undefined}
+      />
+      <MediaGallery
+        eyebrow={gallery?.extra.eyebrow}
+        title={gallery?.title || undefined}
+        description={gallery?.body || undefined}
+        image={gallery?.image || undefined}
       />
       {socialVideo ? (
         <section className="py-12 sm:py-16 bg-background">

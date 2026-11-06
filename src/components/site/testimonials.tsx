@@ -115,7 +115,9 @@ export function Testimonials({
         {/* View all on Google */}
         <div className="mt-10 text-center">
           <a
-            href="#reviews"
+            href="https://www.google.com/search?q=KPC+Skin+Hair+%26+Aesthetic+Clinic"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm font-medium text-brand hover:text-ink transition-colors link-underline"
           >
             <GoogleG className="h-4 w-4" />

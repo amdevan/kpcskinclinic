@@ -33,6 +33,19 @@ const VIDEO_FIELD: PageField = {
   help: "Paste a video link — it will be embedded on the public page.",
 };
 
+// Additional body-alias fields read as `extra.*` on home sections.
+const EYEBROW_FIELD: PageField = {
+  key: "eyebrow",
+  label: "Eyebrow (small heading above title)",
+  type: "text",
+};
+
+const HIGHLIGHT_FIELD: PageField = {
+  key: "highlight",
+  label: "Highlighted title text (accent color)",
+  type: "text",
+};
+
 // 11 pages — each with grouped fields keyed by section name.
 // The 'page' value is the route slug, the group 'id' is the PageContent.section.
 // The field 'key' is the column on PageContent (title | body | image | video).
@@ -59,7 +72,9 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "popular-services",
         label: "Popular services strip",
         fields: [
+          EYEBROW_FIELD,
           { key: "title", label: "Section title", type: "text" },
+          HIGHLIGHT_FIELD,
           { key: "body", label: "Intro text", type: "textarea" },
           IMAGE_FIELD,
         ],
@@ -68,7 +83,9 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "about",
         label: "Welcome / About teaser",
         fields: [
+          EYEBROW_FIELD,
           { key: "title", label: "Title", type: "text" },
+          HIGHLIGHT_FIELD,
           { key: "body", label: "Body", type: "textarea" },
           { key: "image", label: "Image", type: "image" },
           {
@@ -82,8 +99,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Call-to-action",
         fields: [
           { key: "title", label: "Headline", type: "text" },
+          HIGHLIGHT_FIELD,
           { key: "body", label: "Body", type: "textarea" },
           { key: "image", label: "Background image", type: "image" },
+          { key: "primaryCta", label: "Primary button label", type: "text", help: "Opens the booking form." },
+          { key: "secondaryCta", label: "Secondary button label", type: "text", help: "Links to the contact page." },
           {
             ...VIDEO_FIELD,
             help: "Optional background or explainer video — overlaid above the CTA when set.",
@@ -94,7 +114,9 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "success-stories",
         label: "Success stories",
         fields: [
+          EYEBROW_FIELD,
           { key: "title", label: "Title", type: "text" },
+          HIGHLIGHT_FIELD,
           { key: "body", label: "Intro", type: "textarea" },
           IMAGE_FIELD,
           {
@@ -107,6 +129,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "testimonials",
         label: "Testimonials",
         fields: [
+          EYEBROW_FIELD,
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Intro", type: "textarea" },
           IMAGE_FIELD,
@@ -120,7 +143,9 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "social",
         label: "Social posts strip",
         fields: [
+          EYEBROW_FIELD,
           { key: "title", label: "Title", type: "text" },
+          HIGHLIGHT_FIELD,
           { key: "body", label: "Caption", type: "textarea" },
           IMAGE_FIELD,
           {
@@ -133,6 +158,7 @@ export const PAGE_SECTIONS: PageSection[] = [
         id: "media-gallery",
         label: "Media gallery (before/after showcase)",
         fields: [
+          EYEBROW_FIELD,
           { key: "title", label: "Title", type: "text" },
           { key: "body", label: "Intro", type: "textarea" },
           IMAGE_FIELD,

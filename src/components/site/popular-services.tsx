@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
-import { POPULAR_SERVICES } from "@/lib/site-data";
+import { POPULAR_SERVICES, slugify } from "@/lib/site-data";
 import { useBookAppointment } from "./book-appointment-context";
 
 export function PopularServices({
@@ -64,7 +64,7 @@ export function PopularServices({
             asChild
             className="bg-gold hover:bg-gold/90 text-ink rounded-full font-semibold shrink-0"
           >
-            <Link href="#services">
+            <Link href="/services">
               Explore All Services
               <ArrowUpRight className="ml-1.5 h-4 w-4" />
             </Link>
@@ -103,7 +103,7 @@ export function PopularServices({
                 </p>
                 <div className="mt-3 flex items-center justify-between">
                   <Link
-                    href="#popular"
+                    href={`/services/${slugify(s.title)}`}
                     className="text-xs font-medium text-gold hover:text-cream inline-flex items-center gap-1"
                   >
                     Learn More
