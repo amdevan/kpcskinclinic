@@ -9,6 +9,12 @@ import {
   getTreatmentBySlug,
   type Treatment,
 } from "@/lib/site-data";
+import { db } from "@/lib/db";
+
+// Always render fresh from the DB so admin image/content edits appear
+// immediately (actions.ts already calls revalidatePath on save).
+export const dynamic = "force-dynamic";
+
 import {
   Accordion,
   AccordionContent,
@@ -35,31 +41,161 @@ export function generateStaticParams() {
   return [...fullSlugs, ...remainingSlugs];
 }
 
-// Per-page metadata (SEO)
-export function generateMetadata({
+/* ============ DB-first loading (with static fallback) ============ */
+
+type LoadedTreatment =
+  | { kind: "full"; treatment: Treatment }
+  | {
+      kind: "generated";
+      slug: string;
+      title: string;
+      category: string;
+      heroImage: string;
+      tagline: string;
+      intro: string;
+    }
+  | { kind: "notfound" };
+
+function parseJsonArray<T>(value: string | null | undefined, fallback: T[] = []): T[] {
+  if (!value) return fallback;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? (parsed as T[]) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function parseComparisonTable(
+  value: string | null | undefined,
+): Treatment["comparisonTable"] {
+  if (!value) return undefined;
+  try {
+    const parsed = JSON.parse(value);
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      Array.isArray(parsed.columns) &&
+      Array.isArray(parsed.rows)
+    ) {
+      return parsed as Treatment["comparisonTable"];
+    }
+  } catch {
+    // fall through
+  }
+  return undefined;
+}
+
+/** Non-empty DB text overrides the static value; empty keeps the static one. */
+function pickText(dbValue: string | null | undefined, fallback: string): string {
+  return dbValue && dbValue.trim() !== "" ? dbValue : fallback;
+}
+
+async function loadTreatmentPage(slug: string): Promise<LoadedTreatment> {
+  const full = getTreatmentBySlug(slug);
+  const remaining = REMAINING_TREATMENT_SLUGS.find((s) => s.slug === slug);
+
+  // Try the CMS database first.
+  let row: any = null;
+  try {
+    row = await db.treatment.findUnique({ where: { slug } });
+  } catch {
+    // DB not available — fall back to static content below.
+  }
+
+  if (row && row.published) {
+    // Full static entry + CMS overrides for any field the admin filled in.
+    if (full) {
+      const subsections = parseJsonArray<any>(row.subsections);
+      const faq = parseJsonArray<any>(row.faq);
+      const ideal = parseJsonArray<string>(row.suitabilityIdeal);
+      const notIdeal = parseJsonArray<string>(row.suitabilityNotIdeal);
+      const comparisonTable = parseComparisonTable(row.comparisonTable);
+      return {
+        kind: "full",
+        treatment: {
+          ...full,
+          title: pickText(row.title, full.title),
+          category: pickText(row.category, full.category),
+          metaDescription: pickText(row.metaDescription, full.metaDescription),
+          heroImage: pickText(row.heroImage, full.heroImage),
+          tagline: pickText(row.tagline, full.tagline),
+          intro: pickText(row.intro, full.intro),
+          subsections: subsections.length > 0 ? subsections : full.subsections,
+          resultsReality: pickText(row.resultsReality, full.resultsReality),
+          suitability:
+            ideal.length > 0 || notIdeal.length > 0
+              ? {
+                  ideal: ideal.length > 0 ? ideal : full.suitability.ideal,
+                  notIdeal: notIdeal.length > 0 ? notIdeal : full.suitability.notIdeal,
+                }
+              : full.suitability,
+          faq: faq.length > 0 ? faq : full.faq,
+          comparisonTable: comparisonTable ?? full.comparisonTable,
+          pricing: {
+            startingPrice: pickText(row.startingPrice, full.pricing.startingPrice),
+            sessions: pickText(row.sessions, full.pricing.sessions),
+            note: pickText(row.note, full.pricing.note),
+          },
+        },
+      };
+    }
+
+    // CMS-only or "remaining" treatment: use the DB content with the
+    // generated template (custom hero image, tagline and intro included).
+    return {
+      kind: "generated",
+      slug,
+      title: pickText(row.title, remaining?.title ?? row.title),
+      category: pickText(row.category, remaining?.category ?? ""),
+      heroImage: pickText(row.heroImage, "/images/gen/hair-treatment.jpg"),
+      tagline: row.tagline ?? "",
+      intro: row.intro ?? "",
+    };
+  }
+
+  // No CMS row (or unpublished) — use the static entries as before.
+  if (full) return { kind: "full", treatment: full };
+  if (remaining) {
+    return {
+      kind: "generated",
+      slug: remaining.slug,
+      title: remaining.title,
+      category: remaining.category,
+      heroImage: "/images/gen/hair-treatment.jpg",
+      tagline: "",
+      intro: "",
+    };
+  }
+  return { kind: "notfound" };
+}
+
+// Per-page metadata (SEO) — mirrors the page's DB-first loading so edited
+// titles/descriptions show up in search results too.
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  return params.then(({ slug }) => {
-    const t = getTreatmentBySlug(slug);
-    if (t) {
-      return {
-        title: `${t.title} | KPC Skin Clinic Thapathali`,
-        description: t.metaDescription,
-        alternates: { canonical: `/services/${t.slug}` },
-      };
-    }
-    const r = REMAINING_TREATMENT_SLUGS.find((s) => s.slug === slug);
-    if (r) {
-      return {
-        title: `${r.title} | KPC Skin Clinic Thapathali`,
-        description: `${r.title} at KPC Skin Hair & Aesthetic Clinic, Thapathali Kathmandu. Performed by qualified doctors with written treatment plans and transparent pricing.`,
-        alternates: { canonical: `/services/${r.slug}` },
-      };
-    }
-    return { title: "Treatment | KPC Skin Clinic" };
-  });
+  const { slug } = await params;
+  const loaded = await loadTreatmentPage(slug);
+  if (loaded.kind === "full") {
+    return {
+      title: `${loaded.treatment.title} | KPC Skin Clinic Thapathali`,
+      description: loaded.treatment.metaDescription,
+      alternates: { canonical: `/services/${loaded.treatment.slug}` },
+    };
+  }
+  if (loaded.kind === "generated") {
+    return {
+      title: `${loaded.title} | KPC Skin Clinic Thapathali`,
+      description:
+        loaded.tagline ||
+        `${loaded.title} at KPC Skin Hair & Aesthetic Clinic, Thapathali Kathmandu. Performed by qualified doctors with written treatment plans and transparent pricing.`,
+      alternates: { canonical: `/services/${loaded.slug}` },
+    };
+  }
+  return { title: "Treatment | KPC Skin Clinic" };
 }
 
 export default async function TreatmentDetailPage({
@@ -68,17 +204,24 @@ export default async function TreatmentDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const full = getTreatmentBySlug(slug);
+  const loaded = await loadTreatmentPage(slug);
 
-  // If we have full content, render the complete template
-  if (full) {
-    return <FullTreatmentTemplate treatment={full} />;
+  if (loaded.kind === "full") {
+    return <FullTreatmentTemplate treatment={loaded.treatment} />;
   }
-
-  // Otherwise, render the shared template with generated content
-  const r = REMAINING_TREATMENT_SLUGS.find((s) => s.slug === slug);
-  if (!r) notFound();
-  return <GeneratedTreatmentTemplate slug={r.slug} title={r.title} category={r.category} />;
+  if (loaded.kind === "generated") {
+    return (
+      <GeneratedTreatmentTemplate
+        slug={loaded.slug}
+        title={loaded.title}
+        category={loaded.category}
+        heroImage={loaded.heroImage}
+        tagline={loaded.tagline}
+        intro={loaded.intro}
+      />
+    );
+  }
+  notFound();
 }
 
 /* ============ Full template (for treatments with detailed content) ============ */
@@ -301,18 +444,26 @@ function GeneratedTreatmentTemplate({
   slug,
   title,
   category,
+  heroImage = "/images/gen/hair-treatment.jpg",
+  tagline = "",
+  intro = "",
 }: {
   slug: string;
   title: string;
   category: string;
+  heroImage?: string;
+  tagline?: string;
+  intro?: string;
 }) {
-  const heroImage = "/images/gen/hair-treatment.jpg";
+  const description =
+    tagline ||
+    `${title} at KPC Skin Clinic, Thapathali — performed by qualified doctors with written treatment plans and transparent pricing.`;
   return (
     <>
       <PageBanner
         eyebrow={category}
         title={title}
-        description={`${title} at KPC Skin Clinic, Thapathali — performed by qualified doctors with written treatment plans and transparent pricing.`}
+        description={description}
         image={heroImage}
         crumbs={[
           { label: "Home", href: "/" },
@@ -342,11 +493,8 @@ function GeneratedTreatmentTemplate({
                 About {title.toLowerCase()}
               </h2>
               <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
-                {title} is part of our {category} practice at KPC Skin Hair &amp;
-                Aesthetic Clinic, Thapathali. Every treatment begins with a 30–45
-                minute consultation where we assess your specific case, explain the
-                options, and give you a written plan with clear pricing — no
-                verbal estimates, no surprise charges.
+                {intro ||
+                  `${title} is part of our ${category} practice at KPC Skin Hair & Aesthetic Clinic, Thapathali. Every treatment begins with a 30–45 minute consultation where we assess your specific case, explain the options, and give you a written plan with clear pricing — no verbal estimates, no surprise charges.`}
               </p>
               <p className="mt-4 text-base leading-relaxed text-muted-foreground">
                 Our doctors have collectively performed over 8,000 procedures
