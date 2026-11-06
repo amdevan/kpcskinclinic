@@ -21,7 +21,7 @@ interface AdminStatCardProps {
   label: string;
   value: number;
   icon?: LucideIcon;
-  color?: "brand" | "rust" | "gold";
+  color?: "brand" | "rust" | "gold" | "green";
   hint?: string;
 }
 
@@ -29,6 +29,7 @@ const COLOR_MAP: Record<NonNullable<AdminStatCardProps["color"]>, string> = {
   brand: "border-blue-200 bg-blue-50",
   rust: "border-red-200 bg-red-50",
   gold: "border-amber-200 bg-amber-50",
+  green: "border-emerald-200 bg-emerald-50",
 };
 
 export function AdminStatCard({
