@@ -28,10 +28,9 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
       "image/png",
       "image/webp",
       "image/gif",
-      "image/svg+xml",
     ];
     if (!allowedTypes.includes(file.type.toLowerCase())) {
-      setError("Unsupported file type. Use JPG, PNG, WEBP, GIF or SVG.");
+      setError("Unsupported file type. Use JPG, PNG, WEBP or GIF.");
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
@@ -165,7 +164,7 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
                 Drag &amp; drop, or click to browse
               </p>
               <p className="text-[10px] text-muted-foreground">
-                JPG, PNG, WEBP, GIF, SVG — max 10 MB
+                JPG, PNG, WEBP, GIF — max 10 MB
               </p>
             </>
           )}
@@ -175,7 +174,7 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+        accept="image/jpeg,image/png,image/webp,image/gif"
         className="sr-only"
         onChange={handleFilePick}
       />

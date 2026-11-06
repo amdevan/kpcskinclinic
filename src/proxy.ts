@@ -1,8 +1,55 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+// NOTE: global security headers (CSP, HSTS, ...) live in next.config.ts
+// headers() so they apply to every route, not just ones matched here.
+
+// ---------- API request guards ----------
+
+const API_BODY_LIMIT = 64 * 1024; // 64 KB for JSON APIs (upload exempt)
+
+// Returns a 4xx response when the request is suspicious, otherwise null.
+function guardApiRequest(req: NextRequest): NextResponse | null {
+  const path = req.nextUrl.pathname;
+  if (!path.startsWith("/api/")) return null;
+
+  const origin = req.headers.get("origin");
+  if (origin) {
+    try {
+      const originHost = new URL(origin).host;
+      const host = req.headers.get("host");
+      if (host && originHost !== host) {
+        return NextResponse.json(
+          { error: "cross_origin_rejected" },
+          { status: 403 },
+        );
+      }
+    } catch {
+      return NextResponse.json(
+        { error: "cross_origin_rejected" },
+        { status: 403 },
+      );
+    }
+  }
+
+  if (path === "/api/upload") return null; // multipart — governed by auth + 4MB cap in the route
+
+  const len = req.headers.get("content-length");
+  if (len && Number(len) > API_BODY_LIMIT) {
+    return NextResponse.json(
+      { error: "payload_too_large" },
+      { status: 413 },
+    );
+  }
+  return null;
+}
+
 export function proxy(req: NextRequest) {
   const path = req.nextUrl.pathname;
+
+  // Reject cross-origin / oversized API calls before anything else.
+  const guard = guardApiRequest(req);
+  if (guard) return guard;
 
   // Stash the request pathname on a custom REQUEST header so the root
   // layout can detect CMS admin routes and suppress the public
@@ -28,17 +75,9 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // Security headers for admin responses
-  const res = NextResponse.next({
+  return NextResponse.next({
     request: { headers: requestHeaders },
   });
-  res.headers.set("X-Content-Type-Options", "nosniff");
-  res.headers.set("X-Frame-Options", "DENY");
-  res.headers.set("X-XSS-Protection", "1; mode=block");
-  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
-
-  return res;
 }
 
 export const config = {
@@ -46,5 +85,6 @@ export const config = {
   // The bare "/admin" entry closes a security hole where /admin (without a
   // trailing slash) was previously not matched by "/admin/:path*" and could
   // bypass the auth check.
-  matcher: ["/admin", "/admin/:path*"],
+  // /api is guarded for oversized / cross-origin requests.
+  matcher: ["/admin", "/admin/:path*", "/api/:path*"],
 };

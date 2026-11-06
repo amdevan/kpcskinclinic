@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 import { authOptions } from "@/lib/auth";
+import { sanitizeInput } from "@/lib/security";
 
 // In-memory rate limit (per-process) to prevent simple abuse
 const RATE: Record<string, { count: number; reset: number }> = {};
@@ -38,11 +39,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  const name = (body?.name ?? "").toString().trim();
-  const phone = (body?.phone ?? "").toString().trim();
-  const email = (body?.email ?? "").toString().trim() || null;
-  const service = (body?.service ?? "").toString().trim();
-  const message = (body?.message ?? "").toString().trim() || null;
+  const name = sanitizeInput(body?.name, 120);
+  const phone = sanitizeInput(body?.phone, 40);
+  const email = sanitizeInput(body?.email, 254) || null;
+  const service = sanitizeInput(body?.service, 200);
+  const message = sanitizeInput(body?.message, 4000) || null;
   const preferredDateRaw = (body?.preferredDate ?? "").toString().trim();
 
   if (!name || !phone || !service || !preferredDateRaw) {
@@ -50,13 +51,6 @@ export async function POST(req: NextRequest) {
       { error: "missing_required_fields" },
       { status: 400 }
     );
-  }
-
-  if (name.length > 120) {
-    return NextResponse.json({ error: "name_too_long" }, { status: 400 });
-  }
-  if (phone.length > 40) {
-    return NextResponse.json({ error: "phone_too_long" }, { status: 400 });
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "invalid_email" }, { status: 400 });
