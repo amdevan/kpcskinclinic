@@ -5,7 +5,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlayCircle } from "lucide-react";
 
-const STORY_CARDS = [
+export type StoryCard = { image: string; label: string; patient: string };
+
+const DEFAULT_STORY_CARDS: StoryCard[] = [
   {
     image:
       "/images/gen/hair-transplant.jpg",
@@ -37,6 +39,7 @@ export function SuccessStoriesSection({
   title,
   titleHighlight = "Satisfied Clients",
   description = "Discover why so many people trust our clinic to boost their confidence and well-being.",
+  cards,
 }: {
   eyebrow?: string;
   /** Full heading; when set, `titleHighlight` is ignored. */
@@ -44,13 +47,17 @@ export function SuccessStoriesSection({
   /** Accent text appended to the default heading when `title` is not set. */
   titleHighlight?: string;
   description?: string;
+  /** Cards with images fetched from the CMS (Treatments / PageContent).
+   *  Falls back to the built-in story cards. */
+  cards?: StoryCard[];
 }) {
+  const items = cards && cards.length > 0 ? cards : DEFAULT_STORY_CARDS;
   return (
     <section id="stories" className="py-20 sm:py-28 bg-background">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         {/* 4 before/after style cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-14">
-          {STORY_CARDS.map((c, i) => (
+          {items.map((c, i) => (
             <motion.div
               key={c.label}
               initial={{ opacity: 0, y: 20 }}

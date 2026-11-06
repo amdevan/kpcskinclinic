@@ -3,11 +3,14 @@
 import { Instagram, Music2 } from "lucide-react";
 import { SOCIAL_POSTS, CONTACT_INFO } from "@/lib/site-data";
 
+export type SocialPost = { image: string; handle: string; caption: string };
+
 export function SocialSection({
   eyebrow = "Follow us @",
   title,
   titleHighlight = "TikTok",
   description,
+  posts,
 }: {
   eyebrow?: string;
   /** Full heading; when set, `titleHighlight` is ignored. */
@@ -15,7 +18,11 @@ export function SocialSection({
   /** Accent text appended after "Instagram ·" when `title` is not set. */
   titleHighlight?: string;
   description?: string;
+  /** Posts with images fetched from the CMS (Blog / PageContent).
+   *  Falls back to the built-in SOCIAL_POSTS list. */
+  posts?: SocialPost[];
 }) {
+  const items = posts && posts.length > 0 ? posts : SOCIAL_POSTS;
   return (
     <section id="social" className="py-20 sm:py-28 bg-background">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -70,7 +77,7 @@ export function SocialSection({
 
         {/* Instagram-style grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-          {SOCIAL_POSTS.map((p, i) => (
+          {items.map((p, i) => (
             <a
               key={i}
               href={CONTACT_INFO.socials.find((s) => s.icon === "instagram")?.href || "https://instagram.com/kpcskin"}

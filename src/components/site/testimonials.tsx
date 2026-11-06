@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-import { TESTIMONIALS } from "@/lib/site-data";
+import { TESTIMONIALS, type Testimonial } from "@/lib/site-data";
 
 function GoogleG({ className }: { className?: string }) {
   return (
@@ -31,11 +31,16 @@ export function Testimonials({
   eyebrow = "Welcome to KPC",
   title = "What Our Patients Say?",
   description = "Reflects trust, quality service, and the positive impact we've made on their confidence and well-being.",
+  testimonials,
 }: {
   eyebrow?: string;
   title?: string;
   description?: string;
+  /** Reviews with avatars fetched from the CMS (PageContent blocks).
+   *  Falls back to the built-in TESTIMONIALS list. */
+  testimonials?: Testimonial[];
 }) {
+  const items = testimonials && testimonials.length > 0 ? testimonials : TESTIMONIALS;
   return (
     <section id="reviews" className="py-20 sm:py-28 bg-sky-50">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -58,7 +63,7 @@ export function Testimonials({
 
         {/* Google review cards — masonry-style staggered grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          {TESTIMONIALS.map((t, i) => (
+          {items.map((t, i) => (
             <motion.article
               key={t.name + t.date}
               initial={{ opacity: 0, y: 20 }}

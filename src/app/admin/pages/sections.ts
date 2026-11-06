@@ -40,9 +40,60 @@ const EYEBROW_FIELD: PageField = {
   type: "text",
 };
 
+// Additional body-alias fields read as `extra.*` on home sections.
 const HIGHLIGHT_FIELD: PageField = {
   key: "highlight",
   label: "Highlighted title text (accent color)",
+  type: "text",
+};
+
+// Card-section convention: the FIRST block of a card section is the section
+// header (eyebrow / title / intro). Every block BELOW it is one card — its
+// Title, Body and Image render as that card (e.g. a service card, a review
+// avatar, a social post photo). Image fallback: when a card has no image,
+// the home page uses the matching Treatment hero image (Admin → Treatments).
+const CARD_HREF_FIELD: PageField = {
+  key: "href",
+  label: "Card service slug (optional)",
+  type: "text",
+  help: "Treatment slug (e.g. botox-treatment). Blank = link to this card's title slug.",
+};
+
+const PATIENT_FIELD: PageField = {
+  key: "patient",
+  label: "Patient name (optional)",
+  type: "text",
+};
+
+const SESSIONS_FIELD: PageField = {
+  key: "sessions",
+  label: "Sessions info (optional)",
+  type: "text",
+  help: "e.g. 4 sessions over 3 months",
+};
+
+const HANDLE_FIELD: PageField = {
+  key: "handle",
+  label: "Handle (optional)",
+  type: "text",
+  help: "e.g. @kpcskin",
+};
+
+const SERVICE_FIELD: PageField = {
+  key: "service",
+  label: "Treatment badge (optional)",
+  type: "text",
+};
+
+const DATE_FIELD: PageField = {
+  key: "date",
+  label: "Review date (optional)",
+  type: "text",
+};
+
+const RATING_FIELD: PageField = {
+  key: "rating",
+  label: "Star rating 1–5 (optional)",
   type: "text",
 };
 
@@ -73,10 +124,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Popular services strip",
         fields: [
           EYEBROW_FIELD,
-          { key: "title", label: "Section title", type: "text" },
+          { key: "title", label: "Section title", type: "text", help: "First block = heading (title/intro). Add blocks below it — each one renders as a card with its own title, body and image." },
           HIGHLIGHT_FIELD,
           { key: "body", label: "Intro text", type: "textarea" },
           IMAGE_FIELD,
+          CARD_HREF_FIELD,
         ],
       },
       {
@@ -115,10 +167,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Success stories",
         fields: [
           EYEBROW_FIELD,
-          { key: "title", label: "Title", type: "text" },
+          { key: "title", label: "Title", type: "text", help: "First block = heading. Blocks below render as cards (title = label, patient name optional, image = card photo)." },
           HIGHLIGHT_FIELD,
           { key: "body", label: "Intro", type: "textarea" },
           IMAGE_FIELD,
+          PATIENT_FIELD,
           {
             ...VIDEO_FIELD,
             help: "Featured patient story video — embedded at the top of the section.",
@@ -130,9 +183,12 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Testimonials",
         fields: [
           EYEBROW_FIELD,
-          { key: "title", label: "Title", type: "text" },
+          { key: "title", label: "Title", type: "text", help: "First block = heading. Blocks below are reviews (title = name, body = review, image = avatar)." },
           { key: "body", label: "Intro", type: "textarea" },
           IMAGE_FIELD,
+          SERVICE_FIELD,
+          DATE_FIELD,
+          RATING_FIELD,
           {
             ...VIDEO_FIELD,
             help: "Video testimonial — embedded above the testimonials grid.",
@@ -144,10 +200,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Social posts strip",
         fields: [
           EYEBROW_FIELD,
-          { key: "title", label: "Title", type: "text" },
+          { key: "title", label: "Title", type: "text", help: "First block = heading. Blocks below are posts (title ignored, body = caption, image = post photo)." },
           HIGHLIGHT_FIELD,
           { key: "body", label: "Caption", type: "textarea" },
           IMAGE_FIELD,
+          HANDLE_FIELD,
           {
             ...VIDEO_FIELD,
             help: "Featured reel — embedded in the social strip.",
@@ -159,9 +216,11 @@ export const PAGE_SECTIONS: PageSection[] = [
         label: "Media gallery (before/after showcase)",
         fields: [
           EYEBROW_FIELD,
-          { key: "title", label: "Title", type: "text" },
+          { key: "title", label: "Title", type: "text", help: "First block = heading. Blocks below are gallery cards (title = treatment, image = result photo)." },
           { key: "body", label: "Intro", type: "textarea" },
           IMAGE_FIELD,
+          PATIENT_FIELD,
+          SESSIONS_FIELD,
           {
             ...VIDEO_FIELD,
             help: "Optional showcase video — embedded at the top of the gallery.",

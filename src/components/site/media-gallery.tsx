@@ -3,18 +3,29 @@
 import { motion } from "framer-motion";
 import { BEFORE_AFTER_GALLERY } from "@/lib/site-data";
 
+export type GalleryItem = {
+  image: string;
+  treatment: string;
+  patient: string;
+  sessions: string;
+};
+
 export function MediaGallery({
   eyebrow = "Before / After",
   title = "Real results, real people",
   description = "A glimpse of the transformations our doctors achieve — every result documented with consent.",
   image,
+  items,
 }: {
   eyebrow?: string;
   title?: string;
   description?: string;
   image?: string;
+  /** Gallery cards with images fetched from the CMS (Treatments / PageContent).
+   *  Falls back to the built-in BEFORE_AFTER_GALLERY list. */
+  items?: GalleryItem[];
 }) {
-  const gallery = BEFORE_AFTER_GALLERY;
+  const gallery = items && items.length > 0 ? items : BEFORE_AFTER_GALLERY;
   return (
     <section id="gallery" className="py-20 sm:py-28 bg-cream">
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-24">

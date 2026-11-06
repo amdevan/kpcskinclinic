@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
-import { POPULAR_SERVICES, slugify } from "@/lib/site-data";
+import { POPULAR_SERVICES, slugify, type PopularService } from "@/lib/site-data";
 import { useBookAppointment } from "./book-appointment-context";
 
 export function PopularServices({
@@ -13,6 +13,7 @@ export function PopularServices({
   title,
   titleHighlight = "Healthy, Glowing Skin & Hair",
   description,
+  services,
 }: {
   eyebrow?: string;
   /** Full heading; when set, `titleHighlight` is ignored. */
@@ -20,8 +21,12 @@ export function PopularServices({
   /** Accent text appended to the default heading when `title` is not set. */
   titleHighlight?: string;
   description?: string;
+  /** Cards with images fetched from the CMS (Treatments / PageContent).
+   *  Falls back to the built-in POPULAR_SERVICES list. */
+  services?: PopularService[];
 }) {
   const { setPrefillService, setOpen } = useBookAppointment();
+  const items = services && services.length > 0 ? services : POPULAR_SERVICES;
   return (
     <section
       id="popular"
@@ -73,7 +78,7 @@ export function PopularServices({
 
         {/* 4-card grid — clean photos, text below */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {POPULAR_SERVICES.map((s, i) => (
+          {items.map((s, i) => (
             <motion.article
               key={s.title}
               initial={{ opacity: 0, y: 20 }}

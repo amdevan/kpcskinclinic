@@ -8,8 +8,20 @@ import { SocialSection } from "@/components/site/social-section";
 import { MediaGallery } from "@/components/site/media-gallery";
 import { VideoEmbed } from "@/components/site/video-embed";
 import { db } from "@/lib/db";
-import { getPageSection, type PageSectionContent } from "@/lib/page-content";
-import { HERO_SLIDES, type HeroSlide } from "@/lib/site-data";
+import {
+  getPageSection,
+  getPageSectionRows,
+  type PageSectionContent,
+} from "@/lib/page-content";
+import {
+  HERO_SLIDES,
+  POPULAR_SERVICES,
+  BEFORE_AFTER_GALLERY,
+  slugify,
+  type HeroSlide,
+  type PopularService,
+  type Testimonial,
+} from "@/lib/site-data";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +73,141 @@ export default async function Home() {
   const social = sec("social");
   const gallery = sec("media-gallery");
 
+  // ---- Relevant images from the CMS ----
+  // Treatment hero images (uploaded in Admin → Treatments) enrich every card
+  // that is keyed by treatment, and blog images feed the social strip.
+  const treatmentImageBySlug = new Map<string, string>();
+  const treatmentImageByTitle = new Map<string, string>();
+  let blogPosts: { image: string; handle: string; caption: string }[] = [];
+  try {
+    const [treatments, blogs] = await Promise.all([
+      db.treatment.findMany({
+        where: { published: true },
+        select: { slug: true, title: true, heroImage: true },
+      }),
+      db.blogArticle.findMany({
+        where: { published: true },
+        select: { title: true, image: true },
+        orderBy: { createdAt: "desc" },
+        take: 6,
+      }),
+    ]);
+    for (const t of treatments || []) {
+      if (!t.heroImage) continue;
+      treatmentImageBySlug.set(t.slug, t.heroImage);
+      treatmentImageByTitle.set(t.title.toLowerCase(), t.heroImage);
+    }
+    blogPosts = (blogs || [])
+      .filter((b) => b.image)
+      .map((b) => ({ image: b.image, handle: "@kpcskin", caption: b.title }));
+  } catch {
+    // DB not available — static fallbacks are used
+  }
+  const imageForTreatment = (title: string, fallback: string): string =>
+    treatmentImageByTitle.get(title.toLowerCase()) ||
+    treatmentImageBySlug.get(slugify(title)) ||
+    fallback;
+
+  // Card rows per section: first row is the header (already in `sec`),
+  // subsequent rows are individual cards with their own uploaded image.
+  const cardRows = async (section: string): Promise<PageSectionContent[]> =>
+    (await getPageSectionRows("home", section)).slice(1);
+  const [
+    popularCards,
+    storyCards,
+    reviewCards,
+    socialCards,
+    galleryCards,
+  ] = await Promise.all([
+    cardRows("popular-services"),
+    cardRows("success-stories"),
+    cardRows("testimonials"),
+    cardRows("social"),
+    cardRows("media-gallery"),
+  ]);
+
+  const popularServices: PopularService[] =
+    popularCards.length > 0
+      ? popularCards.map((c) => ({
+          title: c.title,
+          description: c.body,
+          image: c.image || imageForTreatment(c.title, ""),
+          href: c.extra.href
+            ? `/services/${c.extra.href}`
+            : `/services/${slugify(c.title)}`,
+          accent: "",
+        }))
+      : POPULAR_SERVICES.map((s) => ({
+          ...s,
+          image: imageForTreatment(s.title, s.image),
+        }));
+
+  const storyItems =
+    storyCards.length > 0
+      ? storyCards.map((c) => ({
+          image: c.image || imageForTreatment(c.title, ""),
+          label: c.title,
+          patient: c.extra.patient || c.body,
+        }))
+      : [
+          {
+            image: imageForTreatment("Hair Transplant", "/images/gen/hair-transplant.jpg"),
+            label: "Hair Transplant",
+            patient: "Megha N.",
+          },
+          {
+            image: imageForTreatment("Acne & Acne Scars", "/images/gen/acne-care.jpg"),
+            label: "Acne & Scars",
+            patient: "Sneha S.",
+          },
+          {
+            image: imageForTreatment("Laser Hair Removal", "/images/gen/laser-care.jpg"),
+            label: "Laser Hair Removal",
+            patient: "Manju D.",
+          },
+          {
+            image: imageForTreatment("HydraFacial", "/images/gen/hydrafacial.jpg"),
+            label: "Hydra Facial",
+            patient: "Priya K.",
+          },
+        ];
+
+  const galleryItems =
+    galleryCards.length > 0
+      ? galleryCards.map((c) => ({
+          image: c.image || imageForTreatment(c.title, ""),
+          treatment: c.title,
+          patient: c.extra.patient || "",
+          sessions: c.extra.sessions || c.body,
+        }))
+      : BEFORE_AFTER_GALLERY.map((g) => ({
+          ...g,
+          image: imageForTreatment(g.treatment, g.image),
+        }));
+
+  const socialPosts =
+    socialCards.length > 0
+      ? socialCards.map((c) => ({
+          image: c.image || "",
+          handle: c.extra.handle || "@kpcskin",
+          caption: c.body || c.title,
+        }))
+      : blogPosts.length > 0
+        ? blogPosts
+        : undefined;
+
+  const testimonials: Testimonial[] | undefined =
+    reviewCards.length > 0
+      ? reviewCards.map((c) => ({
+          name: c.title,
+          date: c.extra.date || "",
+          rating: Math.max(1, Math.min(5, parseInt(c.extra.rating || "5", 10) || 5)),
+          text: c.body,
+          avatar: c.image || "/images/gen/avatar-m1.svg",
+          service: c.extra.service || "",
+        }))
+      : undefined;
+
   const heroVideo = videoOf("hero");
   const aboutVideo = videoOf("about");
   const successStoriesVideo = videoOf("success-stories");
@@ -86,6 +233,7 @@ export default async function Home() {
         title={popular?.title || undefined}
         titleHighlight={popular?.extra.highlight}
         description={popular?.body || undefined}
+        services={popularServices}
       />
       <AboutSection
         eyebrow={about?.extra.eyebrow}
@@ -132,6 +280,7 @@ export default async function Home() {
         title={stories?.title || undefined}
         titleHighlight={stories?.extra.highlight}
         description={stories?.body || undefined}
+        cards={storyItems}
       />
       {successStoriesVideo ? (
         <section className="py-12 sm:py-16 bg-background">
@@ -146,6 +295,7 @@ export default async function Home() {
         eyebrow={reviews?.extra.eyebrow}
         title={reviews?.title || undefined}
         description={reviews?.body || undefined}
+        testimonials={testimonials}
       />
       {testimonialsVideo ? (
         <section className="py-12 sm:py-16 bg-cream">
@@ -161,12 +311,14 @@ export default async function Home() {
         title={social?.title || undefined}
         titleHighlight={social?.extra.highlight}
         description={social?.body || undefined}
+        posts={socialPosts}
       />
       <MediaGallery
         eyebrow={gallery?.extra.eyebrow}
         title={gallery?.title || undefined}
         description={gallery?.body || undefined}
         image={gallery?.image || undefined}
+        items={galleryItems}
       />
       {socialVideo ? (
         <section className="py-12 sm:py-16 bg-background">
