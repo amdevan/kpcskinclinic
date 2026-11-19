@@ -149,7 +149,7 @@ export type PopularService = {
 
 export const POPULAR_SERVICES: PopularService[] = [
   {
-    title: "Hair Transplant",
+    title: "Hair Transplant (FUE)",
     description:
       "Natural, permanent hair restoration with advanced FUE techniques and experienced surgeons.",
     image:
@@ -158,31 +158,31 @@ export const POPULAR_SERVICES: PopularService[] = [
     accent: "from-brand/80 to-cyan",
   },
   {
-    title: "Plastic Surgery",
+    title: "PRP Hair Treatment",
     description:
-      "Refined cosmetic and reconstructive procedures performed by board-certified plastic surgeons.",
+      "Platelet-rich plasma therapy to stimulate hair follicles and restore density.",
     image:
-      "/images/gen/plastic-surgery.jpg",
-    href: "/services/plastic-surgery",
-    accent: "from-gold/80 to-rust",
-  },
-  {
-    title: "Acne & Acne Scars",
-    description:
-      "Clear active acne and smooth acne scars with clinically proven, personalized protocols.",
-    image:
-      "/images/gen/acne-care.jpg",
-    href: "/services/acne-scar-treatment",
-    accent: "from-green/80 to-brand",
+      "/images/gen/hair-treatment.jpg",
+    href: "/services/prp-hair-treatment",
+    accent: "from-cyan/80 to-green",
   },
   {
     title: "Hair Loss Treatment",
     description:
       "Diagnosis-driven plans combining medical therapy, PRP, GFC and lifestyle guidance.",
     image:
-      "/images/gen/hair-treatment.jpg",
+      "/images/gen/hero-hair.jpg",
     href: "/services/hair-loss-treatment",
-    accent: "from-rust/80 to-gold",
+    accent: "from-green/80 to-brand",
+  },
+  {
+    title: "Laser Hair Removal",
+    description:
+      "Long-term hair reduction with gentle, clinically proven laser technology.",
+    image:
+      "/images/gen/social-scalp.jpg",
+    href: "/services/laser-hair-removal",
+    accent: "from-brand/80 to-gold",
   },
 ];
 
