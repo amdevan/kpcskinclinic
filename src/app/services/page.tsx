@@ -172,7 +172,7 @@ export default async function ServicesPage() {
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <Link href={`/services/${slugify(sv.title)}`} className="font-medium text-ink hover:text-brand transition-colors">{sv.title}</Link>
+                        <Link href={`/services/${sv.slug || slugify(sv.title)}`} className="font-medium text-ink hover:text-brand transition-colors">{sv.title}</Link>
                         <p className="text-sm text-muted-foreground mt-0.5">
                           {sv.description}
                         </p>
