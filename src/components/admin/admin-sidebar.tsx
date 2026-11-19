@@ -40,12 +40,14 @@ const nav = [
 const cmsNav = [
   { label: "Site Info", href: "/admin/site-info", icon: Settings },
   { label: "Page Content", href: "/admin/pages", icon: FileCode },
-  { label: "Hero Slides", href: "/admin/hero", icon: ImageIcon },
+  { label: "Hero Slides", href: "/admin/hero", icon: Image },
   { label: "Popups", href: "/admin/popup", icon: Bell },
   { label: "Services", href: "/admin/services", icon: LayoutGrid },
   { label: "SEO", href: "/admin/seo", icon: Search },
   { label: "Users", href: "/admin/users", icon: Users },
   { label: "Security", href: "/admin/security", icon: ShieldCheck },
+  { label: "Hair Transplant", href: "/admin/hair-transplant", icon: Stethoscope },
+  { label: "Success Stories", href: "/admin/success-stories", icon: FileText },
 ];
 
 export function AdminSidebar() {
