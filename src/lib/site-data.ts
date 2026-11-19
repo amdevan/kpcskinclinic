@@ -48,9 +48,9 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/hair-transplant.jpg",
     services: [
-      { title: "Hair Transplant", href: "#services", description: "FUE hair restoration for natural density." },
-      { title: "Beard Transplant", href: "#services", description: "Fill in patchy beards with your own follicles." },
-      { title: "Eyebrow Transplant", href: "#services", description: "Restore eyebrows frame-by-frame." },
+      { title: "Hair Transplant", slug: "hair-transplant", href: "#services", description: "FUE hair restoration for natural density." },
+      { title: "Beard Transplant", slug: "beard-transplant", href: "#services", description: "Fill in patchy beards with your own follicles." },
+      { title: "Eyebrow Transplant", slug: "eyebrow-transplant", href: "#services", description: "Restore eyebrows frame-by-frame." },
     ],
   },
   {
@@ -94,11 +94,11 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/skincare-facial.jpg",
     services: [
-      { title: "Acne & Acne Scars", href: "#services", description: "Clear active acne and smooth scars." },
-      { title: "Open Pores & Oily Skin", href: "#services", description: "Refine texture and control oil." },
-      { title: "Melasma Treatment", href: "#services", description: "Fade stubborn pigmentation safely." },
-      { title: "Vitiligo Treatment", href: "#services", description: "Holistic care for vitiligo." },
-      { title: "Dark Circles Treatment", href: "#services", description: "Brighten tired under-eyes." },
+      { title: "Acne & Acne Scars", slug: "acne-acne-scars", href: "#services", description: "Clear active acne and smooth scars." },
+      { title: "Open Pores & Oily Skin", slug: "open-pores-oily-skin", href: "#services", description: "Refine texture and control oil." },
+      { title: "Melasma Treatment", slug: "melasma-treatment", href: "#services", description: "Fade stubborn pigmentation safely." },
+      { title: "Vitiligo Treatment", slug: "vitiligo-treatment", href: "#services", description: "Holistic care for vitiligo." },
+      { title: "Dark Circles Treatment", slug: "dark-circles-treatment", href: "#services", description: "Brighten tired under-eyes." },
     ],
   },
   {
@@ -110,19 +110,19 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/hydrafacial.jpg",
     services: [
-      { title: "Hydra Facial", href: "#services", description: "Deep-cleansing, hydrating glow facial." },
-      { title: "Chemical Peeling", href: "#services", description: "Resurface for brighter, smoother skin." },
-      { title: "Botox Treatment", href: "#services", description: "Soften lines and wrinkles." },
-      { title: "Carbon Laser Peeling", href: "#services", description: "The 'red-carpet' glow peel." },
-      { title: "Facial Treatments", href: "#services", description: "Customized facials for every skin." },
-      { title: "Microneedling", href: "#services", description: "Collagen induction for firmness." },
-      { title: "HIFU", href: "#services", description: "Non-surgical lifting & tightening." },
-      { title: "Weight Loss / Body Shaping", href: "#services", description: "Body contouring programs." },
-      { title: "PRP – Face Treatment", href: "#services", description: "PRP for facial rejuvenation." },
-      { title: "PRP – Hair Treatment", href: "#services", description: "PRP therapy for hair regrowth." },
-      { title: "Dermal Fillers", href: "#services", description: "Restore volume & definition." },
-      { title: "Tattoo Removal", href: "#services", description: "Safe, effective laser removal." },
-      { title: "Mole Removal", href: "#services", description: "Precision mole & skin tag removal." },
+      { title: "Hydra Facial", slug: "hydrafacial", href: "#services", description: "Deep-cleansing, hydrating glow facial." },
+      { title: "Chemical Peeling", slug: "chemical-peeling", href: "#services", description: "Resurface for brighter, smoother skin." },
+      { title: "Botox Treatment", slug: "botox-treatment", href: "#services", description: "Soften lines and wrinkles." },
+      { title: "Carbon Laser Peeling", slug: "carbon-laser-peel", href: "#services", description: "The 'red-carpet' glow peel." },
+      { title: "Facial Treatments", slug: "facials", href: "#services", description: "Customized facials for every skin." },
+      { title: "Microneedling", slug: "microneedling", href: "#services", description: "Collagen induction for firmness." },
+      { title: "HIFU", slug: "hifu", href: "#services", description: "Non-surgical lifting & tightening." },
+      { title: "Weight Loss / Body Shaping", slug: "weight-loss-body-sculpting", href: "#services", description: "Body contouring programs." },
+      { title: "PRP – Face Treatment", slug: "prp-face-treatment", href: "#services", description: "PRP for facial rejuvenation." },
+      { title: "PRP – Hair Treatment", slug: "prp-hair-treatment", href: "#services", description: "PRP therapy for hair regrowth." },
+      { title: "Dermal Fillers", slug: "dermal-fillers", href: "#services", description: "Restore volume & definition." },
+      { title: "Tattoo Removal", slug: "tattoo-removal", href: "#services", description: "Safe, effective laser removal." },
+      { title: "Mole Removal", slug: "mole-removal", href: "#services", description: "Precision mole & skin tag removal." },
     ],
   },
   {
@@ -134,7 +134,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/laser-care.jpg",
     services: [
-      { title: "Laser Hair Removal", href: "#services", description: "Permanent reduction, all skin types." },
+      { title: "Laser Hair Removal", slug: "laser-hair-removal", href: "#services", description: "Permanent reduction, all skin types." },
     ],
   },
 ];
