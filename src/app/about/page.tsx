@@ -28,7 +28,7 @@ const DEFAULTS = {
   story: {
     title:
       "We started KPC because we were tired of clinics that treated patients like transactions.",
-    body: "KPC Skin Hair & Aesthetic Clinic started in 2021 with two rooms in Thapathali and one dermatologist who refused to recommend treatments he wouldn't do on his own family. Five years on, we've grown — but that rule hasn't changed.\n\nWe are not the biggest clinic in Kathmandu, and we don't want to be. What we are is deliberate: every consultation runs 30–45 minutes, every treatment plan is written down and handed to you, and every procedure is performed by a doctor — not a technician, not a salesperson.\n\nToday, KPC is a team of five full-time doctors, a patient care team of three, and an in-house surgical theatre. We've performed over 8,000 procedures — from hair transplants to rhinoplasty to laser hair removal — and we still answer every appointment request ourselves. No call center, no bots.",
+    body: "KPC Skin Hair & Aesthetic Clinic started in 2021 with two rooms in Thapathali and one dermatologist who refused to recommend treatments he wouldn't do on his own family. Five years on, we've grown — but that rule hasn't changed.\n\nWe are not the biggest clinic in Kathmandu, and we don't want to be. What we are is deliberate: every consultation runs 30–45 minutes, every treatment plan is written down and handed to you, and every procedure is performed by a doctor — not a technician, not a salesperson.\n\nToday, KPC is a team of five full-time doctors, a patient care team of three, and an in-house surgical theatre. We still answer every appointment request ourselves. No call center, no bots.",
   },
   mission: {
     title: "Mission",
