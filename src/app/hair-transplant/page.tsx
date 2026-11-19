@@ -97,6 +97,24 @@ async function getHairTransplantContent() {
   } catch {
     // DB not available — fall back to defaults
   }
+
+  // Enrich sub-procedure images from Treatment DB by slug — admin-uploaded
+  // heroImage overrides the static default. Falls back to the static image
+  // when the DB has nothing for that slug.
+  try {
+    const treatments = await db.treatment.findMany({
+      where: { published: true },
+      select: { slug: true, heroImage: true },
+    });
+    const bySlug = new Map(treatments.map((t) => [t.slug, t.heroImage]));
+    subProcedures = subProcedures.map((p) => {
+      const dbImg = bySlug.get(p.slug);
+      return { ...p, image: dbImg || p.image };
+    });
+  } catch {
+    // DB not available — keep static images
+  }
+
   return { banner, subProcedures, steps, bannerVideo: bannerRow?.video || "", stepsVideo };
 }
 
