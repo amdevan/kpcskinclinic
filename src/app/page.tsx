@@ -103,10 +103,19 @@ export default async function Home() {
   } catch {
     // DB not available — static fallbacks are used
   }
-  const imageForTreatment = (title: string, fallback: string): string =>
-    treatmentImageByTitle.get(title.toLowerCase()) ||
-    treatmentImageBySlug.get(slugify(title)) ||
-    fallback;
+  // Fuzzy match: DB titles often include parentheticals (e.g. "Hair Transplant (FUE)")
+  // while static cards use the short name ("Hair Transplant"). Try exact match,
+  // then slug match, then substring match in either direction.
+  const imageForTreatment = (title: string, fallback: string): string => {
+    const key = title.toLowerCase();
+    if (treatmentImageByTitle.has(key)) return treatmentImageByTitle.get(key)!;
+    if (treatmentImageBySlug.has(slugify(title)))
+      return treatmentImageBySlug.get(slugify(title))!;
+    for (const [t, img] of treatmentImageByTitle) {
+      if (t.includes(key) || key.includes(t)) return img;
+    }
+    return fallback;
+  };
 
   // Card rows per section: first row is the header (already in `sec`),
   // subsequent rows are individual cards with their own uploaded image.

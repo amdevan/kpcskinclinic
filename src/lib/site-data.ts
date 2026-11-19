@@ -154,7 +154,7 @@ export const POPULAR_SERVICES: PopularService[] = [
       "Natural, permanent hair restoration with advanced FUE techniques and experienced surgeons.",
     image:
       "/images/gen/hair-transplant.jpg",
-    href: "#services",
+    href: "/services/hair-transplant",
     accent: "from-brand/80 to-cyan",
   },
   {
@@ -163,7 +163,7 @@ export const POPULAR_SERVICES: PopularService[] = [
       "Refined cosmetic and reconstructive procedures performed by board-certified plastic surgeons.",
     image:
       "/images/gen/plastic-surgery.jpg",
-    href: "#services",
+    href: "/services/plastic-surgery",
     accent: "from-gold/80 to-rust",
   },
   {
@@ -172,7 +172,7 @@ export const POPULAR_SERVICES: PopularService[] = [
       "Clear active acne and smooth acne scars with clinically proven, personalized protocols.",
     image:
       "/images/gen/acne-care.jpg",
-    href: "#services",
+    href: "/services/acne-scar-treatment",
     accent: "from-green/80 to-brand",
   },
   {
@@ -181,7 +181,7 @@ export const POPULAR_SERVICES: PopularService[] = [
       "Diagnosis-driven plans combining medical therapy, PRP, GFC and lifestyle guidance.",
     image:
       "/images/gen/hair-treatment.jpg",
-    href: "#services",
+    href: "/services/hair-loss-treatment",
     accent: "from-rust/80 to-gold",
   },
 ];
