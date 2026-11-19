@@ -117,17 +117,7 @@ export function AdminSimpleList({
       setBusy(null);
       if (res?.ok) {
         closeForm();
-        if (id === null) {
-          // New row: let the server re-render provide the real record
-          router.refresh();
-        } else {
-          // Update the row in place — no full page reload
-          setLocal((arr) =>
-            arr.map((x) =>
-              x.id === id ? { ...x, ...form, id, published: x.published } : x,
-            ),
-          );
-        }
+        router.refresh();
       } else {
         alert(res?.error || "Save failed");
       }
@@ -140,11 +130,9 @@ export function AdminSimpleList({
       const res = await action(item.id, "toggle-publish");
       setBusy(null);
       if (res?.ok) {
-        setLocal((arr) =>
-          arr.map((x) =>
-            x.id === item.id ? { ...x, published: !x.published } : x,
-          ),
-        );
+        router.refresh();
+      } else {
+        alert(res?.error || "Action failed");
       }
     });
   }
@@ -157,7 +145,9 @@ export function AdminSimpleList({
       const res = await action(item.id, "delete");
       setBusy(null);
       if (res?.ok) {
-        setLocal((arr) => arr.filter((x) => x.id !== item.id));
+        router.refresh();
+      } else {
+        alert(res?.error || "Delete failed");
       }
     });
   }
