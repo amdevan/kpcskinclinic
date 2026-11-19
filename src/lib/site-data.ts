@@ -62,11 +62,11 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/hair-treatment.jpg",
     services: [
-      { title: "Dandruff & Scalp Treatments", href: "#services", description: "Targeted care for itchy, flaky scalps." },
-      { title: "GFC Treatment", href: "#services", description: "Growth Factor Concentrate for thicker hair." },
-      { title: "PRP Hair Treatment", href: "#services", description: "Platelet-rich plasma therapy for hair regrowth." },
-      { title: "Hair Loss Treatment", href: "#services", description: "Personalized plans for every type of hair loss." },
-      { title: "Minoxidil / Finasteride", href: "#services", description: "Medical-grade hair loss management." },
+      { title: "Dandruff & Scalp Treatments", slug: "dandruff-scalp-treatment", href: "#services", description: "Targeted care for itchy, flaky scalps." },
+      { title: "GFC Treatment", slug: "gfc-treatment", href: "#services", description: "Growth Factor Concentrate for thicker hair." },
+      { title: "PRP Hair Treatment", slug: "prp-hair-treatment", href: "#services", description: "Platelet-rich plasma therapy for hair regrowth." },
+      { title: "Hair Loss Treatment", slug: "hair-loss-treatment", href: "#services", description: "Personalized plans for every type of hair loss." },
+      { title: "Minoxidil / Finasteride", slug: "minoxidil-finasteride", href: "#services", description: "Medical-grade hair loss management." },
     ],
   },
   {
@@ -78,11 +78,11 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/surgery.jpg",
     services: [
-      { title: "Anti Aging", href: "#services", description: "Surgical anti-aging procedures." },
-      { title: "Plastic Surgery", href: "#services", description: "Comprehensive cosmetic surgery options." },
-      { title: "Rhinoplasty", href: "#services", description: "Nose reshaping for harmony & function." },
-      { title: "Blepharoplasty (Upper & Lower)", href: "#services", description: "Eyelid surgery for a refreshed look." },
-      { title: "Scar Revision", href: "#services", description: "Minimize and refine visible scars." },
+      { title: "Anti-Ageing Surgery", href: "/services/anti-ageing-surgery", description: "Surgical anti-aging procedures." },
+      { title: "Plastic Surgery", href: "/services/plastic-surgery", description: "Comprehensive cosmetic surgery options." },
+      { title: "Rhinoplasty", href: "/services/rhinoplasty", description: "Nose reshaping for harmony & function." },
+      { title: "Blepharoplasty (Upper & Lower)", href: "/services/blepharoplasty", description: "Eyelid surgery for a refreshed look." },
+      { title: "Scar Revision", href: "/services/scar-revision", description: "Minimize and refine visible scars." },
     ],
   },
   {
