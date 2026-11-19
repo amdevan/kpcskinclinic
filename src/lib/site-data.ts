@@ -78,11 +78,11 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/surgery.jpg",
     services: [
-      { title: "Anti-Ageing Surgery", href: "/services/anti-ageing-surgery", description: "Surgical anti-aging procedures." },
-      { title: "Plastic Surgery", href: "/services/plastic-surgery", description: "Comprehensive cosmetic surgery options." },
-      { title: "Rhinoplasty", href: "/services/rhinoplasty", description: "Nose reshaping for harmony & function." },
-      { title: "Blepharoplasty (Upper & Lower)", href: "/services/blepharoplasty", description: "Eyelid surgery for a refreshed look." },
-      { title: "Scar Revision", href: "/services/scar-revision", description: "Minimize and refine visible scars." },
+      { title: "Anti-Ageing Surgery", slug: "anti-ageing-surgery", href: "#services", description: "Surgical anti-aging procedures." },
+      { title: "Plastic Surgery", slug: "plastic-surgery", href: "#services", description: "Comprehensive cosmetic surgery options." },
+      { title: "Rhinoplasty", slug: "rhinoplasty", href: "#services", description: "Nose reshaping for harmony & function." },
+      { title: "Blepharoplasty (Upper & Lower)", slug: "blepharoplasty", href: "#services", description: "Eyelid surgery for a refreshed look." },
+      { title: "Scar Revision", slug: "scar-revision", href: "#services", description: "Minimize and refine visible scars." },
     ],
   },
   {
