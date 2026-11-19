@@ -16,7 +16,7 @@ const FEATURES = [
     icon: Microscope,
     title: "Equipment we'd use on ourselves",
     description:
-      "We invest in the same FDA-cleared devices top clinics in Delhi and Bangkok use. No grey-market imports, no shortcuts.",
+      "We invest in the same devices top clinics in Delhi and Bangkok use. No grey-market imports, no shortcuts.",
     color: "text-cyan",
     bg: "bg-cyan/10",
   },
