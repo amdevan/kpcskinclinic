@@ -94,7 +94,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     image:
       "/images/gen/skincare-facial.jpg",
     services: [
-      { title: "Acne & Acne Scars", slug: "acne-acne-scars", href: "#services", description: "Clear active acne and smooth scars." },
+      { title: "Acne & Acne Scars", slug: "acne-scar-treatment", href: "#services", description: "Clear active acne and smooth scars." },
       { title: "Open Pores & Oily Skin", slug: "open-pores-oily-skin", href: "#services", description: "Refine texture and control oil." },
       { title: "Melasma Treatment", slug: "melasma-treatment", href: "#services", description: "Fade stubborn pigmentation safely." },
       { title: "Vitiligo Treatment", slug: "vitiligo-treatment", href: "#services", description: "Holistic care for vitiligo." },
